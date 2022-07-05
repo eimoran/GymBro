@@ -18,6 +18,7 @@
 		60D1720A2874AFFA0031214D /* GymBroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172092874AFFA0031214D /* GymBroTests.m */; };
 		60D172142874AFFA0031214D /* GymBroUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172132874AFFA0031214D /* GymBroUITests.m */; };
 		60D172162874AFFA0031214D /* GymBroUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172152874AFFA0031214D /* GymBroUITestsLaunchTests.m */; };
+		60D172262874B5B10031214D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172252874B5B10031214D /* LoginViewController.m */; };
 		6202BA339D678724A0C43219 /* Pods_GymBro_GymBroUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */; };
 		88F59CF7FC65668745D9B527 /* Pods_GymBro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B357074C47765BDB933E5F0 /* Pods_GymBro.framework */; };
 /* End PBXBuildFile section */
@@ -61,6 +62,8 @@
 		60D1720F2874AFFA0031214D /* GymBroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GymBroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D172132874AFFA0031214D /* GymBroUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GymBroUITests.m; sourceTree = "<group>"; };
 		60D172152874AFFA0031214D /* GymBroUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GymBroUITestsLaunchTests.m; sourceTree = "<group>"; };
+		60D172242874B5B10031214D /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		60D172252874B5B10031214D /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		8077BF8F3ACD7C4A8707DD45 /* Pods_GymBroTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBroTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBro_GymBroUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		999B603B8148AF60F4D2BC66 /* Pods-GymBro-GymBroUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBro-GymBroUITests.release.xcconfig"; path = "Target Support Files/Pods-GymBro-GymBroUITests/Pods-GymBro-GymBroUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -116,7 +119,6 @@
 				B602B02803A88DF9E0395B69 /* Pods-GymBroTests.debug.xcconfig */,
 				1C09A1A622B3A18550535DE1 /* Pods-GymBroTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -145,6 +147,8 @@
 		60D171EC2874AFF90031214D /* GymBro */ = {
 			isa = PBXGroup;
 			children = (
+				60D172232874B4950031214D /* Models */,
+				60D172222874B4860031214D /* ViewControllers */,
 				60D171ED2874AFF90031214D /* AppDelegate.h */,
 				60D171EE2874AFF90031214D /* AppDelegate.m */,
 				60D171F02874AFF90031214D /* SceneDelegate.h */,
@@ -175,6 +179,22 @@
 				60D172152874AFFA0031214D /* GymBroUITestsLaunchTests.m */,
 			);
 			path = GymBroUITests;
+			sourceTree = "<group>";
+		};
+		60D172222874B4860031214D /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				60D172242874B5B10031214D /* LoginViewController.h */,
+				60D172252874B5B10031214D /* LoginViewController.m */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		60D172232874B4950031214D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -419,6 +439,7 @@
 				60D171EF2874AFF90031214D /* AppDelegate.m in Sources */,
 				60D172002874AFFA0031214D /* main.m in Sources */,
 				60D171F22874AFF90031214D /* SceneDelegate.m in Sources */,
+				60D172262874B5B10031214D /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

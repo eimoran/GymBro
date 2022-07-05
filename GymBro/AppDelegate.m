@@ -18,15 +18,28 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     ParseClientConfiguration *config = [ParseClientConfiguration  configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
-
-            configuration.applicationId = @"sdhQay3CsZ8mOLs5iIuvrSHkPtabXqHesQ7diKqY"; // <- UPDATE
-            configuration.clientKey = @"TCRiRrtUWmmtI1khFzvJdmRinX1N2tg7kaYrV304"; // <- UPDATE
-            configuration.server = @"https://parseapi.back4app.com";
-        }];
-
-        [Parse initializeWithConfiguration:config];
-
-        return YES;
+        
+        configuration.applicationId = @"sdhQay3CsZ8mOLs5iIuvrSHkPtabXqHesQ7diKqY"; // <- UPDATE
+        configuration.clientKey = @"TCRiRrtUWmmtI1khFzvJdmRinX1N2tg7kaYrV304"; // <- UPDATE
+        configuration.server = @"https://parseapi.back4app.com";
+    }];
+    
+    [Parse initializeWithConfiguration:config];
+    
+    // Test Object Creation
+//    PFObject *gymBro = [PFObject objectWithClassName:@"GymBro"];
+//    gymBro[@"name"] = @"Test User";
+//    gymBro[@"age"] = @20;
+//    gymBro[@"experience"] = @2;
+//    [gymBro saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//        if (succeeded) {
+//            NSLog(@"Object saved!");
+//        } else {
+//            NSLog(@"Error: %@", error.description);
+//        }
+//    }];
+    
+    return YES;
 }
 
 

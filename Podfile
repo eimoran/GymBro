@@ -7,6 +7,7 @@ target 'GymBro' do
 
   # Pods for GymBro
   pod 'Parse'
+  pod 'GoogleSignIn'
 
   target 'GymBroTests' do
     inherit! :search_paths
