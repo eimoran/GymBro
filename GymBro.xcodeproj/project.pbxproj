@@ -1,0 +1,757 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		086221C3A619353E33EB50DD /* Pods_GymBroTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8077BF8F3ACD7C4A8707DD45 /* Pods_GymBroTests.framework */; };
+		60D171EF2874AFF90031214D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D171EE2874AFF90031214D /* AppDelegate.m */; };
+		60D171F22874AFF90031214D /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D171F12874AFF90031214D /* SceneDelegate.m */; };
+		60D171F52874AFF90031214D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D171F42874AFF90031214D /* ViewController.m */; };
+		60D171F82874AFF90031214D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D171F62874AFF90031214D /* Main.storyboard */; };
+		60D171FA2874AFFA0031214D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60D171F92874AFFA0031214D /* Assets.xcassets */; };
+		60D171FD2874AFFA0031214D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D171FB2874AFFA0031214D /* LaunchScreen.storyboard */; };
+		60D172002874AFFA0031214D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D171FF2874AFFA0031214D /* main.m */; };
+		60D1720A2874AFFA0031214D /* GymBroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172092874AFFA0031214D /* GymBroTests.m */; };
+		60D172142874AFFA0031214D /* GymBroUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172132874AFFA0031214D /* GymBroUITests.m */; };
+		60D172162874AFFA0031214D /* GymBroUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172152874AFFA0031214D /* GymBroUITestsLaunchTests.m */; };
+		6202BA339D678724A0C43219 /* Pods_GymBro_GymBroUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */; };
+		88F59CF7FC65668745D9B527 /* Pods_GymBro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B357074C47765BDB933E5F0 /* Pods_GymBro.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		60D172062874AFFA0031214D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60D171E22874AFF90031214D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60D171E92874AFF90031214D;
+			remoteInfo = GymBro;
+		};
+		60D172102874AFFA0031214D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60D171E22874AFF90031214D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60D171E92874AFF90031214D;
+			remoteInfo = GymBro;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		196267B6982D6F57D11BE975 /* Pods-GymBro.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBro.release.xcconfig"; path = "Target Support Files/Pods-GymBro/Pods-GymBro.release.xcconfig"; sourceTree = "<group>"; };
+		1C09A1A622B3A18550535DE1 /* Pods-GymBroTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBroTests.release.xcconfig"; path = "Target Support Files/Pods-GymBroTests/Pods-GymBroTests.release.xcconfig"; sourceTree = "<group>"; };
+		419E88129D7641FABC7B561F /* Pods-GymBro.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBro.debug.xcconfig"; path = "Target Support Files/Pods-GymBro/Pods-GymBro.debug.xcconfig"; sourceTree = "<group>"; };
+		5A0B043EABA469F0DE4576BB /* Pods-GymBro-GymBroUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBro-GymBroUITests.debug.xcconfig"; path = "Target Support Files/Pods-GymBro-GymBroUITests/Pods-GymBro-GymBroUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		60D171EA2874AFF90031214D /* GymBro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymBro.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		60D171ED2874AFF90031214D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		60D171EE2874AFF90031214D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		60D171F02874AFF90031214D /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		60D171F12874AFF90031214D /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		60D171F32874AFF90031214D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		60D171F42874AFF90031214D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		60D171F72874AFF90031214D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		60D171F92874AFFA0031214D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		60D171FC2874AFFA0031214D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		60D171FE2874AFFA0031214D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60D171FF2874AFFA0031214D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		60D172052874AFFA0031214D /* GymBroTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GymBroTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		60D172092874AFFA0031214D /* GymBroTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GymBroTests.m; sourceTree = "<group>"; };
+		60D1720F2874AFFA0031214D /* GymBroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GymBroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		60D172132874AFFA0031214D /* GymBroUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GymBroUITests.m; sourceTree = "<group>"; };
+		60D172152874AFFA0031214D /* GymBroUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GymBroUITestsLaunchTests.m; sourceTree = "<group>"; };
+		8077BF8F3ACD7C4A8707DD45 /* Pods_GymBroTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBroTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBro_GymBroUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		999B603B8148AF60F4D2BC66 /* Pods-GymBro-GymBroUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBro-GymBroUITests.release.xcconfig"; path = "Target Support Files/Pods-GymBro-GymBroUITests/Pods-GymBro-GymBroUITests.release.xcconfig"; sourceTree = "<group>"; };
+		9B357074C47765BDB933E5F0 /* Pods_GymBro.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBro.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B602B02803A88DF9E0395B69 /* Pods-GymBroTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBroTests.debug.xcconfig"; path = "Target Support Files/Pods-GymBroTests/Pods-GymBroTests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		60D171E72874AFF90031214D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				88F59CF7FC65668745D9B527 /* Pods_GymBro.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60D172022874AFFA0031214D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				086221C3A619353E33EB50DD /* Pods_GymBroTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60D1720C2874AFFA0031214D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6202BA339D678724A0C43219 /* Pods_GymBro_GymBroUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0661FCAF5F6541CF4E755242 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9B357074C47765BDB933E5F0 /* Pods_GymBro.framework */,
+				84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */,
+				8077BF8F3ACD7C4A8707DD45 /* Pods_GymBroTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2E4B564DCB30C87819C1C657 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				419E88129D7641FABC7B561F /* Pods-GymBro.debug.xcconfig */,
+				196267B6982D6F57D11BE975 /* Pods-GymBro.release.xcconfig */,
+				5A0B043EABA469F0DE4576BB /* Pods-GymBro-GymBroUITests.debug.xcconfig */,
+				999B603B8148AF60F4D2BC66 /* Pods-GymBro-GymBroUITests.release.xcconfig */,
+				B602B02803A88DF9E0395B69 /* Pods-GymBroTests.debug.xcconfig */,
+				1C09A1A622B3A18550535DE1 /* Pods-GymBroTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		60D171E12874AFF90031214D = {
+			isa = PBXGroup;
+			children = (
+				60D171EC2874AFF90031214D /* GymBro */,
+				60D172082874AFFA0031214D /* GymBroTests */,
+				60D172122874AFFA0031214D /* GymBroUITests */,
+				60D171EB2874AFF90031214D /* Products */,
+				2E4B564DCB30C87819C1C657 /* Pods */,
+				0661FCAF5F6541CF4E755242 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		60D171EB2874AFF90031214D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				60D171EA2874AFF90031214D /* GymBro.app */,
+				60D172052874AFFA0031214D /* GymBroTests.xctest */,
+				60D1720F2874AFFA0031214D /* GymBroUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		60D171EC2874AFF90031214D /* GymBro */ = {
+			isa = PBXGroup;
+			children = (
+				60D171ED2874AFF90031214D /* AppDelegate.h */,
+				60D171EE2874AFF90031214D /* AppDelegate.m */,
+				60D171F02874AFF90031214D /* SceneDelegate.h */,
+				60D171F12874AFF90031214D /* SceneDelegate.m */,
+				60D171F32874AFF90031214D /* ViewController.h */,
+				60D171F42874AFF90031214D /* ViewController.m */,
+				60D171F62874AFF90031214D /* Main.storyboard */,
+				60D171F92874AFFA0031214D /* Assets.xcassets */,
+				60D171FB2874AFFA0031214D /* LaunchScreen.storyboard */,
+				60D171FE2874AFFA0031214D /* Info.plist */,
+				60D171FF2874AFFA0031214D /* main.m */,
+			);
+			path = GymBro;
+			sourceTree = "<group>";
+		};
+		60D172082874AFFA0031214D /* GymBroTests */ = {
+			isa = PBXGroup;
+			children = (
+				60D172092874AFFA0031214D /* GymBroTests.m */,
+			);
+			path = GymBroTests;
+			sourceTree = "<group>";
+		};
+		60D172122874AFFA0031214D /* GymBroUITests */ = {
+			isa = PBXGroup;
+			children = (
+				60D172132874AFFA0031214D /* GymBroUITests.m */,
+				60D172152874AFFA0031214D /* GymBroUITestsLaunchTests.m */,
+			);
+			path = GymBroUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		60D171E92874AFF90031214D /* GymBro */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60D172192874AFFA0031214D /* Build configuration list for PBXNativeTarget "GymBro" */;
+			buildPhases = (
+				2C3DAB84FE9D7B4CE4BEC866 /* [CP] Check Pods Manifest.lock */,
+				60D171E62874AFF90031214D /* Sources */,
+				60D171E72874AFF90031214D /* Frameworks */,
+				60D171E82874AFF90031214D /* Resources */,
+				84A862065E001667CB704D98 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GymBro;
+			productName = GymBro;
+			productReference = 60D171EA2874AFF90031214D /* GymBro.app */;
+			productType = "com.apple.product-type.application";
+		};
+		60D172042874AFFA0031214D /* GymBroTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60D1721C2874AFFA0031214D /* Build configuration list for PBXNativeTarget "GymBroTests" */;
+			buildPhases = (
+				48C794C88F29D10D2E88B061 /* [CP] Check Pods Manifest.lock */,
+				60D172012874AFFA0031214D /* Sources */,
+				60D172022874AFFA0031214D /* Frameworks */,
+				60D172032874AFFA0031214D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				60D172072874AFFA0031214D /* PBXTargetDependency */,
+			);
+			name = GymBroTests;
+			productName = GymBroTests;
+			productReference = 60D172052874AFFA0031214D /* GymBroTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		60D1720E2874AFFA0031214D /* GymBroUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60D1721F2874AFFA0031214D /* Build configuration list for PBXNativeTarget "GymBroUITests" */;
+			buildPhases = (
+				BC886416817780646B80B17E /* [CP] Check Pods Manifest.lock */,
+				60D1720B2874AFFA0031214D /* Sources */,
+				60D1720C2874AFFA0031214D /* Frameworks */,
+				60D1720D2874AFFA0031214D /* Resources */,
+				781BA21D4CEFE6E016F2FDCD /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				60D172112874AFFA0031214D /* PBXTargetDependency */,
+			);
+			name = GymBroUITests;
+			productName = GymBroUITests;
+			productReference = 60D1720F2874AFFA0031214D /* GymBroUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		60D171E22874AFF90031214D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1340;
+				TargetAttributes = {
+					60D171E92874AFF90031214D = {
+						CreatedOnToolsVersion = 13.4;
+					};
+					60D172042874AFFA0031214D = {
+						CreatedOnToolsVersion = 13.4;
+						TestTargetID = 60D171E92874AFF90031214D;
+					};
+					60D1720E2874AFFA0031214D = {
+						CreatedOnToolsVersion = 13.4;
+						TestTargetID = 60D171E92874AFF90031214D;
+					};
+				};
+			};
+			buildConfigurationList = 60D171E52874AFF90031214D /* Build configuration list for PBXProject "GymBro" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 60D171E12874AFF90031214D;
+			productRefGroup = 60D171EB2874AFF90031214D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				60D171E92874AFF90031214D /* GymBro */,
+				60D172042874AFFA0031214D /* GymBroTests */,
+				60D1720E2874AFFA0031214D /* GymBroUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		60D171E82874AFF90031214D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60D171FD2874AFFA0031214D /* LaunchScreen.storyboard in Resources */,
+				60D171FA2874AFFA0031214D /* Assets.xcassets in Resources */,
+				60D171F82874AFF90031214D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60D172032874AFFA0031214D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60D1720D2874AFFA0031214D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2C3DAB84FE9D7B4CE4BEC866 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GymBro-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		48C794C88F29D10D2E88B061 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GymBroTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		781BA21D4CEFE6E016F2FDCD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GymBro-GymBroUITests/Pods-GymBro-GymBroUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GymBro-GymBroUITests/Pods-GymBro-GymBroUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GymBro-GymBroUITests/Pods-GymBro-GymBroUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		84A862065E001667CB704D98 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GymBro/Pods-GymBro-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-GymBro/Pods-GymBro-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GymBro/Pods-GymBro-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BC886416817780646B80B17E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GymBro-GymBroUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		60D171E62874AFF90031214D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60D171F52874AFF90031214D /* ViewController.m in Sources */,
+				60D171EF2874AFF90031214D /* AppDelegate.m in Sources */,
+				60D172002874AFFA0031214D /* main.m in Sources */,
+				60D171F22874AFF90031214D /* SceneDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60D172012874AFFA0031214D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60D1720A2874AFFA0031214D /* GymBroTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60D1720B2874AFFA0031214D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60D172162874AFFA0031214D /* GymBroUITestsLaunchTests.m in Sources */,
+				60D172142874AFFA0031214D /* GymBroUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		60D172072874AFFA0031214D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60D171E92874AFF90031214D /* GymBro */;
+			targetProxy = 60D172062874AFFA0031214D /* PBXContainerItemProxy */;
+		};
+		60D172112874AFFA0031214D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60D171E92874AFF90031214D /* GymBro */;
+			targetProxy = 60D172102874AFFA0031214D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		60D171F62874AFF90031214D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				60D171F72874AFF90031214D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		60D171FB2874AFFA0031214D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				60D171FC2874AFFA0031214D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		60D172172874AFFA0031214D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		60D172182874AFFA0031214D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		60D1721A2874AFFA0031214D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 419E88129D7641FABC7B561F /* Pods-GymBro.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JTU99G9RW9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GymBro/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codepath.GymBro;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		60D1721B2874AFFA0031214D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 196267B6982D6F57D11BE975 /* Pods-GymBro.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JTU99G9RW9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GymBro/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codepath.GymBro;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		60D1721D2874AFFA0031214D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B602B02803A88DF9E0395B69 /* Pods-GymBroTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JTU99G9RW9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codepath.GymBroTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GymBro.app/GymBro";
+			};
+			name = Debug;
+		};
+		60D1721E2874AFFA0031214D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1C09A1A622B3A18550535DE1 /* Pods-GymBroTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JTU99G9RW9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codepath.GymBroTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GymBro.app/GymBro";
+			};
+			name = Release;
+		};
+		60D172202874AFFA0031214D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5A0B043EABA469F0DE4576BB /* Pods-GymBro-GymBroUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JTU99G9RW9;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codepath.GymBroUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GymBro;
+			};
+			name = Debug;
+		};
+		60D172212874AFFA0031214D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 999B603B8148AF60F4D2BC66 /* Pods-GymBro-GymBroUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JTU99G9RW9;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codepath.GymBroUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GymBro;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		60D171E52874AFF90031214D /* Build configuration list for PBXProject "GymBro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60D172172874AFFA0031214D /* Debug */,
+				60D172182874AFFA0031214D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		60D172192874AFFA0031214D /* Build configuration list for PBXNativeTarget "GymBro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60D1721A2874AFFA0031214D /* Debug */,
+				60D1721B2874AFFA0031214D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		60D1721C2874AFFA0031214D /* Build configuration list for PBXNativeTarget "GymBroTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60D1721D2874AFFA0031214D /* Debug */,
+				60D1721E2874AFFA0031214D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		60D1721F2874AFFA0031214D /* Build configuration list for PBXNativeTarget "GymBroUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60D172202874AFFA0031214D /* Debug */,
+				60D172212874AFFA0031214D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 60D171E22874AFF90031214D /* Project object */;
+}
