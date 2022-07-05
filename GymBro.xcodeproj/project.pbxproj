@@ -19,6 +19,11 @@
 		60D172142874AFFA0031214D /* GymBroUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172132874AFFA0031214D /* GymBroUITests.m */; };
 		60D172162874AFFA0031214D /* GymBroUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172152874AFFA0031214D /* GymBroUITestsLaunchTests.m */; };
 		60D172262874B5B10031214D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172252874B5B10031214D /* LoginViewController.m */; };
+		60D172292874D8370031214D /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172282874D8370031214D /* HomeViewController.m */; };
+		60D1722C2874D8470031214D /* MatchingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1722B2874D8470031214D /* MatchingViewController.m */; };
+		60D1722F2874D8510031214D /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1722E2874D8510031214D /* ProfileViewController.m */; };
+		60D172322874E5710031214D /* ProfileFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172312874E5710031214D /* ProfileFormViewController.m */; };
+		60D172352874EA220031214D /* ProfileFormCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172342874EA220031214D /* ProfileFormCell.m */; };
 		6202BA339D678724A0C43219 /* Pods_GymBro_GymBroUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */; };
 		88F59CF7FC65668745D9B527 /* Pods_GymBro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B357074C47765BDB933E5F0 /* Pods_GymBro.framework */; };
 /* End PBXBuildFile section */
@@ -64,6 +69,16 @@
 		60D172152874AFFA0031214D /* GymBroUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GymBroUITestsLaunchTests.m; sourceTree = "<group>"; };
 		60D172242874B5B10031214D /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		60D172252874B5B10031214D /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		60D172272874D8370031214D /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		60D172282874D8370031214D /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		60D1722A2874D8470031214D /* MatchingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MatchingViewController.h; sourceTree = "<group>"; };
+		60D1722B2874D8470031214D /* MatchingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchingViewController.m; sourceTree = "<group>"; };
+		60D1722D2874D8510031214D /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		60D1722E2874D8510031214D /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		60D172302874E5710031214D /* ProfileFormViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileFormViewController.h; sourceTree = "<group>"; };
+		60D172312874E5710031214D /* ProfileFormViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileFormViewController.m; sourceTree = "<group>"; };
+		60D172332874EA220031214D /* ProfileFormCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileFormCell.h; sourceTree = "<group>"; };
+		60D172342874EA220031214D /* ProfileFormCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileFormCell.m; sourceTree = "<group>"; };
 		8077BF8F3ACD7C4A8707DD45 /* Pods_GymBroTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBroTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBro_GymBroUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		999B603B8148AF60F4D2BC66 /* Pods-GymBro-GymBroUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBro-GymBroUITests.release.xcconfig"; path = "Target Support Files/Pods-GymBro-GymBroUITests/Pods-GymBro-GymBroUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +201,14 @@
 			children = (
 				60D172242874B5B10031214D /* LoginViewController.h */,
 				60D172252874B5B10031214D /* LoginViewController.m */,
+				60D172272874D8370031214D /* HomeViewController.h */,
+				60D172282874D8370031214D /* HomeViewController.m */,
+				60D1722A2874D8470031214D /* MatchingViewController.h */,
+				60D1722B2874D8470031214D /* MatchingViewController.m */,
+				60D1722D2874D8510031214D /* ProfileViewController.h */,
+				60D1722E2874D8510031214D /* ProfileViewController.m */,
+				60D172302874E5710031214D /* ProfileFormViewController.h */,
+				60D172312874E5710031214D /* ProfileFormViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -193,6 +216,8 @@
 		60D172232874B4950031214D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				60D172332874EA220031214D /* ProfileFormCell.h */,
+				60D172342874EA220031214D /* ProfileFormCell.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -435,11 +460,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60D1722C2874D8470031214D /* MatchingViewController.m in Sources */,
+				60D172352874EA220031214D /* ProfileFormCell.m in Sources */,
 				60D171F52874AFF90031214D /* ViewController.m in Sources */,
+				60D1722F2874D8510031214D /* ProfileViewController.m in Sources */,
 				60D171EF2874AFF90031214D /* AppDelegate.m in Sources */,
 				60D172002874AFFA0031214D /* main.m in Sources */,
 				60D171F22874AFF90031214D /* SceneDelegate.m in Sources */,
 				60D172262874B5B10031214D /* LoginViewController.m in Sources */,
+				60D172322874E5710031214D /* ProfileFormViewController.m in Sources */,
+				60D172292874D8370031214D /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

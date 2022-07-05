@@ -78,7 +78,7 @@
 
 - (IBAction)signup:(id)sender {
     self.emailField.hidden = false;
-    if ([self.usernameField isEqual:@""] || [self.emailField isEqual:@""] || [self.passwordField isEqual:@""])
+    if ([self.usernameField isEqual:@""] || self.emailField.text.length == 0 || [self.passwordField isEqual:@""])
     {
         // Place alert controller
     }
