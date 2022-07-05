@@ -89,7 +89,7 @@
 }
 
 - (IBAction)login:(id)sender {
-    if ([self.usernameField isEqual:@""] || [self.passwordField isEqual:@""] || ![self.emailField isEqual:@""])
+    if ([self.usernameField isEqual:@""] || [self.passwordField isEqual:@""])
     {
         // Place alert controller
     }
