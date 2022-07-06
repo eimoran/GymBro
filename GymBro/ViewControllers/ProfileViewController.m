@@ -32,7 +32,6 @@
 */
 
 - (IBAction)updateInfo:(id)sender {
-    [self performSegueWithIdentifier:@"profileForm"
-                              sender:self];
+    [self performSegueWithIdentifier:@"profileForm" sender:self];
 }
 @end

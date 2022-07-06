@@ -6,10 +6,17 @@
 //
 
 #import "ProfileFormViewController.h"
-#import "../Models/ProfileFormCell.h"
+#import "../Models/WorkoutSplitCell.h"
+#import "../Models/WorkoutTimeCell.h"
+#import "../Models/GenderCell.h"
+#import "Parse/Parse.h"
+
 
 @interface ProfileFormViewController () <UITableViewDelegate, UITableViewDataSource>
+
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+- (IBAction)submit:(id)sender;
 
 @end
 
@@ -20,43 +27,38 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     // Do any additional setup after loading the view.
-    
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
-}
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return 3;
-}
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSString * title = nil;
-    switch(row) {
-            case 0:
-                title = @"a";
-                break;
-            case 1:
-                title = @"b";
-                break;
-            case 2:
-                title = @"c";
-                break;
-    }
-    return title;
+    self.tableView.rowHeight = 200;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ProfileFormCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormCell" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    if (indexPath.row == 0)
+    {
+        WorkoutSplitCell *splitCell = [tableView dequeueReusableCellWithIdentifier:@"WorkoutSplitCell" forIndexPath:indexPath];
+        splitCell.controller = self;
+        return splitCell;
+    }
+    else if (indexPath.row == 1)
+    {
+        WorkoutTimeCell *workoutTimeCell = [tableView dequeueReusableCellWithIdentifier:@"WorkoutTimeCell" forIndexPath:indexPath];
+        workoutTimeCell.controller = self;
+        return workoutTimeCell;
+    }
+    else if (indexPath.row == 2)
+    {
+        GenderCell *genderCell = [tableView dequeueReusableCellWithIdentifier:@"GenderCell" forIndexPath:indexPath];
+        genderCell.controller = self;
+        return genderCell;
+    }
+    
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 3;
 }
+
 /*
 #pragma mark - Navigation
 
@@ -67,4 +69,20 @@
 }
 */
 
+- (IBAction)submit:(id)sender {
+    if (self.time == nil)
+    {
+        self.time = @"Morning (6am - 12pm)";
+    }
+    if (self.split == nil)
+    {
+        self.split = @"Whole-Body Split";
+    }
+    if (self.gender == nil)
+    {
+        self.gender = @"Male";
+    }
+    NSLog(@"%@, %@, %@", self.split, self.time, self.gender);
+    
+}
 @end
