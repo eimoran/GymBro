@@ -14,7 +14,6 @@
 
 @interface ProfileFormViewController () <UITableViewDelegate, UITableViewDataSource>
 
-
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 - (IBAction)submit:(id)sender;
 
@@ -82,7 +81,22 @@
     {
         self.gender = @"Male";
     }
-    NSLog(@"%@, %@, %@", self.split, self.time, self.gender);
+//    NSLog(@"%@, %@, %@", self.split, self.time, self.gender);
+    
+    // Update User Info
+    PFUser *user = [PFUser currentUser];
+    user[@"workoutSplit"] = self.split;
+    user[@"workoutTime"] = self.time;
+    user[@"gender"] = self.gender;
+    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        [self dismissViewControllerAnimated:true completion:^{
+            [self.delegate updateProfile:self.split :self.time :self.gender];
+        }];
+    }];
+    //user[@"gym"] = self.gym;
+//    [self.delegate updateProfile:self.split :self.time :self.gender];
+    
+    
     
 }
 @end
