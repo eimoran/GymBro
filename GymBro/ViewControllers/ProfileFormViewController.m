@@ -69,6 +69,7 @@
 */
 
 - (IBAction)submit:(id)sender {
+    NSLog(@"SUBMIT");
     if (self.time == nil)
     {
         self.time = @"Morning (6am - 12pm)";
@@ -83,20 +84,25 @@
     }
 //    NSLog(@"%@, %@, %@", self.split, self.time, self.gender);
     
+    /* REFRESH DATA WHEN MODAL SEGUE IS FINISHED (try making updateprofile work)*/
+    
     // Update User Info
     PFUser *user = [PFUser currentUser];
     user[@"workoutSplit"] = self.split;
     user[@"workoutTime"] = self.time;
     user[@"gender"] = self.gender;
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-        [self dismissViewControllerAnimated:true completion:^{
-            [self.delegate updateProfile:self.split :self.time :self.gender];
-        }];
+        NSLog(@"SAVED");
     }];
-    //user[@"gym"] = self.gym;
-//    [self.delegate updateProfile:self.split :self.time :self.gender];
+    [self.delegate updateProfile];
+    [self dismissViewControllerAnimated:true completion:nil];//^{
+//        [self.delegate updateProfile];
+//    }];
     
     
-    
+//    NSLog(@"User update profile successfully");
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    UIViewController *tabViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
+//    self.view.window.rootViewController = tabViewController;
 }
 @end

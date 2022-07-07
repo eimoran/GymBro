@@ -153,6 +153,7 @@
                                 <buttonConfiguration key="configuration" style="plain" title="Update"/>
                                 <connections>
                                     <action selector="updateInfo:" destination="wn9-iP-QDa" eventType="touchUpInside" id="zcw-wy-1YL"/>
+                                    <segue destination="fT0-Sc-PlT" kind="presentation" id="nst-6I-Xme"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -165,7 +166,6 @@
                         <outlet property="gymlabel" destination="0ds-t4-1cS" id="MTw-oa-psa"/>
                         <outlet property="workoutPlanLabel" destination="B1i-LP-ZOM" id="aOP-DN-JBI"/>
                         <outlet property="workoutTimeLabel" destination="32m-Wv-a0y" id="P3x-e1-23d"/>
-                        <segue destination="BNi-T3-SCh" kind="presentation" identifier="profileForm" id="Dl8-p1-6Xj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S6g-bW-CFf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -266,27 +266,30 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oFi-0v-h0q">
-                                <rect key="frame" x="326" y="20" width="70" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Submit"/>
-                                <connections>
-                                    <action selector="submit:" destination="BNi-T3-SCh" eventType="touchUpInside" id="bP5-cU-NfH"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="d7D-JZ-YCA"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="mSI-tx-Hhy"/>
+                    <navigationItem key="navigationItem" id="mSI-tx-Hhy">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="lE9-RM-X47">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="cbq-uH-rls">
+                                <rect key="frame" x="302" y="12.5" width="92" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Submit"/>
+                                <connections>
+                                    <action selector="submit:" destination="BNi-T3-SCh" eventType="touchUpInside" id="L7b-eb-TdR"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="UiQ-eA-z7b" id="R9T-9D-MCx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uAF-NL-hfH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3400" y="2275"/>
+            <point key="canvasLocation" x="4310.144927536232" y="2274.7767857142858"/>
         </scene>
         <!--Matching View Controller-->
         <scene sceneID="PdU-kc-dX1">
@@ -376,6 +379,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LDI-aq-U6a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2574" y="1554"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ZBN-5J-84e">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fT0-Sc-PlT" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ODo-br-dPV">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BNi-T3-SCh" kind="relationship" relationship="rootViewController" id="ThR-Dg-GFO"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z9X-tu-Xm5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3400.0000000000005" y="2274.7767857142858"/>
         </scene>
     </scenes>
     <resources>

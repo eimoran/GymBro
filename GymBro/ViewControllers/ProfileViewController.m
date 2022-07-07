@@ -10,6 +10,7 @@
 #import "Parse/Parse.h"
 
 @interface ProfileViewController () <ProfileFormViewControllerDelegate>
+
 - (IBAction)updateInfo:(id)sender;
 @property (strong, nonatomic) NSString *workoutSplit;
 @property (strong, nonatomic) NSString *workoutTime;
@@ -34,7 +35,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"APPEARED");
-//    [self displayInfo];
+    [self displayInfo];
 }
 
 - (void)getProfile
@@ -45,14 +46,6 @@
     self.gender = user[@"gender"];
 }
 
-- (void)updateProfile:(NSString *)split :(NSString *)time :(NSString *)gender
-{
-    NSLog(@"UPDATING PROFILE");
-    [self displayInfo];
-//    self.workoutSplit = split;
-//    self.workoutTime = time;
-//    self.gender = gender;
-}
 
 - (void)displayInfo
 {
@@ -65,19 +58,28 @@
     
 }
 
-/*
-#pragma mark - Navigation
+
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    UINavigationController *navigationController = [segue destinationViewController];
+    ProfileFormViewController *formController = (ProfileFormViewController*)navigationController.topViewController;
+    formController.delegate = self;
 }
-*/
+
 
 - (IBAction)updateInfo:(id)sender {
-    [self performSegueWithIdentifier:@"profileForm" sender:self];
+//    [self performSegueWithIdentifier:@"profileForm" sender:self];
 //    [self displayInfo];
 }
+
+- (void)updateProfile {
+    NSLog(@"UPDATING PROFILE");
+    [self displayInfo];
+}
+
+
 
 @end

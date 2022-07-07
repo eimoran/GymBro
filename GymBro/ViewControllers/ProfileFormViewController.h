@@ -11,13 +11,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ProfileFormViewControllerDelegate
 
-- (void)updateProfile:(NSString *)split :(NSString *)time :(NSString *)gender;
+- (void)updateProfile;
 
 @end
 
 @interface ProfileFormViewController : UIViewController
 
-@property (nonatomic, weak) id <ProfileFormViewControllerDelegate> delegate;
+@property (weak, nonatomic) id<ProfileFormViewControllerDelegate> delegate;
 @property (weak, nonatomic) NSString *split;
 @property (weak, nonatomic) NSString *time;
 @property (weak, nonatomic) NSString *gender;
