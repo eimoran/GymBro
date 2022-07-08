@@ -23,7 +23,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) MKPointOfInterestFilter *filter;
-@property (strong, nonatomic) NSArray *gyms;
+@property (strong, nonatomic) NSMutableArray *gyms;
 @property (strong, nonatomic) NSString *lat;
 @property (strong, nonatomic) NSString *lon;
 
@@ -51,12 +51,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     
     
     
-//    [self.locationManager requestLocation];
-    
-//    NSArray *gymFilter = [[NSArray alloc] init];
-//    gymFilter = [gymFilter arrayByAddingObject:MKPointOfInterestCategoryFitnessCenter];
-//    self.mapView.pointOfInterestFilter = [[MKPointOfInterestFilter alloc] initIncludingCategories:gymFilter];
-    
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
@@ -79,31 +73,23 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     if (manager.authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse || manager.authorizationStatus == kCLAuthorizationStatusAuthorizedAlways)
     {
         [manager requestLocation];
-        NSLog(@"AUTHORIZED");
+//        NSLog(@"AUTHORIZED");
     }
-    
-//    [manager requestLocation];
-//    [self fetchLocationsWithQuery];
 }
 
 
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
-    NSLog(@"UPDATED LOCATION");
+//    NSLog(@"UPDATED LOCATION");
     CLLocation *location = [locations lastObject];
     NSLog(@"lat%f - lon%f", location.coordinate.latitude, location.coordinate.longitude);
     self.lat = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
     self.lon = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
     NSLog(@"%@,%@", self.lat, self.lon);
-    MKCoordinateRegion sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), MKCoordinateSpanMake(0.3, 0.3));
+    MKCoordinateRegion sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), MKCoordinateSpanMake(0.05, 0.05));
     [self.mapView setRegion:sfRegion animated:false];
     
-    MKPointAnnotation *annotation = [MKPointAnnotation new];
-    annotation.coordinate = location.coordinate;
-    annotation.title = @"Picture!";
-    NSLog(@"Works");
-    [self.mapView addAnnotation:annotation];
     [self fetchLocationsWithQuery];
 }
 
@@ -130,13 +116,36 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
                                                     } else {
                                                         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 //                                                        NSLog(@"response: %@", responseDictionary);
-                                                        self.gyms = [responseDictionary valueForKeyPath:@"results"];
-                                                        NSLog(@"%@", self.gyms);
-//                                                        self.results = [responseDictionary valueForKeyPath:@"response.venues"];
+                                                        self.gyms = [[NSMutableArray alloc] init];
+                                                        for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
+                                                        {
+                                                            [self.gyms addObject:gym];
+                                                            MKPointAnnotation *annotation = [MKPointAnnotation new];
+                                                            double latitude = [[gym valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
+                                                            double longitude = [[gym valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
+                                                            annotation.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+                                                            annotation.title = [gym valueForKeyPath:@"name"];
+                                                            NSLog(@"Works");
+                                                            [self.mapView addAnnotation:annotation];
+                                                        }
+//                                                        self.gyms = [responseDictionary valueForKeyPath:@"results"];
+//                                                        NSLog(@"%@", self.gyms);
+                                                        NSLog(@"DONE");
+//                                                        for (NSDictionary *gym in self.gyms)
+//                                                        {
+//                                                            MKPointAnnotation *annotation = [MKPointAnnotation new];
+//                                                            double latitude = [[gym valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
+//                                                            double longitude = [[gym valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
+//                                                            annotation.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+//                                                            annotation.title = [gym valueForKeyPath:@"name"];
+//                                                            NSLog(@"Works");
+//                                                            [self.mapView addAnnotation:annotation];
+//                                                        }
                                                     }
                                                 }];
     [dataTask resume];
-
+    
+    
 }
 
 
