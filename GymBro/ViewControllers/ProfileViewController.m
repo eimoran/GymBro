@@ -16,7 +16,7 @@
 - (IBAction)updateInfo:(id)sender;
 
 
-@property (weak, nonatomic) IBOutlet MKMapView *map;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 
 @property (strong, nonatomic) IBOutlet UILabel *workoutPlanLabel;
@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.    [self displayInfo];
+    // Do any additional setup after loading the view.
     
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
@@ -39,15 +39,36 @@
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
         [self.locationManager requestWhenInUseAuthorization];
-
     [self.locationManager requestLocation];
 }
 
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+     MKPinAnnotationView *annotationView = (MKPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"Pin"];
+     if (annotationView == nil) {
+         annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
+         annotationView.canShowCallout = true;
+         annotationView.leftCalloutAccessoryView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 50.0, 50.0)];
+     }
+    
+    
+
+    NSLog(@"Here");
+
+     return annotationView;
+ }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
     CLLocation *location = [locations lastObject];
     NSLog(@"lat%f - lon%f", location.coordinate.latitude, location.coordinate.longitude);
+    MKCoordinateRegion sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), MKCoordinateSpanMake(0.3, 0.3));
+    [self.mapView setRegion:sfRegion animated:false];
+    
+    MKPointAnnotation *annotation = [MKPointAnnotation new];
+    annotation.coordinate = location.coordinate;
+    annotation.title = @"Picture!";
+    NSLog(@"Works");
+    [self.mapView addAnnotation:annotation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error

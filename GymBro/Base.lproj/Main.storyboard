@@ -163,8 +163,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="GGF-Lb-FpT">
-                                <rect key="frame" x="0.0" y="398" width="414" height="462"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" fixedFrame="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GGF-Lb-FpT">
+                                <rect key="frame" x="20" y="398" width="358" height="462"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
                         </subviews>
@@ -176,7 +176,7 @@
                         <outlet property="genderLabel" destination="K9a-6b-3CM" id="mPM-ZK-vbN"/>
                         <outlet property="gymlabel" destination="0ds-t4-1cS" id="MTw-oa-psa"/>
                         <outlet property="levelLabel" destination="Bql-Pg-d3d" id="xCC-Xh-bQ1"/>
-                        <outlet property="map" destination="GGF-Lb-FpT" id="ZMt-4y-7La"/>
+                        <outlet property="mapView" destination="GGF-Lb-FpT" id="8iJ-zn-BoA"/>
                         <outlet property="workoutPlanLabel" destination="B1i-LP-ZOM" id="aOP-DN-JBI"/>
                         <outlet property="workoutTimeLabel" destination="32m-Wv-a0y" id="P3x-e1-23d"/>
                     </connections>
