@@ -10,6 +10,7 @@
 #import "Parse/Parse.h"
 #import <CoreLocation/CoreLocation.h>
 #import "MapKit/MapKit.h"
+#import "../AppDelegate.h"
 
 static NSString * const clientID = @"ZQHYEONNNHSSRVKTPJLCMNP3IUBUHIEWLYM4O5ROWKEPZPJZ";
 static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQMZMXDXAHD";
@@ -40,14 +41,17 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     self.locationManager.distanceFilter = kCLDistanceFilterNone;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
         [self.locationManager requestWhenInUseAuthorization];
-    [self.locationManager requestLocation];
+    
+    
+    
+//    [self.locationManager requestLocation];
     
 //    NSArray *gymFilter = [[NSArray alloc] init];
 //    gymFilter = [gymFilter arrayByAddingObject:MKPointOfInterestCategoryFitnessCenter];
@@ -70,12 +74,28 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
      return annotationView;
  }
 
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager
+{
+    if (manager.authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse || manager.authorizationStatus == kCLAuthorizationStatusAuthorizedAlways)
+    {
+        [manager requestLocation];
+        NSLog(@"AUTHORIZED");
+    }
+    
+//    [manager requestLocation];
+//    [self fetchLocationsWithQuery];
+}
+
+
+
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
+    NSLog(@"UPDATED LOCATION");
     CLLocation *location = [locations lastObject];
     NSLog(@"lat%f - lon%f", location.coordinate.latitude, location.coordinate.longitude);
     self.lat = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
     self.lon = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
+    NSLog(@"%@,%@", self.lat, self.lon);
     MKCoordinateRegion sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), MKCoordinateSpanMake(0.3, 0.3));
     [self.mapView setRegion:sfRegion animated:false];
     
@@ -95,7 +115,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 - (void)fetchLocationsWithQuery {
     NSDictionary *headers = @{ @"Accept": @"application/json",
                                @"Authorization": @"fsq34hUP8/Fm3u/fGWnAv/jMBKdyEQIlaf+ueJvtD52Wn8o=" };
-    NSString *queryString = [NSString stringWithFormat:@"https://api.foursquare.com/v3/places/search?query=gym&ll=%@,%@&radius=1000&categories=18021", self.lat, self.lon];
+    NSString *queryString = [NSString stringWithFormat:@"https://api.foursquare.com/v3/places/search?&ll=%@,%@&radius=10000&categories=18021", self.lat, self.lon];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:queryString]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
@@ -109,7 +129,9 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
                                                         NSLog(@"%@", error);
                                                     } else {
                                                         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                        NSLog(@"response: %@", responseDictionary);
+//                                                        NSLog(@"response: %@", responseDictionary);
+                                                        self.gyms = [responseDictionary valueForKeyPath:@"results"];
+                                                        NSLog(@"%@", self.gyms);
 //                                                        self.results = [responseDictionary valueForKeyPath:@"response.venues"];
                                                     }
                                                 }];
