@@ -1,25 +1,32 @@
 //
-//  WorkoutSplitCell.m
+//  LevelCell.m
 //  GymBro
 //
-//  Created by Eric Moran on 7/5/22.
+//  Created by Eric Moran on 7/7/22.
 //
 
-#import "WorkoutSplitCell.h"
+#import "LevelCell.h"
 
-@interface WorkoutSplitCell () <UIPickerViewDelegate, UIPickerViewDataSource>
-@property (weak, nonatomic) NSString *split;
+@interface LevelCell () <UIPickerViewDelegate, UIPickerViewDataSource>
+
+@property (weak, nonatomic) NSString *level;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
+
 @end
 
-@implementation WorkoutSplitCell
+@implementation LevelCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    
     self.picker.delegate = self;
     self.picker.dataSource = self;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
@@ -27,26 +34,20 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)picker numberOfRowsInComponent:(NSInteger)component {
-    return 5;
+    return 3;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     NSString * title = nil;
     switch(row) {
         case 0:
-            title = @"Whole Body Split";
+            title = @"Novice";
             break;
         case 1:
-            title = @"Upper/Lower Body Split";
+            title = @"Intermediate";
             break;
         case 2:
-            title = @"Push/Pull/Legs";
-            break;
-        case 3:
-            title = @"Four Day Split";
-            break;
-        case 4:
-            title = @"Five Day Split";
+            title = @"Advanced";
             break;
     }
     return title;
@@ -60,23 +61,18 @@
 //    NSLog(@"%@", self.split);
     switch(row) {
         case 0:
-            self.split = @"Whole Body Split";
+            self.level = @"Novice";
             break;
         case 1:
-            self.split = @"Upper And Lower Body Split";
+            self.level = @"Intermediate";
             break;
         case 2:
-            self.split = @"Push/Pull/Legs";
-            break;
-        case 3:
-            self.split = @"Four Day Split";
-            break;
-        case 4:
-            self.split = @"Five Day Split";
+            self.level = @"Advanced";
             break;
     }
     
-    self.controller.split = self.split;
+    self.controller.level = self.level;
 }
 
 @end
+

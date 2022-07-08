@@ -49,13 +49,19 @@
         genderCell.controller = self;
         return genderCell;
     }
+    else if (indexPath.row == 3)
+    {
+        GenderCell *gymMapCell = [tableView dequeueReusableCellWithIdentifier:@"LevelCell" forIndexPath:indexPath];
+        gymMapCell.controller = self;
+        return gymMapCell;
+    }
     
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 4;
 }
 
 /*
@@ -69,7 +75,6 @@
 */
 
 - (IBAction)submit:(id)sender {
-    NSLog(@"SUBMIT");
     if (self.time == nil)
     {
         self.time = @"Morning (6am - 12pm)";
@@ -82,6 +87,10 @@
     {
         self.gender = @"Male";
     }
+    if (self.level == nil)
+    {
+        self.level = @"Novice";
+    }
 //    NSLog(@"%@, %@, %@", self.split, self.time, self.gender);
     
     /* REFRESH DATA WHEN MODAL SEGUE IS FINISHED (try making updateprofile work)*/
@@ -91,13 +100,20 @@
     user[@"workoutSplit"] = self.split;
     user[@"workoutTime"] = self.time;
     user[@"gender"] = self.gender;
+    user[@"level"] = self.level;
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-        NSLog(@"SAVED");
+        if (succeeded)
+        {
+            [self dismissViewControllerAnimated:true completion:^{
+                [self.delegate updateProfile];
+            }];
+        }
+        else
+        {
+            NSLog(@"Error Updating Profile: %@", error.localizedDescription);
+        }
     }];
-    [self.delegate updateProfile];
-    [self dismissViewControllerAnimated:true completion:nil];//^{
-//        [self.delegate updateProfile];
-//    }];
+    
     
     
 //    NSLog(@"User update profile successfully");

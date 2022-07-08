@@ -8,17 +8,21 @@
 #import "ProfileViewController.h"
 #import "ProfileFormViewController.h"
 #import "Parse/Parse.h"
+#import <CoreLocation/CoreLocation.h>
+#import "MapKit/MapKit.h"
 
-@interface ProfileViewController () <ProfileFormViewControllerDelegate>
+@interface ProfileViewController () <ProfileFormViewControllerDelegate, CLLocationManagerDelegate>
 
 - (IBAction)updateInfo:(id)sender;
-@property (strong, nonatomic) NSString *workoutSplit;
-@property (strong, nonatomic) NSString *workoutTime;
-@property (strong, nonatomic) NSString *gender;
-@property (strong, nonatomic) NSString *gym;
+
+
+@property (weak, nonatomic) IBOutlet MKMapView *map;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+
 @property (strong, nonatomic) IBOutlet UILabel *workoutPlanLabel;
 @property (strong, nonatomic) IBOutlet UILabel *workoutTimeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *genderLabel;
+@property (weak, nonatomic) IBOutlet UILabel *levelLabel;
 @property (strong, nonatomic) IBOutlet UILabel *gymlabel;
 
 @end
@@ -27,10 +31,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [self getProfile];
-    [self displayInfo];
+    // Do any additional setup after loading the view.    [self displayInfo];
+    
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.distanceFilter = kCLDistanceFilterNone;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+        [self.locationManager requestWhenInUseAuthorization];
+
+    [self.locationManager requestLocation];
 }
+
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
+{
+    CLLocation *location = [locations lastObject];
+    NSLog(@"lat%f - lon%f", location.coordinate.latitude, location.coordinate.longitude);
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSLog(@"Error: %@", error.localizedDescription);
+}
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -38,23 +62,15 @@
     [self displayInfo];
 }
 
-- (void)getProfile
-{
-    PFUser *user = [PFUser currentUser];
-    self.workoutSplit = user[@"workoutSplit"];
-    self.workoutTime = user[@"workoutTime"];
-    self.gender = user[@"gender"];
-}
-
 
 - (void)displayInfo
 {
     NSLog(@"DISPLAYING INFO");
     PFUser *user = [PFUser currentUser];
-//    [self updateProfile:user[@"workoutSplit"] :user[@"workoutTime"] :user[@"gender"]];
     self.workoutPlanLabel.text = [NSString stringWithFormat:@"Workout Split: %@", user[@"workoutSplit"]];
     self.workoutTimeLabel.text = [NSString stringWithFormat:@"Time you workout: %@", user[@"workoutTime"]];
     self.genderLabel.text = [NSString stringWithFormat:@"Gender: %@", user[@"gender"]];
+    self.levelLabel.text = [NSString stringWithFormat:@"Level: %@", user[@"level"]];
     
 }
 
@@ -80,6 +96,6 @@
     [self displayInfo];
 }
 
-
-
 @end
+
+
