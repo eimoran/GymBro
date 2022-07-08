@@ -11,6 +11,9 @@
 #import <CoreLocation/CoreLocation.h>
 #import "MapKit/MapKit.h"
 
+static NSString * const clientID = @"ZQHYEONNNHSSRVKTPJLCMNP3IUBUHIEWLYM4O5ROWKEPZPJZ";
+static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQMZMXDXAHD";
+
 @interface ProfileViewController () <ProfileFormViewControllerDelegate, CLLocationManagerDelegate>
 
 - (IBAction)updateInfo:(id)sender;
@@ -18,12 +21,17 @@
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) MKPointOfInterestFilter *filter;
+@property (strong, nonatomic) NSArray *gyms;
+@property (strong, nonatomic) NSString *lat;
+@property (strong, nonatomic) NSString *lon;
 
 @property (strong, nonatomic) IBOutlet UILabel *workoutPlanLabel;
 @property (strong, nonatomic) IBOutlet UILabel *workoutTimeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *genderLabel;
 @property (weak, nonatomic) IBOutlet UILabel *levelLabel;
 @property (strong, nonatomic) IBOutlet UILabel *gymlabel;
+
 
 @end
 
@@ -40,6 +48,11 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
         [self.locationManager requestWhenInUseAuthorization];
     [self.locationManager requestLocation];
+    
+//    NSArray *gymFilter = [[NSArray alloc] init];
+//    gymFilter = [gymFilter arrayByAddingObject:MKPointOfInterestCategoryFitnessCenter];
+//    self.mapView.pointOfInterestFilter = [[MKPointOfInterestFilter alloc] initIncludingCategories:gymFilter];
+    
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
@@ -61,6 +74,8 @@
 {
     CLLocation *location = [locations lastObject];
     NSLog(@"lat%f - lon%f", location.coordinate.latitude, location.coordinate.longitude);
+    self.lat = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
+    self.lon = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
     MKCoordinateRegion sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), MKCoordinateSpanMake(0.3, 0.3));
     [self.mapView setRegion:sfRegion animated:false];
     
@@ -69,11 +84,37 @@
     annotation.title = @"Picture!";
     NSLog(@"Works");
     [self.mapView addAnnotation:annotation];
+    [self fetchLocationsWithQuery];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
     NSLog(@"Error: %@", error.localizedDescription);
+}
+
+- (void)fetchLocationsWithQuery {
+    NSDictionary *headers = @{ @"Accept": @"application/json",
+                               @"Authorization": @"fsq34hUP8/Fm3u/fGWnAv/jMBKdyEQIlaf+ueJvtD52Wn8o=" };
+    NSString *queryString = [NSString stringWithFormat:@"https://api.foursquare.com/v3/places/search?query=gym&ll=%@,%@&radius=1000&categories=18021", self.lat, self.lon];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:queryString]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"GET"];
+    [request setAllHTTPHeaderFields:headers];
+
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    if (error) {
+                                                        NSLog(@"%@", error);
+                                                    } else {
+                                                        NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                                        NSLog(@"response: %@", responseDictionary);
+//                                                        self.results = [responseDictionary valueForKeyPath:@"response.venues"];
+                                                    }
+                                                }];
+    [dataTask resume];
+
 }
 
 
@@ -108,13 +149,6 @@
 
 
 - (IBAction)updateInfo:(id)sender {
-//    [self performSegueWithIdentifier:@"profileForm" sender:self];
-//    [self displayInfo];
-}
-
-- (void)updateProfile {
-    NSLog(@"UPDATING PROFILE");
-    [self displayInfo];
 }
 
 @end

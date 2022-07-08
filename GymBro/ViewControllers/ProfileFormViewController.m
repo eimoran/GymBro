@@ -105,7 +105,7 @@
         if (succeeded)
         {
             [self dismissViewControllerAnimated:true completion:^{
-                [self.delegate updateProfile];
+                [self.delegate displayInfo];
             }];
         }
         else
@@ -113,12 +113,5 @@
             NSLog(@"Error Updating Profile: %@", error.localizedDescription);
         }
     }];
-    
-    
-    
-//    NSLog(@"User update profile successfully");
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    UIViewController *tabViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
-//    self.view.window.rootViewController = tabViewController;
 }
 @end

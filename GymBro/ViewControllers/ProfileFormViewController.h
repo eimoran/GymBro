@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ProfileFormViewControllerDelegate
 
-- (void)updateProfile;
+- (void)displayInfo;
 
 @end
 
