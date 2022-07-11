@@ -18,6 +18,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @interface ProfileViewController () <ProfileFormViewControllerDelegate, CLLocationManagerDelegate>
 
 - (IBAction)updateInfo:(id)sender;
+- (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size;
 
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -50,22 +51,49 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
         [self.locationManager requestWhenInUseAuthorization];
     
     
-    
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-     MKPinAnnotationView *annotationView = (MKPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"Pin"];
-     if (annotationView == nil) {
-         annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
-         annotationView.canShowCallout = true;
-         annotationView.leftCalloutAccessoryView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 50.0, 50.0)];
-     }
+//     MKPinAnnotationView *annotationView = (MKPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"Pin"];
+//     if (annotationView == nil) {
+//         annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
+//         annotationView.canShowCallout = true;
+//         annotationView.leftCalloutAccessoryView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 50.0, 50.0)];
+//     }
+//
+//
+//
+//    NSLog(@"Here");
+//
+//     return annotationView;
+    NSLog(@"VIEWFORANN");
     
-    
-
-    NSLog(@"Here");
-
-     return annotationView;
+    // If it's the user location, just return nil.
+        if ([annotation isKindOfClass:[MKUserLocation class]])
+            return nil;
+        
+        // Handle any custom annotations.
+        if ([annotation isKindOfClass:[MKPointAnnotation class]])
+        {
+            // Try to dequeue an existing pin view first.
+            MKAnnotationView *pinView = (MKAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"CustomPinAnnotationView"];
+            if (!pinView)
+            {
+                // If an existing pin view was not available, create one.
+                pinView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CustomPinAnnotationView"];
+                //pinView.animatesDrop = YES;
+                pinView.canShowCallout = YES;
+                CGSize size = CGSizeMake(20, 20);
+                pinView.image = [self imageWithImage:[UIImage imageNamed:@"dumbbell.png"] convertToSize:size];
+//                pinView.image = imageWithImage [UIImage imageNamed:@"dumbbell.png"];
+                
+                pinView.calloutOffset = CGPointMake(0, 32);
+            } else {
+                pinView.annotation = annotation;
+            }
+            return pinView;
+        }
+        return nil;
  }
 
 - (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager
@@ -75,6 +103,14 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
         [manager requestLocation];
 //        NSLog(@"AUTHORIZED");
     }
+}
+
+- (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size {
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return destImage;
 }
 
 
@@ -120,27 +156,15 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
                                                         for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
                                                         {
                                                             [self.gyms addObject:gym];
-                                                            MKPointAnnotation *annotation = [MKPointAnnotation new];
+                                                            MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
                                                             double latitude = [[gym valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
                                                             double longitude = [[gym valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
                                                             annotation.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
                                                             annotation.title = [gym valueForKeyPath:@"name"];
-                                                            NSLog(@"Works");
+                                                            
+                                                            
                                                             [self.mapView addAnnotation:annotation];
                                                         }
-//                                                        self.gyms = [responseDictionary valueForKeyPath:@"results"];
-//                                                        NSLog(@"%@", self.gyms);
-                                                        NSLog(@"DONE");
-//                                                        for (NSDictionary *gym in self.gyms)
-//                                                        {
-//                                                            MKPointAnnotation *annotation = [MKPointAnnotation new];
-//                                                            double latitude = [[gym valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
-//                                                            double longitude = [[gym valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
-//                                                            annotation.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-//                                                            annotation.title = [gym valueForKeyPath:@"name"];
-//                                                            NSLog(@"Works");
-//                                                            [self.mapView addAnnotation:annotation];
-//                                                        }
                                                     }
                                                 }];
     [dataTask resume];
@@ -148,6 +172,41 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     
 }
 
+
+//- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id )annotation
+//{
+//    NSLog(@"VIEWFORANNOTATION");
+//    // If it's the user location, just return nil.
+//    if ([annotation isKindOfClass:[MKUserLocation class]])
+//        return nil;
+//
+//    // Handle any custom annotations.
+//    if ([annotation isKindOfClass:[MKPointAnnotation class]])
+//    {
+//        // Try to dequeue an existing pin view first.
+//        MKAnnotationView *pinView = (MKAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"Pin"];
+//        pinView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
+//        //pinView.animatesDrop = YES;
+//        NSLog(@"NEW PIN");
+//        pinView.image = [UIImage imageNamed:@"809670_body building_fitness_sports_weight_icon"];
+//        pinView.canShowCallout = YES;
+//        pinView.calloutOffset = CGPointMake(0, 32);
+////        if (!pinView)
+////        {
+////            // If an existing pin view was not available, create one.
+////            pinView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
+////            //pinView.animatesDrop = YES;
+////            NSLog(@"NEW PIN");
+////            pinView.image = [UIImage imageNamed:@"809670_body building_fitness_sports_weight_icon"];
+////            pinView.canShowCallout = YES;
+////            pinView.calloutOffset = CGPointMake(0, 32);
+////        } else {
+////            pinView.annotation = annotation;
+////        }
+//        return pinView;
+//    }
+//    return nil;
+//}
 
 - (void)viewDidAppear:(BOOL)animated
 {
