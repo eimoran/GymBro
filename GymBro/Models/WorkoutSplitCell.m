@@ -8,7 +8,6 @@
 #import "WorkoutSplitCell.h"
 
 @interface WorkoutSplitCell () <UIPickerViewDelegate, UIPickerViewDataSource>
-@property (weak, nonatomic) NSString *split;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
 @end
 
@@ -27,7 +26,7 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)picker numberOfRowsInComponent:(NSInteger)component {
-    return 5;
+    return 7;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
@@ -48,6 +47,12 @@
         case 4:
             title = @"Five Day Split";
             break;
+        case 5:
+            title = @"Yoga";
+            break;
+        case 6:
+            title = @"Other";
+            break;
     }
     return title;
 }
@@ -60,23 +65,27 @@
 //    NSLog(@"%@", self.split);
     switch(row) {
         case 0:
-            self.split = @"Whole Body Split";
+            self.controller.split = @"Whole Body Split";
             break;
         case 1:
-            self.split = @"Upper And Lower Body Split";
+            self.controller.split = @"Upper And Lower Body Split";
             break;
         case 2:
-            self.split = @"Push/Pull/Legs";
+            self.controller.split = @"Push/Pull/Legs";
             break;
         case 3:
-            self.split = @"Four Day Split";
+            self.controller.split = @"Four Day Split";
             break;
         case 4:
-            self.split = @"Five Day Split";
+            self.controller.split = @"Five Day Split";
+            break;
+        case 5:
+            self.controller.split = @"Yoga";
+            break;
+        case 6:
+            self.controller.split = @"Other";
             break;
     }
-    
-    self.controller.split = self.split;
 }
 
 @end

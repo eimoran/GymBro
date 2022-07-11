@@ -54,19 +54,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-//     MKPinAnnotationView *annotationView = (MKPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"Pin"];
-//     if (annotationView == nil) {
-//         annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
-//         annotationView.canShowCallout = true;
-//         annotationView.leftCalloutAccessoryView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 50.0, 50.0)];
-//     }
-//
-//
-//
-//    NSLog(@"Here");
-//
-//     return annotationView;
-    NSLog(@"VIEWFORANN");
     
     // If it's the user location, just return nil.
         if ([annotation isKindOfClass:[MKUserLocation class]])
