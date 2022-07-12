@@ -7,10 +7,17 @@
 
 #import "GymDetailsViewController.h"
 #import "Parse/Parse.h"
+#import "../Models/UserCell.h"
 
-@interface GymDetailsViewController ()
+@interface GymDetailsViewController () <UITableViewDelegate, UITableViewDataSource>
+
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *gymName;
 @property (weak, nonatomic) IBOutlet UIImageView *gymPhotosView;
+
+@property (strong, nonatomic) NSMutableArray *userArray;
+
 @property (strong, nonatomic) NSMutableArray *gymPhotos;
 @property (nonatomic) NSInteger index;
 @property (strong, nonatomic) NSTimer *timer;
@@ -25,8 +32,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.rowHeight = 100;
+    
+    self.userArray = [[NSMutableArray alloc] init];
     self.gymName.text = [self.gym valueForKeyPath:@"name"];
     [self fetchPhotosWithQuery];
+    [self fetchUsersWithQuery];
     self.timer = [NSTimer scheduledTimerWithTimeInterval: 3.0
                                                   target: self
                                                 selector:@selector(setGymPhotos)
@@ -51,6 +64,28 @@
     NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:currPhoto]];
     self.gymPhotosView.image = [UIImage imageWithData:imageData];
     
+}
+
+- (void)fetchUsersWithQuery
+{
+    PFUser *user = [PFUser currentUser];
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"username" notEqualTo:user[@"username"]];
+    [query whereKey:@"gymID" equalTo:user[@"gymID"]];
+    [query whereKey:@"gymID" equalTo:[self.gym valueForKeyPath:@"fsq_id"]];
+//    [query where]
+    query.limit = 100;
+    [query orderByDescending:@"createdAt"];
+
+    // fetch data asynchronously
+    [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
+        if (users != nil) {
+            self.userArray = users;
+            [self.tableView reloadData];
+        } else {
+            NSLog(@"%@", error.localizedDescription);
+        }
+    }];
 }
 
 - (void)fetchPhotosWithQuery
@@ -84,6 +119,20 @@
     [dataTask resume];
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"CELLFORROW");
+    UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
+    cell.user = self.userArray[indexPath.row];
+    NSLog(@"%@", cell.user);
+    [cell setData];
+    return cell;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.userArray.count;
+}
+
 /*
 #pragma mark - Navigation
 
@@ -97,8 +146,7 @@
 
 - (IBAction)selectGym:(id)sender {
     PFUser *user = [PFUser currentUser];
-    NSArray *gymInfo = [[NSArray alloc] initWithObjects: [self.gym valueForKeyPath:@"name"], [self.gym valueForKeyPath:@"geocodes.main.latitude"], [self.gym valueForKeyPath:@"geocodes.main.longitude"], nil];
-    user[@"gym"] = gymInfo;
+    user[@"gymID"] = [self.gym valueForKeyPath:@"fsq_id"];
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded)
         {

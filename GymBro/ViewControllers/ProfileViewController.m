@@ -91,7 +91,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
                 CGSize size = CGSizeMake(20, 20);
                 UIImageView *iconView = [[UIImageView alloc] initWithImage:[self imageWithImage:[UIImage imageNamed:@"dumbbell.png"] convertToSize:size]];
                             pinView.leftCalloutAccessoryView = iconView;
-                //pinView.animatesDrop = YES;
                 pinView.canShowCallout = YES;
                  
                 pinView.image = [self imageWithImage:[UIImage imageNamed:@"dumbbell.png"] convertToSize:size];
@@ -129,13 +128,12 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
     CLLocation *location = [locations lastObject];
-    NSLog(@"lat%f - lon%f", location.coordinate.latitude, location.coordinate.longitude);
     self.lat = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
     self.lon = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
     MKCoordinateRegion userRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), MKCoordinateSpanMake(0.05, 0.05));
     [self.mapView setRegion:userRegion animated:false];
     
-    [self fetchLocationsWithQuery];
+    [self fetchLocationsWithQuery:self.lat lon:self.lon];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
@@ -143,10 +141,10 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     NSLog(@"Error: %@", error.localizedDescription);
 }
 
-- (void)fetchLocationsWithQuery {
+- (void)fetchLocationsWithQuery:lat lon:lon{
     NSDictionary *headers = @{ @"Accept": @"application/json",
                                @"Authorization": @"fsq34hUP8/Fm3u/fGWnAv/jMBKdyEQIlaf+ueJvtD52Wn8o=" };
-    NSString *queryString = [NSString stringWithFormat:@"https://api.foursquare.com/v3/places/search?&ll=%@,%@&radius=10000&categories=18021", self.lat, self.lon];
+    NSString *queryString = [NSString stringWithFormat:@"https://api.foursquare.com/v3/places/search?&ll=%@,%@&radius=50000&categories=18021", lat, lon];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:queryString]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
@@ -160,6 +158,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
             NSLog(@"%@", error);
         } else {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"%@", responseDictionary);
             self.gyms = [[NSMutableArray alloc] init];
             for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
             {
@@ -187,7 +186,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 
 - (void)displayInfo
 {
-    NSLog(@"DISPLAYING INFO");
     PFUser *user = [PFUser currentUser];
     self.workoutPlanLabel.text = [NSString stringWithFormat:@"Workout Split: %@", user[@"workoutSplit"]];
     self.workoutTimeLabel.text = [NSString stringWithFormat:@"Time you workout: %@", user[@"workoutTime"]];
