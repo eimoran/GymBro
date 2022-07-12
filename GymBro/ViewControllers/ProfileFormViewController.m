@@ -91,9 +91,6 @@
     {
         self.level = @"Novice";
     }
-//    NSLog(@"%@, %@, %@", self.split, self.time, self.gender);
-    
-    /* REFRESH DATA WHEN MODAL SEGUE IS FINISHED (try making updateprofile work)*/
     
     // Update User Info
     PFUser *user = [PFUser currentUser];

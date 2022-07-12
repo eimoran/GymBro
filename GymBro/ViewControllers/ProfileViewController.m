@@ -18,7 +18,7 @@
 static NSString * const clientID = @"ZQHYEONNNHSSRVKTPJLCMNP3IUBUHIEWLYM4O5ROWKEPZPJZ";
 static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQMZMXDXAHD";
 
-@interface ProfileViewController () <ProfileFormViewControllerDelegate, CLLocationManagerDelegate>
+@interface ProfileViewController () <ProfileFormViewControllerDelegate, GymDetailsViewControllerDelegate, CLLocationManagerDelegate>
 
 - (IBAction)updateInfo:(id)sender;
 - (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size;
@@ -35,7 +35,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (strong, nonatomic) IBOutlet UILabel *workoutTimeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *genderLabel;
 @property (weak, nonatomic) IBOutlet UILabel *levelLabel;
-@property (strong, nonatomic) IBOutlet UILabel *gymlabel;
+@property (strong, nonatomic) IBOutlet UILabel *gymLabel;
 
 @property (strong, nonatomic) NSDictionary *currGym;
 
@@ -164,7 +164,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
             for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
             {
                 [self.gyms addObject:gym];
-                NSLog(@"%@", [gym valueForKeyPath:@"fsq_id"]);
                 GymPointAnnotation *annotation = [[GymPointAnnotation alloc] init];
                 double latitude = [[gym valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
                 double longitude = [[gym valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
@@ -188,12 +187,13 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 
 - (void)displayInfo
 {
+    NSLog(@"DISPLAYING INFO");
     PFUser *user = [PFUser currentUser];
     self.workoutPlanLabel.text = [NSString stringWithFormat:@"Workout Split: %@", user[@"workoutSplit"]];
     self.workoutTimeLabel.text = [NSString stringWithFormat:@"Time you workout: %@", user[@"workoutTime"]];
     self.genderLabel.text = [NSString stringWithFormat:@"Gender: %@", user[@"gender"]];
     self.levelLabel.text = [NSString stringWithFormat:@"Level: %@", user[@"level"]];
-    
+    self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: %@", [user[@"gym"] objectAtIndex:0]];
 }
 
 
@@ -207,8 +207,9 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
         UINavigationController *navController = [segue destinationViewController];
         GymDetailsViewController *detailsVC = navController.topViewController;
         detailsVC.gym = self.currGym;
+        detailsVC.delegate = self;
     }
-    else
+    else if ([segue.identifier isEqualToString:@"profileForm"])
     {
         UINavigationController *navigationController = [segue destinationViewController];
         ProfileFormViewController *formController = (ProfileFormViewController*)navigationController.topViewController;

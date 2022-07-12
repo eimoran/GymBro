@@ -164,7 +164,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" fixedFrame="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GGF-Lb-FpT">
-                                <rect key="frame" x="20" y="398" width="358" height="462"/>
+                                <rect key="frame" x="20" y="398" width="358" height="415"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="wn9-iP-QDa" id="paX-XK-Flz"/>
@@ -177,7 +177,7 @@
                     <navigationItem key="navigationItem" id="SgI-Th-wxs"/>
                     <connections>
                         <outlet property="genderLabel" destination="K9a-6b-3CM" id="mPM-ZK-vbN"/>
-                        <outlet property="gymlabel" destination="0ds-t4-1cS" id="MTw-oa-psa"/>
+                        <outlet property="gymLabel" destination="0ds-t4-1cS" id="H5l-7t-Cvu"/>
                         <outlet property="levelLabel" destination="Bql-Pg-d3d" id="xCC-Xh-bQ1"/>
                         <outlet property="mapView" destination="GGF-Lb-FpT" id="8iJ-zn-BoA"/>
                         <outlet property="workoutPlanLabel" destination="B1i-LP-ZOM" id="aOP-DN-JBI"/>

@@ -80,7 +80,14 @@
     self.emailField.hidden = false;
     if ([self.usernameField isEqual:@""] || self.emailField.text.length == 0 || [self.passwordField isEqual:@""])
     {
-        // Place alert controller
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Fields"
+                                                                       message:@"Please Fill In Missing Fields"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                             {}];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
     }
     else{
         [self registerUser];
@@ -91,7 +98,14 @@
 - (IBAction)login:(id)sender {
     if ([self.usernameField isEqual:@""] || [self.passwordField isEqual:@""])
     {
-        // Place alert controller
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Fields"
+                                                                       message:@"Please Fill In Missing Fields"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                             {}];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
     }
     else{
         [self loginUser];

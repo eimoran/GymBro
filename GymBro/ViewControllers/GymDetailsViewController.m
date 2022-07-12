@@ -6,6 +6,7 @@
 //
 
 #import "GymDetailsViewController.h"
+#import "Parse/Parse.h"
 
 @interface GymDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *gymName;
@@ -26,7 +27,7 @@
     // Do any additional setup after loading the view.
     self.gymName.text = [self.gym valueForKeyPath:@"name"];
     [self fetchPhotosWithQuery];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval: 2.0
+    self.timer = [NSTimer scheduledTimerWithTimeInterval: 3.0
                                                   target: self
                                                 selector:@selector(setGymPhotos)
                                                 userInfo: nil repeats:YES];
@@ -47,7 +48,6 @@
         self.index++;
     }
     NSString *currPhoto = [self.gymPhotos objectAtIndex:self.index];
-    NSLog(@"%@", currPhoto);
     NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:currPhoto]];
     self.gymPhotosView.image = [UIImage imageWithData:imageData];
     
@@ -73,8 +73,6 @@
         } else {
             NSDictionary *photos = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             self.gymPhotos = [[NSMutableArray alloc] init];
-            
-            NSLog(@"%@", photos);
             for (NSDictionary *photo in photos)
             {
                 NSString *prefix = [photo valueForKeyPath:@"prefix"];
@@ -98,6 +96,28 @@
 
 
 - (IBAction)selectGym:(id)sender {
-    
+    PFUser *user = [PFUser currentUser];
+    NSArray *gymInfo = [[NSArray alloc] initWithObjects: [self.gym valueForKeyPath:@"name"], [self.gym valueForKeyPath:@"geocodes.main.latitude"], [self.gym valueForKeyPath:@"geocodes.main.longitude"], nil];
+    user[@"gym"] = gymInfo;
+    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded)
+        {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success!"
+                                                                           message:@"Successfully Selected Gym"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                 {}];
+            [alert addAction:ok];
+            [self presentViewController:alert animated:YES completion:^{
+                [self.delegate displayInfo];
+            }];
+            
+        }
+        else
+        {
+            NSLog(@"Error Saving Profile: %@", error.localizedDescription);
+        }
+    }];
 }
 @end
