@@ -53,10 +53,10 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
         [self.locationManager requestWhenInUseAuthorization];
-    
-    
 }
 
+
+/* LET USER CHOOSE GYM AND ADD TO PROFILE*/
 
 - (void)buttonTouchDown:(GymDetailsButton *)sender
 {
@@ -164,6 +164,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
             for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
             {
                 [self.gyms addObject:gym];
+                NSLog(@"%@", [gym valueForKeyPath:@"fsq_id"]);
                 GymPointAnnotation *annotation = [[GymPointAnnotation alloc] init];
                 double latitude = [[gym valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
                 double longitude = [[gym valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
@@ -181,14 +182,12 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"APPEARED");
     [self displayInfo];
 }
 
 
 - (void)displayInfo
 {
-    NSLog(@"DISPLAYING INFO");
     PFUser *user = [PFUser currentUser];
     self.workoutPlanLabel.text = [NSString stringWithFormat:@"Workout Split: %@", user[@"workoutSplit"]];
     self.workoutTimeLabel.text = [NSString stringWithFormat:@"Time you workout: %@", user[@"workoutTime"]];
