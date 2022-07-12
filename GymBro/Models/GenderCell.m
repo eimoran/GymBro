@@ -49,7 +49,6 @@
        inComponent:(NSInteger)component {
     
     //Here, like the table view you can get the each section of each row if you've multiple sections
-//    NSLog(@"%@", self.split);
     switch(row) {
         case 0:
             self.gender = @"Male";

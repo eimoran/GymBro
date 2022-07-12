@@ -7,6 +7,9 @@
 
 #import "ProfileViewController.h"
 #import "ProfileFormViewController.h"
+#import "../Models/GymPointAnnotation.h"
+#import "../Models/GymDetailsButton.h"
+#import "GymDetailsViewController.h"
 #import "Parse/Parse.h"
 #import <CoreLocation/CoreLocation.h>
 #import "MapKit/MapKit.h"
@@ -34,6 +37,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (weak, nonatomic) IBOutlet UILabel *levelLabel;
 @property (strong, nonatomic) IBOutlet UILabel *gymlabel;
 
+@property (strong, nonatomic) NSDictionary *currGym;
 
 @end
 
@@ -53,7 +57,15 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     
 }
 
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+
+- (void)buttonTouchDown:(GymDetailsButton *)sender
+{
+    self.currGym = sender.gym;
+    [self performSegueWithIdentifier:@"gymDetails" sender:nil];
+    
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(GymPointAnnotation *)annotation {
     
     // If it's the user location, just return nil.
         if ([annotation isKindOfClass:[MKUserLocation class]])
@@ -68,14 +80,27 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
             {
                 // If an existing pin view was not available, create one.
                 pinView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CustomPinAnnotationView"];
+                
+                
+                GymDetailsButton* rightButton = [GymDetailsButton buttonWithType:UIButtonTypeDetailDisclosure];
+                pinView.rightCalloutAccessoryView = rightButton;
+                [rightButton addTarget:self action:@selector(buttonTouchDown:) forControlEvents:UIControlEventTouchDown];
+                rightButton.gym = annotation.gym;
+                
+                
+                CGSize size = CGSizeMake(20, 20);
+                UIImageView *iconView = [[UIImageView alloc] initWithImage:[self imageWithImage:[UIImage imageNamed:@"dumbbell.png"] convertToSize:size]];
+                            pinView.leftCalloutAccessoryView = iconView;
                 //pinView.animatesDrop = YES;
                 pinView.canShowCallout = YES;
-                CGSize size = CGSizeMake(20, 20);
+                 
                 pinView.image = [self imageWithImage:[UIImage imageNamed:@"dumbbell.png"] convertToSize:size];
-//                pinView.image = imageWithImage [UIImage imageNamed:@"dumbbell.png"];
                 
                 pinView.calloutOffset = CGPointMake(0, 32);
-            } else {
+            }
+            
+            else
+            {
                 pinView.annotation = annotation;
             }
             return pinView;
@@ -88,7 +113,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     if (manager.authorizationStatus == kCLAuthorizationStatusAuthorizedWhenInUse || manager.authorizationStatus == kCLAuthorizationStatusAuthorizedAlways)
     {
         [manager requestLocation];
-//        NSLog(@"AUTHORIZED");
     }
 }
 
@@ -104,14 +128,12 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
-//    NSLog(@"UPDATED LOCATION");
     CLLocation *location = [locations lastObject];
     NSLog(@"lat%f - lon%f", location.coordinate.latitude, location.coordinate.longitude);
     self.lat = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
     self.lon = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
-    NSLog(@"%@,%@", self.lat, self.lon);
-    MKCoordinateRegion sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), MKCoordinateSpanMake(0.05, 0.05));
-    [self.mapView setRegion:sfRegion animated:false];
+    MKCoordinateRegion userRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), MKCoordinateSpanMake(0.05, 0.05));
+    [self.mapView setRegion:userRegion animated:false];
     
     [self fetchLocationsWithQuery];
 }
@@ -130,70 +152,32 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"GET"];
     [request setAllHTTPHeaderFields:headers];
-
+    
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                    if (error) {
-                                                        NSLog(@"%@", error);
-                                                    } else {
-                                                        NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//                                                        NSLog(@"response: %@", responseDictionary);
-                                                        self.gyms = [[NSMutableArray alloc] init];
-                                                        for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
-                                                        {
-                                                            [self.gyms addObject:gym];
-                                                            MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-                                                            double latitude = [[gym valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
-                                                            double longitude = [[gym valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
-                                                            annotation.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                                                            annotation.title = [gym valueForKeyPath:@"name"];
-                                                            
-                                                            
-                                                            [self.mapView addAnnotation:annotation];
-                                                        }
-                                                    }
-                                                }];
+        if (error) {
+            NSLog(@"%@", error);
+        } else {
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            self.gyms = [[NSMutableArray alloc] init];
+            for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
+            {
+                [self.gyms addObject:gym];
+                GymPointAnnotation *annotation = [[GymPointAnnotation alloc] init];
+                double latitude = [[gym valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
+                double longitude = [[gym valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
+                annotation.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+                annotation.title = [gym valueForKeyPath:@"name"];
+                annotation.gym = gym;
+                
+                
+                [self.mapView addAnnotation:annotation];
+            }
+        }
+    }];
     [dataTask resume];
-    
-    
 }
-
-
-//- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id )annotation
-//{
-//    NSLog(@"VIEWFORANNOTATION");
-//    // If it's the user location, just return nil.
-//    if ([annotation isKindOfClass:[MKUserLocation class]])
-//        return nil;
-//
-//    // Handle any custom annotations.
-//    if ([annotation isKindOfClass:[MKPointAnnotation class]])
-//    {
-//        // Try to dequeue an existing pin view first.
-//        MKAnnotationView *pinView = (MKAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"Pin"];
-//        pinView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
-//        //pinView.animatesDrop = YES;
-//        NSLog(@"NEW PIN");
-//        pinView.image = [UIImage imageNamed:@"809670_body building_fitness_sports_weight_icon"];
-//        pinView.canShowCallout = YES;
-//        pinView.calloutOffset = CGPointMake(0, 32);
-////        if (!pinView)
-////        {
-////            // If an existing pin view was not available, create one.
-////            pinView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
-////            //pinView.animatesDrop = YES;
-////            NSLog(@"NEW PIN");
-////            pinView.image = [UIImage imageNamed:@"809670_body building_fitness_sports_weight_icon"];
-////            pinView.canShowCallout = YES;
-////            pinView.calloutOffset = CGPointMake(0, 32);
-////        } else {
-////            pinView.annotation = annotation;
-////        }
-//        return pinView;
-//    }
-//    return nil;
-//}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -219,9 +203,19 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    UINavigationController *navigationController = [segue destinationViewController];
-    ProfileFormViewController *formController = (ProfileFormViewController*)navigationController.topViewController;
-    formController.delegate = self;
+    if ([segue.identifier isEqualToString:@"gymDetails"])
+    {
+        UINavigationController *navController = [segue destinationViewController];
+        GymDetailsViewController *detailsVC = navController.topViewController;
+        detailsVC.gym = self.currGym;
+    }
+    else
+    {
+        UINavigationController *navigationController = [segue destinationViewController];
+        ProfileFormViewController *formController = (ProfileFormViewController*)navigationController.topViewController;
+        formController.delegate = self;
+    }
+    
 }
 
 

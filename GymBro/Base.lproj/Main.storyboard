@@ -153,7 +153,7 @@
                                 <buttonConfiguration key="configuration" style="plain" title="Update"/>
                                 <connections>
                                     <action selector="updateInfo:" destination="wn9-iP-QDa" eventType="touchUpInside" id="zcw-wy-1YL"/>
-                                    <segue destination="fT0-Sc-PlT" kind="presentation" id="nst-6I-Xme"/>
+                                    <segue destination="fT0-Sc-PlT" kind="presentation" identifier="profileForm" id="nst-6I-Xme"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Level:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bql-Pg-d3d">
@@ -182,6 +182,7 @@
                         <outlet property="mapView" destination="GGF-Lb-FpT" id="8iJ-zn-BoA"/>
                         <outlet property="workoutPlanLabel" destination="B1i-LP-ZOM" id="aOP-DN-JBI"/>
                         <outlet property="workoutTimeLabel" destination="32m-Wv-a0y" id="P3x-e1-23d"/>
+                        <segue destination="CH4-lu-Di4" kind="presentation" identifier="gymDetails" id="5sM-oc-4OU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S6g-bW-CFf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -331,6 +332,22 @@
             </objects>
             <point key="canvasLocation" x="4310.144927536232" y="2274.7767857142858"/>
         </scene>
+        <!--Gym Details View Controller-->
+        <scene sceneID="hqo-Kt-5VW">
+            <objects>
+                <viewController id="h9h-Tz-Ri4" customClass="GymDetailsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="miP-3S-iUe">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="GPh-wO-bXo"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Z1A-8k-Zt5"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WZO-5b-SB1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5333" y="1554"/>
+        </scene>
         <!--Matching View Controller-->
         <scene sceneID="PdU-kc-dX1">
             <objects>
@@ -437,6 +454,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z9X-tu-Xm5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3400.0000000000005" y="2274.7767857142858"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="tCC-3e-RaL">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="CH4-lu-Di4" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="th1-7N-czM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="h9h-Tz-Ri4" kind="relationship" relationship="rootViewController" id="tQh-kF-8VG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pYO-9j-RaZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4310" y="1554"/>
         </scene>
     </scenes>
     <resources>
