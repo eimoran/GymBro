@@ -56,8 +56,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 }
 
 
-/* LET USER CHOOSE GYM AND ADD TO PROFILE*/
-
 - (void)buttonTouchDown:(GymDetailsButton *)sender
 {
     self.currGym = sender.gym;

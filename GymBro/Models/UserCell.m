@@ -7,6 +7,7 @@
 
 #import "UserCell.h"
 
+
 @interface UserCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
@@ -15,7 +16,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *genderLabel;
 @property (weak, nonatomic) IBOutlet UILabel *levelLabel;
 @property (weak, nonatomic) IBOutlet UILabel *gymLabel;
-@property (weak, nonatomic) IBOutlet UILabel *friendsLabel;
+@property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
+- (IBAction)addFriend:(id)sender;
 
 @end
 
@@ -40,7 +42,23 @@
     self.genderLabel.text = [NSString stringWithFormat:@"Gender: %@", self.user[@"gender"]];
     self.levelLabel.text = [NSString stringWithFormat:@"Level: %@", self.user[@"level"]];
     self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: %@", [self.user[@"gym"] valueForKeyPath:@"name"]];
-    self.friendsLabel.text = [NSString stringWithFormat:@"Friends: %@", [self.user[@"gym"] valueForKeyPath:@"friends"]];
 }
 
+- (IBAction)addFriend:(id)sender {
+    PFUser *user = [PFUser currentUser];
+    NSMutableArray *friendsArray = [[NSMutableArray alloc] initWithArray:user[@"friends"]];
+    [friendsArray addObject:self.user];
+    user[@"friends"] = friendsArray;
+    
+    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded)
+        {
+            self.addFriendButton.hidden = true;
+        }
+        else
+        {
+            NSLog(@"Error Updating Profile: %@", error.localizedDescription);
+        }
+    }];
+}
 @end

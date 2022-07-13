@@ -29,33 +29,9 @@
     [self fetchUsersWithQuery];
 }
 
-- (void)saveFriend
-{
-    PFUser *user = [PFUser currentUser];
-    NSMutableArray *friendsArray = [[NSMutableArray alloc] initWithArray:user[@"friends"]];
-    [friendsArray addObject:[[self.userArray objectAtIndex:0] valueForKeyPath:@"objectId"]];
-    user[@"friends"] = friendsArray;
-    
-    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-        if (succeeded)
-        {
-            NSLog(@"%@", user[@"friends"]);
-        }
-        else
-        {
-            NSLog(@"Error Updating Profile: %@", error.localizedDescription);
-        }
-    }];
-
-}
-
 - (void)fetchUsersWithQuery
 {
     PFUser *user = [PFUser currentUser];
-    if (user[@"friends"] == nil)
-    {
-        user[@"friends"] = [[NSMutableArray alloc] init];
-    }
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" notEqualTo:user[@"username"]];
     query.limit = 100;
@@ -66,7 +42,6 @@
         if (users != nil) {
             self.userArray = users;
             [self.tableView reloadData];
-            [self saveFriend];
         } else {
             NSLog(@"%@", error.localizedDescription);
         }
