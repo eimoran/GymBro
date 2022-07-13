@@ -9,7 +9,13 @@
 
 @interface UserCell ()
 
-@property (weak, nonatomic) IBOutlet UILabel *username;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *workoutTypeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *workoutTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *genderLabel;
+@property (weak, nonatomic) IBOutlet UILabel *levelLabel;
+@property (weak, nonatomic) IBOutlet UILabel *gymLabel;
+@property (weak, nonatomic) IBOutlet UILabel *friendsLabel;
 
 @end
 
@@ -28,8 +34,13 @@
 
 - (void)setData
 {
-    self.username.text = self.user[@"username"];
-    NSLog(@"%@", self.username.text);
+    self.usernameLabel.text = self.user[@"username"];
+    self.workoutTypeLabel.text = [NSString stringWithFormat:@"Workout Type: %@", self.user[@"workoutSplit"]];
+    self.workoutTimeLabel.text = [NSString stringWithFormat:@"Workout Time: %@", self.user[@"workoutTime"]];
+    self.genderLabel.text = [NSString stringWithFormat:@"Gender: %@", self.user[@"gender"]];
+    self.levelLabel.text = [NSString stringWithFormat:@"Level: %@", self.user[@"level"]];
+    self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: %@", [self.user[@"gym"] valueForKeyPath:@"name"]];
+    self.friendsLabel.text = [NSString stringWithFormat:@"Friends: %@", [self.user[@"gym"] valueForKeyPath:@"friends"]];
 }
 
 @end

@@ -31,7 +31,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (strong, nonatomic) NSString *lat;
 @property (strong, nonatomic) NSString *lon;
 
-@property (strong, nonatomic) IBOutlet UILabel *workoutPlanLabel;
+@property (strong, nonatomic) IBOutlet UILabel *workoutTypeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *workoutTimeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *genderLabel;
 @property (weak, nonatomic) IBOutlet UILabel *levelLabel;
@@ -133,7 +133,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     MKCoordinateRegion userRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), MKCoordinateSpanMake(0.05, 0.05));
     [self.mapView setRegion:userRegion animated:false];
     
-    [self fetchLocationsWithQuery:self.lat lon:self.lon];
+    [self fetchLocationsWithQuery:self.lat longitude:self.lon];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
@@ -141,7 +141,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     NSLog(@"Error: %@", error.localizedDescription);
 }
 
-- (void)fetchLocationsWithQuery:lat lon:lon{
+- (void)fetchLocationsWithQuery:lat longitude:lon{
     NSDictionary *headers = @{ @"Accept": @"application/json",
                                @"Authorization": @"fsq34hUP8/Fm3u/fGWnAv/jMBKdyEQIlaf+ueJvtD52Wn8o=" };
     NSString *queryString = [NSString stringWithFormat:@"https://api.foursquare.com/v3/places/search?&ll=%@,%@&radius=50000&categories=18021", lat, lon];
@@ -158,7 +158,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
             NSLog(@"%@", error);
         } else {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"%@", responseDictionary);
             self.gyms = [[NSMutableArray alloc] init];
             for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
             {
@@ -187,11 +186,11 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 - (void)displayInfo
 {
     PFUser *user = [PFUser currentUser];
-    self.workoutPlanLabel.text = [NSString stringWithFormat:@"Workout Split: %@", user[@"workoutSplit"]];
+    self.workoutTypeLabel.text = [NSString stringWithFormat:@"Workout Split: %@", user[@"workoutSplit"]];
     self.workoutTimeLabel.text = [NSString stringWithFormat:@"Time you workout: %@", user[@"workoutTime"]];
     self.genderLabel.text = [NSString stringWithFormat:@"Gender: %@", user[@"gender"]];
     self.levelLabel.text = [NSString stringWithFormat:@"Level: %@", user[@"level"]];
-    self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: %@", [user[@"gym"] objectAtIndex:0]];
+    self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: %@", [user[@"gym"] valueForKeyPath:@"name"]];
 }
 
 

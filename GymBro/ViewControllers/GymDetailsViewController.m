@@ -8,6 +8,7 @@
 #import "GymDetailsViewController.h"
 #import "Parse/Parse.h"
 #import "../Models/UserCell.h"
+#import "../API/APIManager.h"
 
 @interface GymDetailsViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -38,6 +39,9 @@
     
     self.userArray = [[NSMutableArray alloc] init];
     self.gymName.text = [self.gym valueForKeyPath:@"name"];
+//    [APIManager fetchUsersWithQuery:self.gym];
+//    [APIManager fetchPhotosWithQuery:self.gym];
+    [self.tableView reloadData];
     [self fetchPhotosWithQuery];
     [self fetchUsersWithQuery];
     self.timer = [NSTimer scheduledTimerWithTimeInterval: 3.0
@@ -73,7 +77,6 @@
     [query whereKey:@"username" notEqualTo:user[@"username"]];
     [query whereKey:@"gymID" equalTo:user[@"gymID"]];
     [query whereKey:@"gymID" equalTo:[self.gym valueForKeyPath:@"fsq_id"]];
-//    [query where]
     query.limit = 100;
     [query orderByDescending:@"createdAt"];
 
@@ -120,10 +123,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"CELLFORROW");
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     cell.user = self.userArray[indexPath.row];
-    NSLog(@"%@", cell.user);
     [cell setData];
     return cell;
 }
@@ -147,6 +148,7 @@
 - (IBAction)selectGym:(id)sender {
     PFUser *user = [PFUser currentUser];
     user[@"gymID"] = [self.gym valueForKeyPath:@"fsq_id"];
+    user[@"gym"] = self.gym;
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded)
         {

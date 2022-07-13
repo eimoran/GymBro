@@ -10,7 +10,6 @@
 		086221C3A619353E33EB50DD /* Pods_GymBroTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8077BF8F3ACD7C4A8707DD45 /* Pods_GymBroTests.framework */; };
 		60D171EF2874AFF90031214D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D171EE2874AFF90031214D /* AppDelegate.m */; };
 		60D171F22874AFF90031214D /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D171F12874AFF90031214D /* SceneDelegate.m */; };
-		60D171F52874AFF90031214D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D171F42874AFF90031214D /* ViewController.m */; };
 		60D171F82874AFF90031214D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D171F62874AFF90031214D /* Main.storyboard */; };
 		60D171FA2874AFFA0031214D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60D171F92874AFFA0031214D /* Assets.xcassets */; };
 		60D171FD2874AFFA0031214D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D171FB2874AFFA0031214D /* LaunchScreen.storyboard */; };
@@ -32,6 +31,7 @@
 		60D1724F287CEAF30031214D /* GymDetailsButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1724E287CEAF30031214D /* GymDetailsButton.m */; };
 		60D17252287CF55D0031214D /* GymPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D17251287CF55D0031214D /* GymPointAnnotation.m */; };
 		60D17255287E25700031214D /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D17254287E25700031214D /* UserCell.m */; };
+		60D17259287E41A70031214D /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D17258287E41A70031214D /* APIManager.m */; };
 		6202BA339D678724A0C43219 /* Pods_GymBro_GymBroUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */; };
 		88F59CF7FC65668745D9B527 /* Pods_GymBro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B357074C47765BDB933E5F0 /* Pods_GymBro.framework */; };
 /* End PBXBuildFile section */
@@ -63,8 +63,6 @@
 		60D171EE2874AFF90031214D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		60D171F02874AFF90031214D /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		60D171F12874AFF90031214D /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		60D171F32874AFF90031214D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		60D171F42874AFF90031214D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		60D171F72874AFF90031214D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		60D171F92874AFFA0031214D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60D171FC2874AFFA0031214D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -103,6 +101,8 @@
 		60D17251287CF55D0031214D /* GymPointAnnotation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GymPointAnnotation.m; sourceTree = "<group>"; };
 		60D17253287E25700031214D /* UserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
 		60D17254287E25700031214D /* UserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
+		60D17257287E41A70031214D /* APIManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
+		60D17258287E41A70031214D /* APIManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
 		8077BF8F3ACD7C4A8707DD45 /* Pods_GymBroTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBroTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBro_GymBroUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		999B603B8148AF60F4D2BC66 /* Pods-GymBro-GymBroUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBro-GymBroUITests.release.xcconfig"; path = "Target Support Files/Pods-GymBro-GymBroUITests/Pods-GymBro-GymBroUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -186,14 +186,13 @@
 		60D171EC2874AFF90031214D /* GymBro */ = {
 			isa = PBXGroup;
 			children = (
+				60D17256287E407E0031214D /* API */,
 				60D172232874B4950031214D /* Models */,
 				60D172222874B4860031214D /* ViewControllers */,
 				60D171ED2874AFF90031214D /* AppDelegate.h */,
 				60D171EE2874AFF90031214D /* AppDelegate.m */,
 				60D171F02874AFF90031214D /* SceneDelegate.h */,
 				60D171F12874AFF90031214D /* SceneDelegate.m */,
-				60D171F32874AFF90031214D /* ViewController.h */,
-				60D171F42874AFF90031214D /* ViewController.m */,
 				60D171F62874AFF90031214D /* Main.storyboard */,
 				60D171F92874AFFA0031214D /* Assets.xcassets */,
 				60D171FB2874AFFA0031214D /* LaunchScreen.storyboard */,
@@ -260,6 +259,15 @@
 				60D17254287E25700031214D /* UserCell.m */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		60D17256287E407E0031214D /* API */ = {
+			isa = PBXGroup;
+			children = (
+				60D17257287E41A70031214D /* APIManager.h */,
+				60D17258287E41A70031214D /* APIManager.m */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -501,13 +509,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				60D1723B287635630031214D /* GenderCell.m in Sources */,
+				60D17259287E41A70031214D /* APIManager.m in Sources */,
 				60D17238287605760031214D /* WorkoutTimeCell.m in Sources */,
 				60D1724F287CEAF30031214D /* GymDetailsButton.m in Sources */,
 				60D1722C2874D8470031214D /* MatchingViewController.m in Sources */,
 				60D17255287E25700031214D /* UserCell.m in Sources */,
 				60D172352874EA220031214D /* WorkoutSplitCell.m in Sources */,
 				60D1724128779FD90031214D /* LevelCell.m in Sources */,
-				60D171F52874AFF90031214D /* ViewController.m in Sources */,
 				60D1722F2874D8510031214D /* ProfileViewController.m in Sources */,
 				60D17246287CE0CB0031214D /* GymDetailsViewController.m in Sources */,
 				60D17252287CF55D0031214D /* GymPointAnnotation.m in Sources */,
