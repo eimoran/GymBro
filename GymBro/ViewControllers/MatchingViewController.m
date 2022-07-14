@@ -25,14 +25,23 @@
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 250;
     
+    self.userArray  = [[NSMutableArray alloc] init];
     
     [self fetchUsersWithQuery];
 }
 
+
+
 - (void)fetchUsersWithQuery
 {
     PFUser *user = [PFUser currentUser];
+    NSArray *friends = user[@"friends"];
     PFQuery *query = [PFUser query];
+    for (PFUser *friend in friends)
+    {
+        [friend fetchIfNeeded];
+        [query whereKey:@"username" notEqualTo:friend[@"username"]];
+    }
     [query whereKey:@"username" notEqualTo:user[@"username"]];
     query.limit = 100;
     [query orderByDescending:@"createdAt"];
@@ -40,7 +49,16 @@
     // fetch data asynchronously
     [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
         if (users != nil) {
-            self.userArray = users;
+            for (PFUser *user in users)
+            {
+                for (PFUser *friend in friends)
+                {
+                    if (![user[@"username"] isEqual:friend[@"username"]])
+                    {
+                        [self.userArray addObject:user];
+                    }
+                }
+            }
             [self.tableView reloadData];
         } else {
             NSLog(@"%@", error.localizedDescription);
