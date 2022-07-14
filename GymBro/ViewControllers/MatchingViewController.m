@@ -36,6 +36,7 @@
 {
     PFUser *user = [PFUser currentUser];
     NSArray *friends = user[@"friends"];
+    __block BOOL isValid;
     PFQuery *query = [PFUser query];
     for (PFUser *friend in friends)
     {
@@ -43,6 +44,8 @@
         [query whereKey:@"username" notEqualTo:friend[@"username"]];
     }
     [query whereKey:@"username" notEqualTo:user[@"username"]];
+    [query whereKeyExists:@"level"];
+    [query whereKeyExists:@"gym"];
     query.limit = 100;
     [query orderByDescending:@"createdAt"];
 
@@ -51,12 +54,17 @@
         if (users != nil) {
             for (PFUser *user in users)
             {
+                isValid = YES;
                 for (PFUser *friend in friends)
                 {
-                    if (![user[@"username"] isEqual:friend[@"username"]])
+                    if ([user[@"username"] isEqual:friend[@"username"]])
                     {
-                        [self.userArray addObject:user];
+                        isValid = NO;
                     }
+                }
+                if (isValid)
+                {
+                    [self.userArray addObject:user];
                 }
             }
             [self.tableView reloadData];
