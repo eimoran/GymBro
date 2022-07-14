@@ -472,7 +472,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aIO-Pz-UYK">
-                                                    <rect key="frame" x="150" y="185" width="115" height="31"/>
+                                                    <rect key="frame" x="150" y="226" width="115" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="Add As Friend"/>
@@ -480,10 +480,18 @@
                                                         <action selector="addFriend:" destination="C9a-nO-97f" eventType="touchUpInside" id="aue-0w-F9S"/>
                                                     </connections>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Distance From Your Gym:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0xS-Bn-hfp">
+                                                    <rect key="frame" x="18" y="185" width="376" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="addFriendButton" destination="aIO-Pz-UYK" id="kyV-Bi-TG7"/>
+                                            <outlet property="distanceLabel" destination="0xS-Bn-hfp" id="6X3-VN-JEg"/>
                                             <outlet property="genderLabel" destination="nWL-wf-qok" id="VFB-wG-nRP"/>
                                             <outlet property="gymLabel" destination="wAw-1I-BMf" id="PKv-K7-Ano"/>
                                             <outlet property="levelLabel" destination="bDT-Ne-ryE" id="UPx-4I-ScC"/>

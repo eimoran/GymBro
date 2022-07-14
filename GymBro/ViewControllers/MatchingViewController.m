@@ -13,6 +13,8 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *userArray;
+@property (strong, nonatomic) PFUser *currUser;
+@property (strong, nonatomic) CLLocation *userLoc;
 
 @end
 
@@ -26,6 +28,10 @@
     self.tableView.rowHeight = 250;
     
     self.userArray  = [[NSMutableArray alloc] init];
+    self.currUser = [PFUser currentUser];
+    double latitude = [[self.currUser[@"gym"] valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
+    double longitude = [[self.currUser[@"gym"] valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
+    self.userLoc = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
     
     [self fetchUsersWithQuery];
 }
@@ -34,8 +40,7 @@
 
 - (void)fetchUsersWithQuery
 {
-    PFUser *user = [PFUser currentUser];
-    NSArray *friends = user[@"friends"];
+    NSArray *friends = self.currUser[@"friends"];
     __block BOOL isValid;
     PFQuery *query = [PFUser query];
     for (PFUser *friend in friends)
@@ -43,7 +48,7 @@
         [friend fetchIfNeeded];
         [query whereKey:@"username" notEqualTo:friend[@"username"]];
     }
-    [query whereKey:@"username" notEqualTo:user[@"username"]];
+    [query whereKey:@"username" notEqualTo:self.currUser[@"username"]];
     [query whereKeyExists:@"level"];
     [query whereKeyExists:@"gym"];
     query.limit = 100;
@@ -64,6 +69,7 @@
                 }
                 if (isValid)
                 {
+                    
                     [self.userArray addObject:user];
                 }
             }
@@ -78,6 +84,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     cell.user = self.userArray[indexPath.row];
+    double latitudeOne = [[cell.user[@"gym"] valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
+    double longitudeOne = [[cell.user[@"gym"] valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
+    CLLocation *userOneLoc = [[CLLocation alloc] initWithLatitude:latitudeOne longitude:longitudeOne];
+    NSLog(@"%f", [self.userLoc distanceFromLocation:userOneLoc]);
+    cell.distanceFromUser = [self.userLoc distanceFromLocation:userOneLoc];
     [cell setData];
     return cell;
 }

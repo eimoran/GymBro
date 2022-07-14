@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *levelLabel;
 @property (weak, nonatomic) IBOutlet UILabel *gymLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 - (IBAction)addFriend:(id)sender;
 
 @end
@@ -30,18 +31,20 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
 - (void)setData
 {
+    NSLog(@"%f", self.distanceFromUser);
     self.usernameLabel.text = self.user[@"username"];
     self.workoutTypeLabel.text = [NSString stringWithFormat:@"Workout Type: %@", self.user[@"workoutSplit"]];
     self.workoutTimeLabel.text = [NSString stringWithFormat:@"Workout Time: %@", self.user[@"workoutTime"]];
     self.genderLabel.text = [NSString stringWithFormat:@"Gender: %@", self.user[@"gender"]];
     self.levelLabel.text = [NSString stringWithFormat:@"Level: %@", self.user[@"level"]];
     self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: %@", [self.user[@"gym"] valueForKeyPath:@"name"]];
+    self.distanceLabel.text = [NSString stringWithFormat:@"Distance From Your Gym: %.2f mi", self.distanceFromUser*0.00062317];
 }
 
 - (IBAction)addFriend:(id)sender {
