@@ -37,6 +37,16 @@
 }
 
 
+- (NSComparisonResult)getDistance:(PFUser *)userOne
+{
+    double latitudeOne = [[userOne[@"gym"] valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
+    double longitudeOne = [[userOne[@"gym"] valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
+    CLLocation *userOneLoc = [[CLLocation alloc] initWithLatitude:latitudeOne longitude:longitudeOne];
+    
+    return [self.userLoc distanceFromLocation:userOneLoc];
+    
+}
+
 
 - (void)fetchUsersWithQuery
 {
@@ -69,10 +79,51 @@
                 }
                 if (isValid)
                 {
+                    if (self.userArray.count == 0)
+                    {
+//                        [self.userArray addObject:user];
+                    }
+                    else
+                    {
+//                        NSLog(@"HELLO %lu", (unsigned long)self.userArray.count);
+//                        double distance = [self getDistance:user];
+//                        for (int i = 0; i < self.userArray.count; i++)
+//                        {
+//                            NSLog(@"%d", i);
+//                            if (distance < [self getDistance:self.userArray[i]])
+//                            {
+//                                [self.userArray insertObject:user atIndex:i];
+//                                NSLog(@"%@", self.userArray);
+//                                break;
+//                            }
+//                            else if (i == self.userArray.count - 1)
+//                            {
+//                                [self.userArray insertObject:user atIndex:i];
+//                                break;
+//                            }
+//                        }
+                    }
                     
                     [self.userArray addObject:user];
                 }
             }
+//            NSLog(@"%@", self.userArray);
+            NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"gym.distance" ascending:YES];
+//            NSLog(@"%@", [self.userArray sortedArrayUsingDescriptors:@[sd]]);
+            
+            
+            NSArray *sortedArray;
+            self.userArray = [self.userArray sortedArrayUsingComparator:^NSComparisonResult(PFUser *a, PFUser *b) {
+                double disOne = [[a valueForKeyPath:@"gym.distance"] doubleValue];
+                double disTwo = [[b valueForKeyPath:@"gym.distance"] doubleValue];
+                NSLog(@"A: %f", disOne);
+                NSLog(@"B: %f", disTwo);
+                NSLog(@"RESULT: %d", disOne < disTwo);
+                return [[a valueForKeyPath:@"gym.distance"] doubleValue] < [[b valueForKeyPath:@"gym.distance"] doubleValue];
+            }];
+//            NSLog(@"%@", sortedArray);
+            
+            
             [self.tableView reloadData];
         } else {
             NSLog(@"%@", error.localizedDescription);

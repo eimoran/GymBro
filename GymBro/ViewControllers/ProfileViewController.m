@@ -156,6 +156,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
             NSLog(@"%@", error);
         } else {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"%@", responseDictionary);
             self.gyms = [[NSMutableArray alloc] init];
             for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
             {
