@@ -37,7 +37,6 @@
 
 - (void)setData
 {
-    NSLog(@"%f", self.distanceFromUser);
     self.usernameLabel.text = self.user[@"username"];
     self.workoutTypeLabel.text = [NSString stringWithFormat:@"Workout Type: %@", self.user[@"workoutSplit"]];
     self.workoutTimeLabel.text = [NSString stringWithFormat:@"Workout Time: %@", self.user[@"workoutTime"]];

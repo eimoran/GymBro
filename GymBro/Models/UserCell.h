@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UserCell : UITableViewCell
 
-@property (strong, nonatomic) NSDictionary *user;
+@property (strong, nonatomic) PFUser *user;
 @property (nonatomic) double distanceFromUser;
 - (void) setData;
 

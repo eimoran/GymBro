@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSMutableArray *userArray;
 @property (strong, nonatomic) PFUser *currUser;
 @property (strong, nonatomic) CLLocation *userLoc;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -29,11 +30,27 @@
     
     self.userArray  = [[NSMutableArray alloc] init];
     self.currUser = [PFUser currentUser];
+    [self setLocalGym];
+    
+    [self fetchUsersWithQuery];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshUser) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
+}
+
+- (void)setLocalGym
+{
     double latitude = [[self.currUser[@"gym"] valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
     double longitude = [[self.currUser[@"gym"] valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
     self.userLoc = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-    
+}
+
+- (void)refreshUser
+{
+    [self setLocalGym];
     [self fetchUsersWithQuery];
+    
 }
 
 
@@ -67,6 +84,7 @@
     // fetch data asynchronously
     [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
         if (users != nil) {
+            self.userArray = [[NSMutableArray alloc] init];
             for (PFUser *user in users)
             {
                 isValid = YES;
@@ -81,50 +99,29 @@
                 {
                     if (self.userArray.count == 0)
                     {
-//                        [self.userArray addObject:user];
+                        [self.userArray addObject:user];
                     }
                     else
                     {
-//                        NSLog(@"HELLO %lu", (unsigned long)self.userArray.count);
-//                        double distance = [self getDistance:user];
-//                        for (int i = 0; i < self.userArray.count; i++)
-//                        {
-//                            NSLog(@"%d", i);
-//                            if (distance < [self getDistance:self.userArray[i]])
-//                            {
-//                                [self.userArray insertObject:user atIndex:i];
-//                                NSLog(@"%@", self.userArray);
-//                                break;
-//                            }
-//                            else if (i == self.userArray.count - 1)
-//                            {
-//                                [self.userArray insertObject:user atIndex:i];
-//                                break;
-//                            }
-//                        }
+                        long distance = [self getDistance:user];
+                        int i;
+                        for (i = 0; i < self.userArray.count; i++)
+                        {
+                            if (distance <= [self getDistance:self.userArray[i]])
+                            {
+                                [self.userArray insertObject:user atIndex:i];
+                                break;
+                            }
+                        }
+                        if (i == self.userArray.count)
+                        {
+                            [self.userArray addObject:user];
+                        }
                     }
-                    
-                    [self.userArray addObject:user];
                 }
             }
-//            NSLog(@"%@", self.userArray);
-            NSSortDescriptor *sd = [[NSSortDescriptor alloc] initWithKey:@"gym.distance" ascending:YES];
-//            NSLog(@"%@", [self.userArray sortedArrayUsingDescriptors:@[sd]]);
-            
-            
-            NSArray *sortedArray;
-            self.userArray = [self.userArray sortedArrayUsingComparator:^NSComparisonResult(PFUser *a, PFUser *b) {
-                double disOne = [[a valueForKeyPath:@"gym.distance"] doubleValue];
-                double disTwo = [[b valueForKeyPath:@"gym.distance"] doubleValue];
-                NSLog(@"A: %f", disOne);
-                NSLog(@"B: %f", disTwo);
-                NSLog(@"RESULT: %d", disOne < disTwo);
-                return [[a valueForKeyPath:@"gym.distance"] doubleValue] < [[b valueForKeyPath:@"gym.distance"] doubleValue];
-            }];
-//            NSLog(@"%@", sortedArray);
-            
-            
             [self.tableView reloadData];
+            [self.refreshControl endRefreshing];
         } else {
             NSLog(@"%@", error.localizedDescription);
         }
@@ -135,11 +132,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     cell.user = self.userArray[indexPath.row];
-    double latitudeOne = [[cell.user[@"gym"] valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
-    double longitudeOne = [[cell.user[@"gym"] valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
-    CLLocation *userOneLoc = [[CLLocation alloc] initWithLatitude:latitudeOne longitude:longitudeOne];
-    NSLog(@"%f", [self.userLoc distanceFromLocation:userOneLoc]);
-    cell.distanceFromUser = [self.userLoc distanceFromLocation:userOneLoc];
+    cell.distanceFromUser = [self getDistance:cell.user];
     [cell setData];
     return cell;
 }
