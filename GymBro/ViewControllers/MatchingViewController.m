@@ -27,7 +27,7 @@
     // Do any additional setup after loading the view.
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.rowHeight = 250;
+    self.tableView.rowHeight = 270;
     
     self.userArray  = [[NSMutableArray alloc] init];
     self.currUser = [PFUser currentUser];
