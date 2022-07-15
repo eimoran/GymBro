@@ -13,6 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *userArray;
+@property (strong, nonatomic) NSMutableArray *compatibilityArray;
 @property (strong, nonatomic) PFUser *currUser;
 @property (strong, nonatomic) CLLocation *userLoc;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
@@ -50,83 +51,134 @@
 {
     [self setLocalGym];
     [self fetchUsersWithQuery];
-    
-}
-
-
-- (NSComparisonResult)getDistance:(PFUser *)userOne
-{
-    double latitudeOne = [[userOne[@"gym"] valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
-    double longitudeOne = [[userOne[@"gym"] valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
-    CLLocation *userOneLoc = [[CLLocation alloc] initWithLatitude:latitudeOne longitude:longitudeOne];
-    
-    return [self.userLoc distanceFromLocation:userOneLoc];
-    
 }
 
 
 - (void)fetchUsersWithQuery
 {
-    NSArray *friends = self.currUser[@"friends"];
-    __block BOOL isValid;
     PFQuery *query = [PFUser query];
-    for (PFUser *friend in friends)
-    {
-        [friend fetchIfNeeded];
-        [query whereKey:@"username" notEqualTo:friend[@"username"]];
-    }
     [query whereKey:@"username" notEqualTo:self.currUser[@"username"]];
     [query whereKeyExists:@"level"];
     [query whereKeyExists:@"gym"];
-    query.limit = 100;
     [query orderByDescending:@"createdAt"];
+    query.limit = 100;
 
     // fetch data asynchronously
     [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
         if (users != nil) {
-            self.userArray = [[NSMutableArray alloc] init];
-            for (PFUser *user in users)
-            {
-                isValid = YES;
-                for (PFUser *friend in friends)
-                {
-                    if ([user[@"username"] isEqual:friend[@"username"]])
-                    {
-                        isValid = NO;
-                    }
-                }
-                if (isValid)
-                {
-                    if (self.userArray.count == 0)
-                    {
-                        [self.userArray addObject:user];
-                    }
-                    else
-                    {
-                        long distance = [self getDistance:user];
-                        int i;
-                        for (i = 0; i < self.userArray.count; i++)
-                        {
-                            if (distance <= [self getDistance:self.userArray[i]])
-                            {
-                                [self.userArray insertObject:user atIndex:i];
-                                break;
-                            }
-                        }
-                        if (i == self.userArray.count)
-                        {
-                            [self.userArray addObject:user];
-                        }
-                    }
-                }
-            }
+            [self setScores:users];
+            [self compatibilitySort];
             [self.tableView reloadData];
             [self.refreshControl endRefreshing];
         } else {
             NSLog(@"%@", error.localizedDescription);
         }
     }];
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+- (long)getDistance:(PFUser *)userOne
+{
+    double latitudeOne = [[userOne[@"gym"] valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
+    double longitudeOne = [[userOne[@"gym"] valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
+    CLLocation *userOneLoc = [[CLLocation alloc] initWithLatitude:latitudeOne longitude:longitudeOne];
     
+    return [self.userLoc distanceFromLocation:userOneLoc];
+}
+
+
+- (void)setScores:(NSArray *)users
+{
+    NSArray *friends = self.currUser[@"friends"];
+    __block BOOL isValid;
+    self.compatibilityArray = [[NSMutableArray alloc] init];
+    self.userArray = [[NSMutableArray alloc] init];
+    NSString *currSplit = self.currUser[@"workoutSplit"];
+    NSString *currTime = self.currUser[@"workoutTime"];
+    NSString *currLevel = self.currUser[@"level"];
+    for (PFUser *user in users)
+    {
+        isValid = YES;
+        for (PFUser *friend in friends)
+        {
+            if ([user[@"username"] isEqual:friend[@"username"]])
+            {
+                isValid = NO;
+            }
+        }
+        if (isValid)
+        {
+            NSInteger score = 0;
+            if ([[user valueForKeyPath:@"workoutSplit"] isEqual:currSplit])
+            {
+                score += 3;
+            }
+            
+            if ([[user valueForKeyPath:@"workoutTime"] isEqual:currTime])
+            {
+                score += 2;
+            }
+            if ([[user valueForKeyPath:@"level"] isEqual:currLevel])
+            {
+                score += 1;
+            }
+            long distance = [self getDistance:user]*0.00062317;
+            
+            if (distance <= 1)
+            {
+                score += 4;
+            }
+            else if (distance <= 5)
+            {
+                score += 3;
+            }
+            else if (distance <= 10)
+            {
+                score += 2;
+            }
+            else
+            {
+                score += 1;
+            }
+            [self.userArray addObject:user];
+            [self.compatibilityArray addObject:@(score)];
+        }
+    }
+}
+
+- (void)compatibilitySort
+{
+    NSMutableArray *sortedArray = [[NSMutableArray alloc] init];
+    int i = 0;
+    [sortedArray addObject:self.userArray[0]];
+    for (int x = 1; x < self.userArray.count; x++)
+    {
+        PFUser *user = self.userArray[x];
+        for (i = 0; i < sortedArray.count; i++)
+        {
+            long y = [self.userArray indexOfObject:sortedArray[i]];
+            if (self.compatibilityArray[x] > self.compatibilityArray[y])
+            {
+                [sortedArray insertObject:user atIndex:i];
+                break;
+            }
+        }
+        if (i == sortedArray.count)
+        {
+            [sortedArray addObject:user];
+        }
+    }
+    self.userArray = sortedArray;
+    [self.tableView reloadData];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -141,15 +193,5 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.userArray.count;
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

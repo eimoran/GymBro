@@ -43,7 +43,7 @@
     self.genderLabel.text = [NSString stringWithFormat:@"Gender: %@", self.user[@"gender"]];
     self.levelLabel.text = [NSString stringWithFormat:@"Level: %@", self.user[@"level"]];
     self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: %@", [self.user[@"gym"] valueForKeyPath:@"name"]];
-    self.distanceLabel.text = [NSString stringWithFormat:@"Distance From Your Gym: %.2f mi", self.distanceFromUser*0.00062317];
+    self.distanceLabel.text = [NSString stringWithFormat:@"Distance From Your Gym: %.2f mi", self.distanceFromUser*0.00062137];
 }
 
 - (IBAction)addFriend:(id)sender {
