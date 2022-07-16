@@ -6,20 +6,20 @@ App will allow users to create a workout profile and get matched with other peop
 Features
 -   Log in, Log out, Sign Up
 -   Profile Page
--   Create Custom Workouts
 -   Matching Users to other users based on their profiles and locations
 -   Match based on who matches more profile traits and location
--   Allow user to filter
--   Map API to track users’ locations and who to show posts to
+-   Map API to track users’ locations display nearby gyms
 -   Forum Posts
 -   Comments, Likes, replies
--   Direct message
 
 Ambiguous/Complex Problems
 -   Matching user to other compatible users
 -   Allow user to get a list of gyms nearby and add it to their profile
 
 Stretch Features
+-   Allow user to filter
+-   Direct message
+-   Create Custom Workouts
 -   Create list of workouts with videos embedded for each workout that user can add to their plan
 -   Create a weight or lift tracker page where users can track their lifting PR’s or track their weight
 
