@@ -41,8 +41,6 @@
 - (void)fetchUsersWithQuery
 {
     self.userArray = [[NSMutableArray alloc] init];
-    __block BOOL isValid;
-    NSArray *friends = self.currUser[@"friends"];
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" notEqualTo:self.currUser[@"username"]];
     [query orderByDescending:@"createdAt"];
@@ -51,25 +49,9 @@
     // fetch data asynchronously
     [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
         if (users != nil) {
-            for (PFUser *user in users)
-            {
-                isValid = NO;
-                for (PFUser *friend in friends)
-                {
-                    [friend fetchIfNeeded];
-                    if ([user[@"username"] isEqual:friend[@"username"]])
-                    {
-                        isValid = YES;
-                    }
-                }
-                if (isValid)
-                {
-                    [self.userArray addObject:user];
-                }
-            }
+            [self filterFriends:users];
             [self.tableView reloadData];
             [self.refreshControl endRefreshing];
-            NSLog(@"%@", [self.userArray valueForKeyPath:@"username"]);
         } else {
             NSLog(@"%@", error.localizedDescription);
         }
@@ -113,6 +95,28 @@
     CLLocation *userOneLoc = [[CLLocation alloc] initWithLatitude:latitudeOne longitude:longitudeOne];
     
     return [self.userLoc distanceFromLocation:userOneLoc];
+}
+
+- (void)filterFriends:(NSArray *)users
+{
+    __block BOOL isValid;
+    NSArray *friends = self.currUser[@"friends"];
+    for (PFUser *user in users)
+    {
+        isValid = NO;
+        for (PFUser *friend in friends)
+        {
+            [friend fetchIfNeeded];
+            if ([user[@"username"] isEqual:friend[@"username"]])
+            {
+                isValid = YES;
+            }
+        }
+        if (isValid)
+        {
+            [self.userArray addObject:user];
+        }
+    }
 }
 
 @end

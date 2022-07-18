@@ -56,6 +56,14 @@
         if (succeeded)
         {
             self.addFriendButton.hidden = true;
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success!"
+                                                                           message:@"Successfully Added Friend"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                 {}];
+            [alert addAction:ok];
+            [self.controller presentViewController:alert animated:YES completion:nil];
         }
         else
         {

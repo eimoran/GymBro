@@ -99,6 +99,10 @@
 - (void)setScores:(NSArray *)users
 {
     NSArray *friends = self.currUser[@"friends"];
+    for (PFUser *friend in friends)
+    {
+        [friend fetchIfNeeded];
+    }
     __block BOOL isValid;
     self.compatibilityArray = [[NSMutableArray alloc] init];
     self.userArray = [[NSMutableArray alloc] init];
@@ -185,6 +189,7 @@
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     cell.user = self.userArray[indexPath.row];
     cell.distanceFromUser = [self getDistance:cell.user];
+    cell.controller = self;
     [cell setData];
     return cell;
 }
