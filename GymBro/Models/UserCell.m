@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *gymLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
-- (IBAction)addFriend:(id)sender;
+- (IBAction)sendFriendRequest:(id)sender;
 
 @end
 
@@ -46,18 +46,42 @@
     self.distanceLabel.text = [NSString stringWithFormat:@"Distance From Your Gym: %.2f mi", self.distanceFromUser*0.00062137];
 }
 
-- (IBAction)addFriend:(id)sender {
+- (IBAction)sendFriendRequest:(id)sender {
     PFUser *user = [PFUser currentUser];
-    NSMutableArray *friendsArray = [[NSMutableArray alloc] initWithArray:user[@"friends"]];
-    [friendsArray addObject:self.user];
-    user[@"friends"] = friendsArray;
+    NSMutableArray *pendingFriendsArray = [[NSMutableArray alloc] initWithArray:user[@"pendingFriends"]];
+    [pendingFriendsArray addObject:[self.user valueForKeyPath:@"username"]];
+    user[@"pendingFriends"] = pendingFriendsArray;
+    NSLog(@"PENDING FRIENDS: %@", pendingFriendsArray);
     
+    NSMutableArray *otherUserFriendRequestArray = [[NSMutableArray alloc] initWithArray:user[@"friendRequests"]];
+    [otherUserFriendRequestArray addObject:[user valueForKeyPath:@"username"]];
+    self.user[@"friendRequests"] = otherUserFriendRequestArray;
+    
+    NSDictionary *params = @{@"friendRequests": otherUserFriendRequestArray};
+    NSLog(@"PARAMS: %@", params);
+    
+    [PFCloud callFunctionInBackground:@"sendFriendRequest" withParameters:params block:^(id  _Nullable object, NSError * _Nullable error) {
+        if (!error)
+        {
+            NSLog(@"SUCCESS %@", [self.user valueForKeyPath:@"friendRequests"]);
+        }
+    }];
+//    [self.user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+//        if (succeeded)
+//        {
+//            NSLog(@"SUCCESS");
+//        }
+//        else
+//        {
+//            NSLog(@"Error Sending Friend Request: %@", error.localizedDescription);
+//        }
+//    }];
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded)
         {
             self.addFriendButton.hidden = true;
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success!"
-                                                                           message:@"Successfully Added Friend"
+                                                                           message:@"Successfully Sent Friend Request"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
@@ -67,7 +91,7 @@
         }
         else
         {
-            NSLog(@"Error Updating Profile: %@", error.localizedDescription);
+            NSLog(@"Error Sending Friend Request: %@", error.localizedDescription);
         }
     }];
 }

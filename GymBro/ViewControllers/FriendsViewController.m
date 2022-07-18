@@ -11,8 +11,14 @@
 
 @interface FriendsViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSMutableArray *userArray;
+@property (weak, nonatomic) IBOutlet UITableView *friendsTableView;
+@property (weak, nonatomic) IBOutlet UITableView *pendingTableView;
+@property (weak, nonatomic) IBOutlet UITableView *requestTableView;
+
+@property (strong, nonatomic) NSMutableArray *friendsArray;
+@property (strong, nonatomic) NSMutableArray *pendingFriendsArray;
+@property (strong, nonatomic) NSMutableArray *friendRequestsArray;
+
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) PFUser *currUser;
 @property (strong, nonatomic) CLLocation *userLoc;
@@ -24,9 +30,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.rowHeight = 270;
+    self.friendsTableView.delegate = self;
+    self.friendsTableView.dataSource = self;
+    self.friendsTableView.rowHeight = 270;
+    self.pendingTableView.delegate = self;
+    self.pendingTableView.dataSource = self;
+    self.pendingTableView.rowHeight = 270;
+    self.requestTableView.delegate = self;
+    self.requestTableView.dataSource = self;
+    self.requestTableView.rowHeight = 270;
     
     self.currUser = [PFUser currentUser];
     [self setLocalGym];
@@ -35,12 +47,14 @@
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchUsersWithQuery) forControlEvents:UIControlEventValueChanged];
-    [self.tableView insertSubview:self.refreshControl atIndex:0];
+    [self.friendsTableView insertSubview:self.refreshControl atIndex:0];
 }
 
 - (void)fetchUsersWithQuery
 {
-    self.userArray = [[NSMutableArray alloc] init];
+    self.friendsArray = [[NSMutableArray alloc] init];
+    self.friendRequestsArray = [[NSMutableArray alloc] init];
+    self.pendingFriendsArray = [[NSMutableArray alloc] init];
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" notEqualTo:self.currUser[@"username"]];
     [query orderByDescending:@"createdAt"];
@@ -50,7 +64,7 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
         if (users != nil) {
             [self filterFriends:users];
-            [self.tableView reloadData];
+            [self.friendsTableView reloadData];
             [self.refreshControl endRefreshing];
         } else {
             NSLog(@"%@", error.localizedDescription);
@@ -70,7 +84,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
-    cell.user = self.userArray[indexPath.row];
+    if ([tableView isEqual: self.friendsTableView])
+    {
+        cell.user = self.friendsArray[indexPath.row];
+    }
+    else if ([tableView isEqual:self.requestTableView])
+    {
+        cell.user = self.friendRequestsArray[indexPath.row];
+    }
+    else
+    {
+        cell.user = self.pendingFriendsArray[indexPath.row];
+    }
     cell.distanceFromUser = [self getDistance:cell.user];
     [cell setData];
     return cell;
@@ -78,7 +103,22 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.userArray.count;
+    if ([tableView isEqual:self.friendsTableView])
+    {
+        NSLog(@"FRIENDS: %lu", (unsigned long)self.friendsArray.count);
+        return self.friendsArray.count;
+    }
+    else if ([tableView isEqual:self.requestTableView])
+    {
+        NSLog(@"REQUESTS: %lu", (unsigned long)self.friendRequestsArray.count);
+        return self.friendRequestsArray.count;
+    }
+    else
+    {
+        NSLog(@"PENDING: %lu", (unsigned long)self.pendingFriendsArray.count);
+        return self.pendingFriendsArray.count;
+    }
+    
 }
 
 - (void)setLocalGym
@@ -99,22 +139,59 @@
 
 - (void)filterFriends:(NSArray *)users
 {
-    __block BOOL isValid;
+    __block BOOL isValidFriend;
+    __block BOOL isValidPendingFriend;
+    __block BOOL isValidFriendRequest;
+    
     NSArray *friends = self.currUser[@"friends"];
+    NSArray *pendingFriends = self.currUser[@"pendingFriends"];
+    NSArray *friendRequests= self.currUser[@"friendRequests"];
+    
     for (PFUser *user in users)
     {
-        isValid = NO;
-        for (PFUser *friend in friends)
+        NSLog(@"USERNAME: %@", user[@"username"]);
+        isValidFriend = NO;
+        isValidPendingFriend = NO;
+        isValidFriendRequest = NO;
+        for (NSString *friend in friends)
         {
-            [friend fetchIfNeeded];
-            if ([user[@"username"] isEqual:friend[@"username"]])
+            if ([user[@"username"] isEqual:friend])
             {
-                isValid = YES;
+                isValidFriend = YES;
             }
         }
-        if (isValid)
+        for (NSString *request in friendRequests)
         {
-            [self.userArray addObject:user];
+            if ([user[@"username"] isEqual:request])
+            {
+                isValidFriendRequest = YES;
+            }
+        }
+        for (NSString *pendingFriend in pendingFriends)
+        {
+            if ([user[@"username"] isEqual:pendingFriend])
+            {
+                NSLog(@"VALID PENDING");
+                isValidPendingFriend = YES;
+            }
+        }
+        if (isValidFriend)
+        {
+            [self.friendsArray addObject:user];
+            NSLog(@"FRIEND COUNT: %lu", (unsigned long)self.pendingFriendsArray.count);
+            [self.friendsTableView reloadData];
+        }
+        else if (isValidFriendRequest)
+        {
+            [self.friendRequestsArray addObject:user];
+            NSLog(@"REQUEST COUNT: %lu", (unsigned long)self.pendingFriendsArray.count);
+            [self.requestTableView reloadData];
+        }
+        else if (isValidPendingFriend)
+        {
+            [self.pendingFriendsArray addObject:user];
+            NSLog(@"PENDING COUNT: %lu", (unsigned long)self.pendingFriendsArray.count);
+            [self.pendingTableView reloadData];
         }
     }
 }

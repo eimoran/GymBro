@@ -99,11 +99,9 @@
 - (void)setScores:(NSArray *)users
 {
     NSArray *friends = self.currUser[@"friends"];
-    for (PFUser *friend in friends)
-    {
-        [friend fetchIfNeeded];
-    }
+    NSArray *pendingFriends = self.currUser[@"pendingFriends"];
     __block BOOL isValid;
+    __block BOOL isValidPendingFriend;
     self.compatibilityArray = [[NSMutableArray alloc] init];
     self.userArray = [[NSMutableArray alloc] init];
     NSString *currSplit = self.currUser[@"workoutSplit"];
@@ -112,9 +110,17 @@
     for (PFUser *user in users)
     {
         isValid = YES;
-        for (PFUser *friend in friends)
+        isValidPendingFriend = YES;
+        for (NSString *friend in friends)
         {
-            if ([user[@"username"] isEqual:friend[@"username"]])
+            if ([user[@"username"] isEqual:friend])
+            {
+                isValid = NO;
+            }
+        }
+        for (NSString *pendingFriend in pendingFriends)
+        {
+            if ([user[@"username"] isEqual:pendingFriend])
             {
                 isValid = NO;
             }
