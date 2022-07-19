@@ -7,12 +7,16 @@
 
 #import "HomeViewController.h"
 #import "../Models/UserCell.h"
+#import "../Models/PostCell.h"
 
-@interface HomeViewController ()
+@interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) NSArray *userArray;
 
-- (IBAction)seeFriends:(id)sender;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) NSMutableArray *postArray;
+
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 
 @end
@@ -22,6 +26,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.rowHeight = 500;
+    
+    [self fetchPostsWithQuery];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(fetchPostsWithQuery) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
 }
 
 
@@ -32,6 +45,38 @@
     // Pass the selected object to the new view controller.
 //}
 
-- (IBAction)seeFriends:(id)sender {
+- (void)fetchPostsWithQuery
+{
+    self.postArray = [[NSMutableArray alloc] init];
+    PFQuery *query = [PFQuery queryWithClassName:@"Post"];
+    [query includeKey:@"author"];
+    [query orderByDescending:@"createdAt"];
+    query.limit = 200;
+
+    // fetch data asynchronously
+    [query findObjectsInBackgroundWithBlock:^(NSArray *posts, NSError *error) {
+        if (posts != nil) {
+            self.postArray = posts;
+//            NSLog(@"POSTS: %@", self.postArray);
+            [self.tableView reloadData];
+        } else {
+            NSLog(@"%@", error.localizedDescription);
+        }
+        [self.refreshControl endRefreshing];
+    }];
 }
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    PostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
+    cell.post = self.postArray[indexPath.row];
+    [cell setPost];
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.postArray.count;
+}
+
+
 @end
