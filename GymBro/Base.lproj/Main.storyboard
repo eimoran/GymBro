@@ -535,7 +535,7 @@
                                 <buttonConfiguration key="configuration" style="plain" title="Friends"/>
                                 <connections>
                                     <action selector="seeFriends:" destination="tXS-IQ-s3J" eventType="touchUpInside" id="pn5-iZ-eaP"/>
-                                    <segue destination="LGh-Kk-Iee" kind="presentation" identifier="friends" id="Qeh-4L-rPr"/>
+                                    <segue destination="LGh-Kk-Iee" kind="presentation" identifier="friends" modalPresentationStyle="fullScreen" id="Qeh-4L-rPr"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -550,7 +550,7 @@
             <objects>
                 <viewController id="YpF-qF-RcV" customClass="FriendsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nz0-Lb-uGP">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Your Friends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vs-yA-BuF">
@@ -695,7 +695,7 @@
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="Accept Friend Request"/>
                                                     <connections>
-                                                        <action selector="acceptFriendsRequest:" destination="Vl0-hN-gWU" eventType="touchUpInside" id="pYI-85-sAI"/>
+                                                        <action selector="acceptFriendRequest:" destination="Vl0-hN-gWU" eventType="touchUpInside" id="XNl-KV-688"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Workout Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b8q-8X-KNe">
@@ -708,6 +708,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="acceptFriendRequestButton" destination="M8l-dz-idL" id="7Zf-ST-yyL"/>
                                             <outlet property="genderLabel" destination="RSv-8m-yAt" id="XTt-Br-pAK"/>
                                             <outlet property="gymLabel" destination="rHh-dC-Zj4" id="DVZ-OP-7ZG"/>
                                             <outlet property="levelLabel" destination="Apv-AQ-W6a" id="vRD-hQ-D4F"/>
@@ -810,7 +811,30 @@
                         <viewLayoutGuide key="safeArea" id="8h7-Mu-zCU"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="07y-C5-3e1"/>
+                    <navigationItem key="navigationItem" id="07y-C5-3e1">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="9Vm-jV-ZSl">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="aLG-e7-V0W">
+                                <rect key="frame" x="20" y="5" width="92" height="34.5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Home"/>
+                                <connections>
+                                    <action selector="goHome:" destination="YpF-qF-RcV" eventType="touchUpInside" id="Jso-7C-ugc"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="FMI-2s-eb1">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="bGA-VA-jF7">
+                                <rect key="frame" x="302" y="5" width="92" height="34.5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Refresh"/>
+                                <connections>
+                                    <action selector="refresh:" destination="YpF-qF-RcV" eventType="touchUpInside" id="Mdu-5Y-wTy"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="friendsTableView" destination="kVl-9B-h9t" id="gIN-BD-qpc"/>
                         <outlet property="pendingTableView" destination="ZCx-JT-hm3" id="Gai-2F-NgI"/>
@@ -919,8 +943,9 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LGh-Kk-Iee" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="pra-dH-4eB"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Awe-Ze-Baf">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

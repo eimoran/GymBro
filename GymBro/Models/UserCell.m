@@ -17,9 +17,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *levelLabel;
 @property (weak, nonatomic) IBOutlet UILabel *gymLabel;
 @property (weak, nonatomic) IBOutlet UIButton *friendRequestButton;
+@property (weak, nonatomic) IBOutlet UIButton *acceptFriendRequestButton;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 - (IBAction)sendFriendRequest:(id)sender;
-- (IBAction)acceptFriendsRequest:(id)sender;
+- (IBAction)acceptFriendRequest:(id)sender;
 
 
 @end
@@ -48,7 +49,7 @@
     self.distanceLabel.text = [NSString stringWithFormat:@"Distance From Your Gym: %.2f mi", self.distanceFromUser*0.00062137];
 }
 
-- (IBAction)acceptFriendsRequest:(id)sender {
+- (IBAction)acceptFriendRequest:(id)sender {
     PFUser *user = [PFUser currentUser];
     NSMutableArray *friendsArray = [[NSMutableArray alloc] initWithArray:user[@"friends"]];
     [friendsArray addObject:[self.user valueForKeyPath:@"username"]];
@@ -57,6 +58,34 @@
     NSMutableArray *friendRequestsArray = [[NSMutableArray alloc] initWithArray:user[@"friendRequests"]];
     [friendRequestsArray removeObjectIdenticalTo:[self.user valueForKeyPath:@"username"]];
     user[@"friendRequests"] = friendRequestsArray;
+    
+    NSMutableArray *otherFriendsArray = [[NSMutableArray alloc] initWithArray:self.user[@"friends"]];
+    [otherFriendsArray addObject:[user valueForKeyPath:@"username"]];
+    
+    NSMutableArray *otherPendingFriendsArray = [[NSMutableArray alloc] initWithArray:self.user[@"pendingFriends"]];
+    [otherPendingFriendsArray removeObjectIdenticalTo:[user valueForKeyPath:@"username"]];
+    
+    NSDictionary *params = @{@"username": [self.user valueForKeyPath:@"username"],
+                             @"friends": otherFriendsArray,
+                             @"pendingFriends": otherPendingFriendsArray};
+    
+    [PFCloud callFunctionInBackground:@"acceptFriendRequest" withParameters:params block:^(id  _Nullable object, NSError * _Nullable error) {
+    }];
+    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded)
+        {
+            self.acceptFriendRequestButton.hidden = true;
+            
+            UIAlertController *alert1 = [UIAlertController alertControllerWithTitle:@"Success!" message:@"Successfully Accepted Friend Request!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *ok1 = [UIAlertAction actionWithTitle:@"Ok" style:(UIAlertActionStyleDefault) handler:^(UIAlertAction * _Nonnull action) {}];
+            [alert1 addAction:ok1];
+            [self.controller presentViewController:alert1 animated:YES completion:nil];
+        }
+        else
+        {
+            NSLog(@"Error Sending Friend Request: %@", error.localizedDescription);
+        }
+    }];
     
 }
 
@@ -70,7 +99,8 @@
     [otherUserFriendRequestArray addObject:[user valueForKeyPath:@"username"]];
     self.user[@"friendRequests"] = otherUserFriendRequestArray;
     
-    NSDictionary *params = @{@"friendRequests": otherUserFriendRequestArray};
+    NSDictionary *params = @{@"username": [self.user valueForKeyPath:@"username"],
+                             @"friendRequests": otherUserFriendRequestArray};
     
     [PFCloud callFunctionInBackground:@"sendFriendRequest" withParameters:params block:^(id  _Nullable object, NSError * _Nullable error) {
     }];
@@ -78,14 +108,13 @@
         if (succeeded)
         {
             self.friendRequestButton.hidden = true;
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success!"
+            UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"Success!"
                                                                            message:@"Successfully Sent Friend Request"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-                                 {}];
-            [alert addAction:ok];
-            [self.controller presentViewController:alert animated:YES completion:nil];
+            UIAlertAction *ok2 = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {}];
+            [alert2 addAction:ok2];
+            [self.controller presentViewController:alert2 animated:YES completion:nil];
         }
         else
         {

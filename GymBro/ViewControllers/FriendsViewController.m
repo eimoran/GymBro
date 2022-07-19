@@ -23,6 +23,9 @@
 @property (strong, nonatomic) PFUser *currUser;
 @property (strong, nonatomic) CLLocation *userLoc;
 
+- (IBAction)goHome:(id)sender;
+- (IBAction)refresh:(id)sender;
+
 @end
 
 @implementation FriendsViewController
@@ -33,9 +36,11 @@
     self.friendsTableView.delegate = self;
     self.friendsTableView.dataSource = self;
     self.friendsTableView.rowHeight = 250;
+    
     self.pendingTableView.delegate = self;
     self.pendingTableView.dataSource = self;
     self.pendingTableView.rowHeight = 250;
+    
     self.requestTableView.delegate = self;
     self.requestTableView.dataSource = self;
     self.requestTableView.rowHeight = 250;
@@ -48,6 +53,8 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchUsersWithQuery) forControlEvents:UIControlEventValueChanged];
     [self.friendsTableView insertSubview:self.refreshControl atIndex:0];
+    [self.pendingTableView insertSubview:self.refreshControl atIndex:0];
+    [self.requestTableView insertSubview:self.refreshControl atIndex:0];
 }
 
 - (void)fetchUsersWithQuery
@@ -65,6 +72,8 @@
         if (users != nil) {
             [self filterFriends:users];
             [self.friendsTableView reloadData];
+            [self.requestTableView reloadData];
+            [self.pendingTableView reloadData];
             [self.refreshControl endRefreshing];
         } else {
             NSLog(@"%@", error.localizedDescription);
@@ -105,17 +114,14 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([tableView isEqual:self.friendsTableView])
     {
-        NSLog(@"FRIENDS: %lu", (unsigned long)self.friendsArray.count);
         return self.friendsArray.count;
     }
     else if ([tableView isEqual:self.requestTableView])
     {
-        NSLog(@"REQUESTS: %lu", (unsigned long)self.friendRequestsArray.count);
         return self.friendRequestsArray.count;
     }
     else
     {
-        NSLog(@"PENDING: %lu", (unsigned long)self.pendingFriendsArray.count);
         return self.pendingFriendsArray.count;
     }
     
@@ -149,7 +155,6 @@
     
     for (PFUser *user in users)
     {
-        NSLog(@"USERNAME: %@", user[@"username"]);
         isValidFriend = NO;
         isValidPendingFriend = NO;
         isValidFriendRequest = NO;
@@ -171,29 +176,31 @@
         {
             if ([user[@"username"] isEqual:pendingFriend])
             {
-                NSLog(@"VALID PENDING");
                 isValidPendingFriend = YES;
             }
         }
         if (isValidFriend)
         {
             [self.friendsArray addObject:user];
-            NSLog(@"FRIEND COUNT: %lu", (unsigned long)self.pendingFriendsArray.count);
             [self.friendsTableView reloadData];
         }
         else if (isValidFriendRequest)
         {
             [self.friendRequestsArray addObject:user];
-            NSLog(@"REQUEST COUNT: %lu", (unsigned long)self.pendingFriendsArray.count);
             [self.requestTableView reloadData];
         }
         else if (isValidPendingFriend)
         {
             [self.pendingFriendsArray addObject:user];
-            NSLog(@"PENDING COUNT: %lu", (unsigned long)self.pendingFriendsArray.count);
             [self.pendingTableView reloadData];
         }
     }
 }
 
+- (IBAction)goHome:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (IBAction)refresh:(id)sender {
+    [self fetchUsersWithQuery];
+}
 @end
