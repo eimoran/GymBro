@@ -169,8 +169,8 @@
 {
     NSMutableArray *sortedArray = [[NSMutableArray alloc] init];
     int i = 0;
-    [sortedArray addObject:self.userArray[0]];
-    for (int x = 1; x < self.userArray.count; x++)
+//    [sortedArray addObject:self.userArray[0]];
+    for (int x = 0; x < self.userArray.count; x++)
     {
         PFUser *user = self.userArray[x];
         for (i = 0; i < sortedArray.count; i++)

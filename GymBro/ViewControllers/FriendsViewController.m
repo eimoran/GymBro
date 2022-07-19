@@ -32,13 +32,13 @@
     // Do any additional setup after loading the view.
     self.friendsTableView.delegate = self;
     self.friendsTableView.dataSource = self;
-    self.friendsTableView.rowHeight = 270;
+    self.friendsTableView.rowHeight = 250;
     self.pendingTableView.delegate = self;
     self.pendingTableView.dataSource = self;
-    self.pendingTableView.rowHeight = 270;
+    self.pendingTableView.rowHeight = 250;
     self.requestTableView.delegate = self;
     self.requestTableView.dataSource = self;
-    self.requestTableView.rowHeight = 270;
+    self.requestTableView.rowHeight = 250;
     
     self.currUser = [PFUser currentUser];
     [self setLocalGym];
