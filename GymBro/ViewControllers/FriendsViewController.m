@@ -19,7 +19,6 @@
 @property (strong, nonatomic) NSMutableArray *pendingFriendsArray;
 @property (strong, nonatomic) NSMutableArray *friendRequestsArray;
 
-@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) PFUser *currUser;
 @property (strong, nonatomic) CLLocation *userLoc;
 
@@ -50,11 +49,6 @@
     
     [self fetchUsersWithQuery];
     
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(fetchUsersWithQuery) forControlEvents:UIControlEventValueChanged];
-    [self.friendsTableView insertSubview:self.refreshControl atIndex:0];
-    [self.pendingTableView insertSubview:self.refreshControl atIndex:0];
-    [self.requestTableView insertSubview:self.refreshControl atIndex:0];
 }
 
 - (void)fetchUsersWithQuery
@@ -64,7 +58,6 @@
     self.pendingFriendsArray = [[NSMutableArray alloc] init];
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" notEqualTo:self.currUser[@"username"]];
-    [query orderByDescending:@"createdAt"];
     query.limit = 100;
 
     // fetch data asynchronously
@@ -74,7 +67,6 @@
             [self.friendsTableView reloadData];
             [self.requestTableView reloadData];
             [self.pendingTableView reloadData];
-            [self.refreshControl endRefreshing];
         } else {
             NSLog(@"%@", error.localizedDescription);
         }
@@ -106,6 +98,7 @@
         cell.user = self.pendingFriendsArray[indexPath.row];
     }
     cell.distanceFromUser = [self getDistance:cell.user];
+    cell.controller = self;
     [cell setData];
     return cell;
 }

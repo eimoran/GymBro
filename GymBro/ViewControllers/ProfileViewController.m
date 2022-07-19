@@ -7,6 +7,7 @@
 
 #import "ProfileViewController.h"
 #import "ProfileFormViewController.h"
+#import "LoginViewController.h"
 #import "../Models/GymPointAnnotation.h"
 #import "../Models/GymDetailsButton.h"
 #import "GymDetailsViewController.h"
@@ -39,6 +40,8 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (strong, nonatomic) IBOutlet UILabel *gymLabel;
 
 @property (strong, nonatomic) NSDictionary *currGym;
+
+- (IBAction)logout:(id)sender;
 
 @end
 
@@ -219,6 +222,16 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 - (IBAction)updateInfo:(id)sender {
 }
 
+- (IBAction)logout:(id)sender {
+    [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
+        if (!error)
+        {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            LoginViewController *loginVC = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+            self.view.window.rootViewController = loginVC;
+        }
+    }];
+}
 @end
 
 
