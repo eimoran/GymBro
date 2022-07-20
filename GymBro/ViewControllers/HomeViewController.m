@@ -8,6 +8,7 @@
 #import "HomeViewController.h"
 #import "../Models/UserCell.h"
 #import "../Models/PostCell.h"
+#import "PostDetailsViewController.h"
 
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -40,10 +41,15 @@
 
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-//}
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqual:@"postDetails"])
+    {
+        UINavigationController *navController = [segue destinationViewController];
+        PostDetailsViewController *postDetailsVC = (PostDetailsViewController *)navController.topViewController;
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        postDetailsVC.post = self.postArray[indexPath.row];
+    }
+}
 
 - (void)fetchPostsWithQuery
 {
@@ -57,7 +63,6 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *posts, NSError *error) {
         if (posts != nil) {
             self.postArray = posts;
-//            NSLog(@"POSTS: %@", self.postArray);
             [self.tableView reloadData];
         } else {
             NSLog(@"%@", error.localizedDescription);

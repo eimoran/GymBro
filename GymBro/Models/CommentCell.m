@@ -1,14 +1,13 @@
 //
-//  PostCell.m
+//  CommentCell.m
 //  GymBro
 //
-//  Created by Eric Moran on 7/19/22.
+//  Created by Eric Moran on 7/20/22.
 //
 
-#import "PostCell.h"
-#import <Parse/Parse.h>
+#import "CommentCell.h"
 
-@implementation PostCell
+@implementation CommentCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -21,23 +20,11 @@
     // Configure the view for the selected state
 }
 
-
-// ONLY CREATE IMAGE VIEW IF POST HAS AN IMAGE (DO PROGRAMMATICALLY) //
-- (void)setPost {
-    if (self.post.photoExists)
-    {
-        NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: self.post.image.url]];
-        self.postImageView.image = [UIImage imageWithData: imageData];
-    }
-    else
-    {
-        self.postImageView.hidden = YES;
-    }
-    
-    self.postTextLabel.text = [NSString stringWithFormat:@"%@ %@", self.post.author, self.post.text];
+- (void)setComment {
+    self.postTextLabel.text = [NSString stringWithFormat:@"%@ %@", self.comment.author, self.comment.text];
     
     NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:self.postTextLabel.text];
-    NSRange boldRange = [self.postTextLabel.text rangeOfString:self.post.author];
+    NSRange boldRange = [self.postTextLabel.text rangeOfString:self.comment.author];
     [postText addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:16] range:boldRange];
     [self.postTextLabel setAttributedText: postText];
     
@@ -47,7 +34,7 @@
 - (void)setTimestamp {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"E MMM d HH:mm:ss Z y";
-    NSDate *date = self.post.createdAt;
+    NSDate *date = self.comment.createdAt;
     // Configure output format
     formatter.dateStyle = NSDateFormatterShortStyle;
     formatter.timeStyle = NSDateFormatterNoStyle;
