@@ -77,6 +77,7 @@
     {
         PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell" forIndexPath:indexPath];
         postCell.post = self.post;
+        postCell.tableView = self.tableView;
         [postCell setPost];
         self.tableView.rowHeight = 450;
         return postCell;

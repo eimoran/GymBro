@@ -29,7 +29,9 @@
     // Do any additional setup after loading the view.
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.rowHeight = 500;
+//    self.tableView.rowHeight = UITableViewAutomaticDimension;
+//    self.tableView.estimatedRowHeight = 500;
+    
     
     [self fetchPostsWithQuery];
     
@@ -74,7 +76,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
     cell.post = self.postArray[indexPath.row];
+    cell.tableView = self.tableView;
     [cell setPost];
+    if (cell.post.photoExists)
+    {
+        self.tableView.rowHeight = 400;
+    }
+    else
+    {
+        self.tableView.rowHeight = 200;
+    }
+    
     return cell;
 }
 

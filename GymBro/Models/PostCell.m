@@ -22,32 +22,47 @@
 }
 
 
-// ONLY CREATE IMAGE VIEW IF POST HAS AN IMAGE (DO PROGRAMMATICALLY) //
 - (void)setPost {
     if (self.post.photoExists)
     {
-        NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: self.post.image.url]];
-        self.postImageView.image = [UIImage imageWithData: imageData];
+        NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: self.post.image.url]];
+        UIImageView *postImageView = [[UIImageView alloc] initWithImage:[UIImage imageWithData:imageData]];
+        [postImageView setFrame:CGRectMake(50, 0, 300, 300)];
+        [self addSubview:postImageView];
+        
+        UILabel *postTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 310, self.frame.size.width - 40, 50)];
+        postTextLabel.text =[NSString stringWithFormat:@"%@ %@", self.post.author, self.post.text];
+        NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:postTextLabel.text];
+        NSRange boldRange = [postTextLabel.text rangeOfString:self.post.author];
+        [postText addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:16] range:boldRange];
+        [postTextLabel setAttributedText: postText];
+        [self addSubview:postTextLabel];
+        
+        UILabel *timestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 370, self.frame.size.width - 40, 20)];
+        [self setTimestamp:timestampLabel ofPost:self.post];
+        [self addSubview:timestampLabel];
     }
     else
     {
+        UILabel *postTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, self.frame.size.width - 40, 50)];
+        postTextLabel.text =[NSString stringWithFormat:@"%@ %@", self.post.author, self.post.text];
+        NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:postTextLabel.text];
+        NSRange boldRange = [postTextLabel.text rangeOfString:self.post.author];
+        [postText addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:16] range:boldRange];
+        [postTextLabel setAttributedText: postText];
+        [self addSubview:postTextLabel];
+        
+        UILabel *timestampLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 80, self.frame.size.width - 40, 20)];
+        [self setTimestamp:timestampLabel ofPost:self.post];
+        [self addSubview:timestampLabel];
         self.postImageView.hidden = YES;
     }
-    
-    self.postTextLabel.text = [NSString stringWithFormat:@"%@ %@", self.post.author, self.post.text];
-    
-    NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:self.postTextLabel.text];
-    NSRange boldRange = [self.postTextLabel.text rangeOfString:self.post.author];
-    [postText addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:16] range:boldRange];
-    [self.postTextLabel setAttributedText: postText];
-    
-    [self setTimestamp];
 }
 
-- (void)setTimestamp {
+- (void)setTimestamp:(UILabel *)label ofPost:(Post *)post{
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"E MMM d HH:mm:ss Z y";
-    NSDate *date = self.post.createdAt;
+    NSDate *date = post.createdAt;
     // Configure output format
     formatter.dateStyle = NSDateFormatterShortStyle;
     formatter.timeStyle = NSDateFormatterNoStyle;
@@ -85,7 +100,7 @@
         formatter2.allowedUnits = NSCalendarUnitSecond;
     }
     NSString *elapsed = [formatter2 stringFromDate:date toDate:[NSDate date]];
-    self.timestampLabel.text = [NSString stringWithFormat:@"%@ ago", elapsed];
+    label.text = [NSString stringWithFormat:@"%@ ago", elapsed];
 }
 
 @end

@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) IBOutlet UILabel *timestampLabel;
 @property (strong, nonatomic) Post *post;
 
+@property (strong, nonatomic) UITableView *tableView;
+
 - (void)setPost;
 
 @end
