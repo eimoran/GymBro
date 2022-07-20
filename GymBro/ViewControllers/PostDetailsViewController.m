@@ -30,8 +30,9 @@
     // Do any additional setup after loading the view.
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"header"];
     
-    self.commentArray = [[NSMutableArray alloc] init];
+//    self.commentArray = [[NSMutableArray alloc] init];
     
     [self fetchCommentsWithQuery];
     
@@ -52,7 +53,7 @@
 
 - (void)fetchCommentsWithQuery
 {
-//    self.commentArray = [[NSMutableArray alloc] init];
+    self.commentArray = [[NSMutableArray alloc] init];
     PFQuery *query = [PFQuery queryWithClassName:@"Comment"];
     [query whereKey:@"parent" equalTo:self.post];
     [query includeKey:@"author"];
@@ -71,9 +72,8 @@
     }];
 }
 
-//GET COMMENTS TO WORK
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0)
+    if (indexPath.row == 0 && indexPath.section == 0)
     {
         PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell" forIndexPath:indexPath];
         postCell.post = self.post;
@@ -84,18 +84,45 @@
     else
     {
         CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
-        commentCell.comment = self.commentArray[indexPath.row-1];
+        commentCell.comment = self.commentArray[indexPath.row];
         [commentCell setComment];
         self.tableView.rowHeight = 300;
         return commentCell;
     }
-    
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"ROW COUNT: %lu", 1 + self.commentArray.count);
-    return 1 + self.commentArray.count;
+    if (section == 0)
+    {
+        return 1;
+    }
+    else
+    {
+        return self.commentArray.count;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 1)
+    {
+        UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
+        header.textLabel.text = @"Comments";
+        header.textLabel.textColor = [UIColor blackColor];
+        return header;
+    }
+    else return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 20;
 }
 
 - (IBAction)comment:(id)sender {

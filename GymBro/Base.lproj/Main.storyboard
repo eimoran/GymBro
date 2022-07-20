@@ -568,7 +568,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="postImageView" destination="19U-fP-jvA" id="7vs-dr-9FM"/>
+                                            <outlet property="postImageView" destination="19U-fP-jvA" id="xgS-m2-nA0"/>
                                             <outlet property="postTextLabel" destination="uu3-Kh-ZKG" id="aVn-65-dAo"/>
                                             <outlet property="timestampLabel" destination="0Nq-9f-AYz" id="KAU-pt-KBq"/>
                                             <segue destination="eEH-Su-l2m" kind="presentation" identifier="postDetails" modalPresentationStyle="fullScreen" id="3M8-nL-BxZ"/>
@@ -1016,7 +1016,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="postImageView" destination="vzx-7O-1qX" id="I56-lU-xPP"/>
+                                            <outlet property="postImageView" destination="vzx-7O-1qX" id="xh0-ph-gs4"/>
                                             <outlet property="postTextLabel" destination="KTC-Pn-0VM" id="596-JH-xKr"/>
                                             <outlet property="timestampLabel" destination="gfa-qr-uhv" id="qRv-mU-7Ci"/>
                                         </connections>
