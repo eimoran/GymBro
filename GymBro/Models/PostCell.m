@@ -62,15 +62,15 @@
     NSDateComponentsFormatter *formatter2 = [[NSDateComponentsFormatter alloc] init];
         formatter2.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
         
-    if (days > 364)
+    if (days >= 365)
     {
         formatter2.allowedUnits = NSCalendarUnitYear;
     }
-    else if (days > 30)
+    else if (days >= 31)
     {
         formatter2.allowedUnits = NSCalendarUnitMonth;
     }
-    else if (hours > 24)
+    else if (hours >= 24)
     {
         formatter2.allowedUnits = NSCalendarUnitDay;
     }
@@ -78,7 +78,7 @@
         formatter2.allowedUnits = NSCalendarUnitHour;
         
     }
-    else if(minutes > 1) {
+    else if(minutes >= 1) {
         formatter2.allowedUnits = NSCalendarUnitMinute;
     }
     else {

@@ -31,6 +31,8 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    self.commentArray = [[NSMutableArray alloc] init];
+    
     [self fetchCommentsWithQuery];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -50,7 +52,7 @@
 
 - (void)fetchCommentsWithQuery
 {
-    self.commentArray = [[NSMutableArray alloc] init];
+//    self.commentArray = [[NSMutableArray alloc] init];
     PFQuery *query = [PFQuery queryWithClassName:@"Comment"];
     [query whereKey:@"parent" equalTo:self.post];
     [query includeKey:@"author"];
@@ -73,34 +75,33 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0)
     {
-        PostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
-        NSLog(@"%@", self.post);
-        cell.post = self.post;
-        [cell setPost];
+        PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell" forIndexPath:indexPath];
+        postCell.post = self.post;
+        [postCell setPost];
         self.tableView.rowHeight = 450;
-        return cell;
+        return postCell;
     }
     else
     {
-        CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell"];
-        cell.comment = self.commentArray[indexPath.row];
-        [cell setComment];
+        CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
+        commentCell.comment = self.commentArray[indexPath.row-1];
+        [commentCell setComment];
         self.tableView.rowHeight = 300;
-        return cell;
+        return commentCell;
     }
-    
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSLog(@"ROW COUNT: %lu", 1 + self.commentArray.count);
     return 1 + self.commentArray.count;
 }
 
 - (IBAction)comment:(id)sender {
     if (self.commentTextView.text.length == 0)
     {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Empty Comment"
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Invalid Comment"
                                      message:@"Please Type Something To Comment"
                                      preferredStyle:UIAlertControllerStyleAlert];
 
@@ -109,16 +110,20 @@
         [alert addAction:ok];
         [self presentViewController:alert animated:YES completion:nil];
     }
-    [Comment postWithText:self.commentTextView.text withParent:self.post withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
-        if (!error)
-        {
-            [self fetchCommentsWithQuery];
-        }
-        else
-        {
-            NSLog(@"%@", error.localizedDescription);
-        }
-    }];
+    else
+    {
+        [Comment postWithText:self.commentTextView.text withParent:self.post withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+            if (!error)
+            {
+                [self fetchCommentsWithQuery];
+            }
+            else
+            {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+    }
+    
 }
 
 - (IBAction)goHome:(id)sender {
