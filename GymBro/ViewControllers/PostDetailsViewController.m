@@ -9,6 +9,7 @@
 #import <Parse/Parse.h>
 #import "../Models/PostCell.h"
 #import "../Models/CommentCell.h"
+#import "../Models/Post.h"
 
 @interface PostDetailsViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -73,22 +74,54 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0 && indexPath.section == 0)
+    if ([[self.post valueForKeyPath:@"photoExists"] isEqual: @1])
     {
-        PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell" forIndexPath:indexPath];
-        postCell.post = self.post;
-        postCell.tableView = self.tableView;
-        [postCell setPost];
-        self.tableView.rowHeight = 450;
-        return postCell;
+        NSLog(@"PHOTO EXISTS");
+        if (indexPath.section == 0)
+        {
+            PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell" forIndexPath:indexPath];
+            postCell.post = self.post;
+            postCell.tableView = self.tableView;
+            if (indexPath.row == 0)
+            {
+                [postCell setPost];
+                self.tableView.rowHeight = 450;
+            }
+            else
+            {
+                [postCell setPostImage];
+                self.tableView.rowHeight = 300;
+            }
+            return postCell;
+        }
+        else
+        {
+            CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
+            commentCell.comment = self.commentArray[indexPath.row];
+            [commentCell setComment];
+            self.tableView.rowHeight = 300;
+            return commentCell;
+        }
     }
     else
     {
-        CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
-        commentCell.comment = self.commentArray[indexPath.row];
-        [commentCell setComment];
-        self.tableView.rowHeight = 300;
-        return commentCell;
+        if (indexPath.row == 0 && indexPath.section == 0)
+        {
+            PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell" forIndexPath:indexPath];
+            postCell.post = self.post;
+            postCell.tableView = self.tableView;
+            [postCell setPost];
+            self.tableView.rowHeight = 300;
+            return postCell;
+        }
+        else
+        {
+            CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
+            commentCell.comment = self.commentArray[indexPath.row];
+            [commentCell setComment];
+            self.tableView.rowHeight = 300;
+            return commentCell;
+        }
     }
 }
 
@@ -101,6 +134,10 @@
 {
     if (section == 0)
     {
+        if ([self.post[@"photoExists"] isEqual: @1])
+        {
+            return 2;
+        }
         return 1;
     }
     else
@@ -111,14 +148,19 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
+    
+    if (section == 0)
+    {
+        header.textLabel.text = @"Original Post";
+    }
     if (section == 1)
     {
-        UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
         header.textLabel.text = @"Comments";
-        header.textLabel.textColor = [UIColor blackColor];
-        return header;
     }
-    else return nil;
+    
+    header.textLabel.textColor = [UIColor blackColor];
+    return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

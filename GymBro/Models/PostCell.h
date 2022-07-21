@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UITableView *tableView;
 
 - (void)setPost;
+- (void)setPostImage;
 
 @end
 

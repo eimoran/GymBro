@@ -78,14 +78,7 @@
     cell.post = self.postArray[indexPath.row];
     cell.tableView = self.tableView;
     [cell setPost];
-    if (cell.post.photoExists)
-    {
-        self.tableView.rowHeight = 400;
-    }
-    else
-    {
-        self.tableView.rowHeight = 200;
-    }
+    self.tableView.rowHeight = 200;
     
     return cell;
 }
