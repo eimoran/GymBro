@@ -8,6 +8,7 @@
 #import "HomeViewController.h"
 #import "../Models/UserCell.h"
 #import "../Models/PostCell.h"
+#import "../Models/Post.h"
 #import "PostDetailsViewController.h"
 
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -16,6 +17,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *postArray;
+@property (strong, nonatomic) NSMutableArray *likedPostsArray;
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 
@@ -29,8 +31,6 @@
     // Do any additional setup after loading the view.
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-//    self.tableView.rowHeight = UITableViewAutomaticDimension;
-//    self.tableView.estimatedRowHeight = 500;
     
     
     [self fetchPostsWithQuery];
@@ -76,6 +76,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
     cell.post = self.postArray[indexPath.row];
+    cell.hasBeenLiked = NO;
+    for (Post *post in cell.post[@"likedPosts"])
+    {
+        if ([cell.post isEqual:post])
+        {
+            cell.hasBeenLiked = YES;
+        }
+    }
+    cell.homeVC = self;
     cell.tableView = self.tableView;
     [cell setPost];
     self.tableView.rowHeight = 200;

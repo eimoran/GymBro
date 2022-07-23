@@ -33,8 +33,6 @@
     self.tableView.dataSource = self;
     [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"header"];
     
-//    self.commentArray = [[NSMutableArray alloc] init];
-    
     [self fetchCommentsWithQuery];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -76,7 +74,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([[self.post valueForKeyPath:@"photoExists"] isEqual: @1])
     {
-        NSLog(@"PHOTO EXISTS");
         if (indexPath.section == 0)
         {
             PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell" forIndexPath:indexPath];

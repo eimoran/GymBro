@@ -75,23 +75,6 @@
 */
 
 - (IBAction)submit:(id)sender {
-    if (self.time == nil)
-    {
-        self.time = @"Morning (6am - 12pm)";
-    }
-    if (self.split == nil)
-    {
-        self.split = @"Whole-Body Split";
-    }
-    if (self.gender == nil)
-    {
-        self.gender = @"Male";
-    }
-    if (self.level == nil)
-    {
-        self.level = @"Novice";
-    }
-    
     // Update User Info
     PFUser *user = [PFUser currentUser];
     user[@"workoutSplit"] = self.split;

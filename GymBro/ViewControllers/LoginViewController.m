@@ -45,6 +45,14 @@
     newUser.username = self.usernameField.text;
     newUser.email = self.emailField.text;
     newUser.password = self.passwordField.text;
+    newUser[@"level"] = @"Novice";
+    newUser[@"gender"] = @"Male";
+    newUser[@"workoutSplit"] = @"Whole Body Split";
+    newUser[@"workoutTime"] = @"Morning (6am - 12pm)";
+    newUser[@"friends"] = @[];
+    newUser[@"pendingFriends"] = @[];
+    newUser[@"friendRequests"] = @[];
+    newUser[@"likedPosts"] = @[];
     
     // call sign up function on the object
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {

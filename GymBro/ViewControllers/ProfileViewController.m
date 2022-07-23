@@ -193,7 +193,14 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     self.workoutTimeLabel.text = [NSString stringWithFormat:@"Time you workout: %@", user[@"workoutTime"]];
     self.genderLabel.text = [NSString stringWithFormat:@"Gender: %@", user[@"gender"]];
     self.levelLabel.text = [NSString stringWithFormat:@"Level: %@", user[@"level"]];
-    self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: %@", [user[@"gym"] valueForKeyPath:@"name"]];
+    if (!user[@"gym"])
+    {
+        self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: n/a"];
+    }
+    else
+    {
+        self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: %@", [user[@"gym"] valueForKeyPath:@"name"]];
+    }
 }
 
 

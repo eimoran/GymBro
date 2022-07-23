@@ -30,6 +30,21 @@
     [self.postTextLabel setAttributedText: postText];
     
     [self setTimestamp:self.timestampLabel ofPost:self.post];
+    
+    self.likeCountLabel.text = [self.post[@"likeCount"] stringValue];
+    
+    // FIX COMMENT COUNT LABEL
+    // MIGHT HAVE TO CHANGE THE WAY COMMENTS ARE CREATED BY ADDING A COMMENT ARRAY TO PARENT POST INSTEAD OF PARENT POINTER TO COMMENTS
+    self.commentCountLabel.text = [self.post[@"commentCount"] stringValue];
+    UIImage *favoriteIcon;
+    if (self.hasBeenLiked)
+    {
+        favoriteIcon = [UIImage imageNamed:@"favor-icon-red.png"];
+    }
+    else{
+        favoriteIcon = [UIImage imageNamed:@"favor-icon.png"];
+    }
+    [self.likeButton setImage:favoriteIcon forState:UIControlStateNormal];
 }
 
 - (void)setPostImage
@@ -40,7 +55,6 @@
     UIImageView *postImageView = [[UIImageView alloc] initWithImage:[UIImage imageWithData: imageData]];
     [postImageView setFrame:CGRectMake(50, 0, 300, 300)];
     [self.contentView addSubview:postImageView];
-    
 }
 
 - (void)setTimestamp:(UILabel *)label ofPost:(Post *)post{
@@ -87,4 +101,39 @@
     label.text = [NSString stringWithFormat:@"%@ ago", elapsed];
 }
 
+- (IBAction)like:(id)sender {
+    PFUser *user = [PFUser currentUser];
+    NSMutableArray *likedPosts = [[NSMutableArray alloc] initWithArray:user[@"likedPosts"]];
+    if (self.hasBeenLiked) {
+            self.hasBeenLiked = NO;
+            self.post.likeCount = [NSNumber numberWithInt:[self.post.likeCount intValue] - 1];
+        // UPDATE likedPosts FOR USER
+        [likedPosts removeObjectIdenticalTo:self.post];
+        } else {
+            self.hasBeenLiked = true;
+            self.post.likeCount = [NSNumber numberWithInt:[self.post.likeCount intValue] + 1];
+            // UPDATE likedPosts FOR USER
+            [likedPosts addObject:self.post];
+        }
+    user[@"likedPosts"] = likedPosts;
+    [self setPost];
+    
+    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded)
+        {
+            NSLog(@"SAVED USER");
+        }
+    }];
+    
+    [self.post saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (!error)
+        {
+            NSLog(@"SAVED");
+        }
+    }];
+}
+
+- (IBAction)comment:(id)sender {
+    [self.homeVC performSegueWithIdentifier:@"postDetails" sender:nil];
+}
 @end
