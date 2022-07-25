@@ -18,15 +18,28 @@
 @dynamic profilePic;
 @dynamic parent;
 
-+ (void)postWithText:(NSString *)text withParent:(Post *)parent withCompletion:(PFBooleanResultBlock)completion
++ (void)commentWithText:(NSString *)text withParent:(Post *)parent withCompletion:(PFBooleanResultBlock)completion
 {
     Comment *newPost = [Comment new];
     newPost.author = [[PFUser currentUser] valueForKeyPath:@"username"];
     newPost.text = text;
-    newPost.parent = parent;
+//    newPost.parent = parent;
     newPost.likeCount = @(0);
     
-    [newPost saveInBackgroundWithBlock: completion];
+    [newPost saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded)
+        {
+            NSMutableArray *parentComments = [[NSMutableArray alloc] initWithArray:parent[@"comments"]];
+            [parentComments addObject:newPost];
+            parent.comments = parentComments;
+            parent.commentCount = @(parentComments.count);
+            [parent saveInBackground];
+        }
+        else
+        {
+            NSLog(@"ERROR: %@", error.localizedDescription);
+        }
+    }];
 }
 
 

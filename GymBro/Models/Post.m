@@ -16,6 +16,7 @@
 @dynamic text;
 @dynamic image;
 @dynamic likeCount;
+@dynamic comments;
 @dynamic commentCount;
 @dynamic profilePic;
 @dynamic photoExists;

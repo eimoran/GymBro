@@ -6,6 +6,7 @@
 //
 
 #import "PostCell.h"
+#import "Post.h"
 #import <Parse/Parse.h>
 
 @implementation PostCell
@@ -23,6 +24,7 @@
 
 
 - (void)setPost {
+    PFUser *user = [PFUser currentUser];
     self.postTextLabel.text = [NSString stringWithFormat:@"%@ %@", self.post.author, self.post.text];
     NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:self.postTextLabel.text];
     NSRange boldRange = [self.postTextLabel.text rangeOfString:self.post.author];
@@ -34,9 +36,24 @@
     self.likeCountLabel.text = [self.post[@"likeCount"] stringValue];
     
     // FIX COMMENT COUNT LABEL
-    // MIGHT HAVE TO CHANGE THE WAY COMMENTS ARE CREATED BY ADDING A COMMENT ARRAY TO PARENT POST INSTEAD OF PARENT POINTER TO COMMENTS
-    self.commentCountLabel.text = [self.post[@"commentCount"] stringValue];
+    // MIGHT HAVE TO CHANGE THE WAY COMMENTS ARE CREATED BY ADDING A COMMENT ARRAY TO PARENT POST INSTEAD OF PARENT POINTER TO COMMENTS4
+    
+    NSArray *comments = self.post[@"comments"];
+    self.commentCountLabel.text = [[NSNumber numberWithLong:comments.count] stringValue];;
+    
     UIImage *favoriteIcon;
+    self.hasBeenLiked = NO;
+    self.likedPostsIndex = -1;
+    NSArray *likedPosts = user[@"likedPosts"];
+    for (int x = 0; x < likedPosts.count; x++)
+    {
+        Post *post = likedPosts[x];
+        if ([post.objectId isEqual:self.post.objectId])
+        {
+            self.likedPostsIndex = x;
+            self.hasBeenLiked = YES;
+        }
+    }
     if (self.hasBeenLiked)
     {
         favoriteIcon = [UIImage imageNamed:@"favor-icon-red.png"];
@@ -105,16 +122,15 @@
     PFUser *user = [PFUser currentUser];
     NSMutableArray *likedPosts = [[NSMutableArray alloc] initWithArray:user[@"likedPosts"]];
     if (self.hasBeenLiked) {
-            self.hasBeenLiked = NO;
-            self.post.likeCount = [NSNumber numberWithInt:[self.post.likeCount intValue] - 1];
-        // UPDATE likedPosts FOR USER
-        [likedPosts removeObjectIdenticalTo:self.post];
-        } else {
-            self.hasBeenLiked = true;
-            self.post.likeCount = [NSNumber numberWithInt:[self.post.likeCount intValue] + 1];
-            // UPDATE likedPosts FOR USER
-            [likedPosts addObject:self.post];
-        }
+        self.hasBeenLiked = NO;
+        self.post.likeCount = [NSNumber numberWithInt:[self.post.likeCount intValue] - 1];
+        [likedPosts removeObjectAtIndex:self.likedPostsIndex];
+    }
+    else {
+        self.hasBeenLiked = YES;
+        self.post.likeCount = [NSNumber numberWithInt:[self.post.likeCount intValue] + 1];
+        [likedPosts addObject:self.post];
+    }
     user[@"likedPosts"] = likedPosts;
     [self setPost];
     

@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) PFFileObject *image;
 @property (nonatomic, strong) NSNumber *likeCount;
+@property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong) NSNumber *commentCount;
 @property (nonatomic, strong) NSString *profilePic;
 @property (nonatomic) BOOL photoExists;

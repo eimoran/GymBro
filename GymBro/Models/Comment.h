@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSNumber *likeCount;
 @property (strong, nonatomic) NSString *profilePic;
 
-+ (void) postWithText: (NSString * _Nullable)text withParent: (Post *)parent withCompletion: (PFBooleanResultBlock _Nullable)completion;
++ (void) commentWithText: (NSString * _Nullable)text withParent: (Post *)parent withCompletion: (PFBooleanResultBlock _Nullable)completion;
 
 @end
 

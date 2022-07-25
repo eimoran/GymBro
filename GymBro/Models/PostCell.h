@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
 @property (strong, nonatomic) Post *post;
 @property (nonatomic) BOOL hasBeenLiked;
+@property (nonatomic) int likedPostsIndex;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 - (IBAction)like:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;

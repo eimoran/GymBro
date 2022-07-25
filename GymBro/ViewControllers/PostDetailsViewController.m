@@ -53,22 +53,19 @@
 - (void)fetchCommentsWithQuery
 {
     self.commentArray = [[NSMutableArray alloc] init];
-    PFQuery *query = [PFQuery queryWithClassName:@"Comment"];
-    [query whereKey:@"parent" equalTo:self.post];
-    [query includeKey:@"author"];
-    [query orderByDescending:@"createdAt"];
-    query.limit = 200;
-
-    // fetch data asynchronously
-    [query findObjectsInBackgroundWithBlock:^(NSArray *comments, NSError *error) {
-        if (comments != nil) {
-            self.commentArray = comments;
+    self.commentArray = self.post.comments;
+    NSLog(@"COMMENTS %@:", self.commentArray);
+    for (Comment *comment in self.commentArray)
+    {
+        [comment fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
             [self.tableView reloadData];
-        } else {
-            NSLog(@"%@", error.localizedDescription);
-        }
-        [self.refreshControl endRefreshing];
-    }];
+            if (self.commentArray.count == self.post.comments.count)
+            {
+                [self.tableView reloadData];
+            }
+        }];
+    }
+    [self.refreshControl endRefreshing];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -93,8 +90,14 @@
         }
         else
         {
+            Comment *comment = self.commentArray[self.commentArray.count - 1 - indexPath.row];
             CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
-            commentCell.comment = self.commentArray[indexPath.row];
+            [comment fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+                commentCell.comment = comment;
+                [commentCell setComment];
+                self.tableView.rowHeight = 300;
+            }];
+            commentCell.comment = comment;
             [commentCell setComment];
             self.tableView.rowHeight = 300;
             return commentCell;
@@ -113,10 +116,13 @@
         }
         else
         {
+            Comment *comment = self.commentArray[self.commentArray.count - 1 - indexPath.row];
             CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
-            commentCell.comment = self.commentArray[indexPath.row];
-            [commentCell setComment];
-            self.tableView.rowHeight = 300;
+            [comment fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+                commentCell.comment = comment;
+                [commentCell setComment];
+                self.tableView.rowHeight = 300;
+            }];
             return commentCell;
         }
     }
@@ -179,18 +185,22 @@
     }
     else
     {
-        [Comment postWithText:self.commentTextView.text withParent:self.post withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
-            if (!error)
+        [Comment commentWithText:self.commentTextView.text withParent:self.post withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+            if (succeeded)
             {
                 [self fetchCommentsWithQuery];
+                [self.tableView reloadData];
             }
             else
             {
                 NSLog(@"%@", error.localizedDescription);
             }
         }];
+        [self fetchCommentsWithQuery];
+        [self.tableView reloadData];
+        NSLog(@"COMMENTS: %@", self.commentArray);
+        self.commentTextView.text = @"";
     }
-    
 }
 
 - (IBAction)goHome:(id)sender {
