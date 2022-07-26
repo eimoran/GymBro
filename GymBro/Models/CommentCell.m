@@ -21,14 +21,16 @@
 }
 
 - (void)setComment {
-    self.postTextLabel.text = [NSString stringWithFormat:@"%@ %@", self.comment.author, self.comment.text];
-    
-    NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:self.postTextLabel.text];
-    NSRange boldRange = [self.postTextLabel.text rangeOfString:self.comment.author];
-    [postText addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:16] range:boldRange];
-    [self.postTextLabel setAttributedText: postText];
-    
-    [self setTimestamp];
+    [self.comment fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        NSLog(@"CURR COMMENT: %@", self.comment);
+        NSString *text = [NSString stringWithFormat:@"%@ %@", self.comment.author, self.comment.text];
+        NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:text];
+        NSRange boldRange = [text rangeOfString:self.comment.author];
+        [postText addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:16] range:boldRange];
+        [self.postTextLabel setAttributedText: postText];
+        
+        [self setTimestamp];
+    }];
 }
 
 - (void)setTimestamp {

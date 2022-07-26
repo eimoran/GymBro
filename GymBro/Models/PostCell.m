@@ -24,6 +24,15 @@
 
 
 - (void)setPost {
+//    if (self.post.photoExists)
+//    {
+//        NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: self.post.image.url]];
+//        self.postImageView.image = [UIImage imageWithData:imageData];
+//    }
+//    else
+//    {
+//        [self.postImageView removeFromSuperview];
+//    }
     PFUser *user = [PFUser currentUser];
     self.postTextLabel.text = [NSString stringWithFormat:@"%@ %@", self.post.author, self.post.text];
     NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:self.postTextLabel.text];
@@ -33,10 +42,8 @@
     
     [self setTimestamp:self.timestampLabel ofPost:self.post];
     
-    self.likeCountLabel.text = [self.post[@"likeCount"] stringValue];
     
-    // FIX COMMENT COUNT LABEL
-    // MIGHT HAVE TO CHANGE THE WAY COMMENTS ARE CREATED BY ADDING A COMMENT ARRAY TO PARENT POST INSTEAD OF PARENT POINTER TO COMMENTS4
+    self.likeCountLabel.text = [self.post[@"likeCount"] stringValue];
     
     NSArray *comments = self.post[@"comments"];
     self.commentCountLabel.text = [[NSNumber numberWithLong:comments.count] stringValue];;
@@ -68,10 +75,9 @@
 {
     self.postTextLabel.hidden = true;
     self.timestampLabel.hidden = true;
+    
     NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: self.post.image.url]];
-    UIImageView *postImageView = [[UIImageView alloc] initWithImage:[UIImage imageWithData: imageData]];
-    [postImageView setFrame:CGRectMake(50, 0, 300, 300)];
-    [self.contentView addSubview:postImageView];
+    self.postImageView.image = [UIImage imageWithData:imageData];
 }
 
 - (void)setTimestamp:(UILabel *)label ofPost:(Post *)post{

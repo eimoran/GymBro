@@ -15,6 +15,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "MapKit/MapKit.h"
 #import "../AppDelegate.h"
+#import "../API/APIManager.h"
 
 static NSString * const clientID = @"ZQHYEONNNHSSRVKTPJLCMNP3IUBUHIEWLYM4O5ROWKEPZPJZ";
 static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQMZMXDXAHD";
@@ -91,11 +92,11 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
                 
                 
                 CGSize size = CGSizeMake(20, 20);
-                UIImageView *iconView = [[UIImageView alloc] initWithImage:[self imageWithImage:[UIImage imageNamed:@"dumbbell.png"] convertToSize:size]];
+                UIImageView *iconView = [[UIImageView alloc] initWithImage:[APIManager imageWithImage:[UIImage imageNamed:@"dumbbell.png"] convertToSize:size]];
                             pinView.leftCalloutAccessoryView = iconView;
                 pinView.canShowCallout = YES;
                  
-                pinView.image = [self imageWithImage:[UIImage imageNamed:@"dumbbell.png"] convertToSize:size];
+                pinView.image = [APIManager imageWithImage:[UIImage imageNamed:@"dumbbell.png"] convertToSize:size];
                 
                 pinView.calloutOffset = CGPointMake(0, 32);
             }
@@ -117,15 +118,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     }
 }
 
-- (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size {
-    UIGraphicsBeginImageContext(size);
-    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
-    UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return destImage;
-}
-
-
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
@@ -135,7 +127,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     MKCoordinateRegion userRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), MKCoordinateSpanMake(0.05, 0.05));
     [self.mapView setRegion:userRegion animated:false];
     
-    [self fetchLocationsWithQuery:self.lat longitude:self.lon];
+    self.gyms = [APIManager fetchLocationsWithLat:self.lat Lon:self.lon Map:self.mapView];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
@@ -143,41 +135,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     NSLog(@"Error: %@", error.localizedDescription);
 }
 
-- (void)fetchLocationsWithQuery:lat longitude:lon{
-    NSDictionary *headers = @{ @"Accept": @"application/json",
-                               @"Authorization": @"fsq34hUP8/Fm3u/fGWnAv/jMBKdyEQIlaf+ueJvtD52Wn8o=" };
-    NSString *queryString = [NSString stringWithFormat:@"https://api.foursquare.com/v3/places/search?&ll=%@,%@&radius=50000&categories=18021", lat, lon];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:queryString]
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                       timeoutInterval:10.0];
-    [request setHTTPMethod:@"GET"];
-    [request setAllHTTPHeaderFields:headers];
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
-                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            NSLog(@"%@", error);
-        } else {
-            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            self.gyms = [[NSMutableArray alloc] init];
-            for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
-            {
-                [self.gyms addObject:gym];
-                GymPointAnnotation *annotation = [[GymPointAnnotation alloc] init];
-                double latitude = [[gym valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
-                double longitude = [[gym valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
-                annotation.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                annotation.title = [gym valueForKeyPath:@"name"];
-                annotation.gym = gym;
-                
-                
-                [self.mapView addAnnotation:annotation];
-            }
-        }
-    }];
-    [dataTask resume];
-}
 
 - (void)viewDidAppear:(BOOL)animated
 {

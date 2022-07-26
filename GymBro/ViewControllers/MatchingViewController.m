@@ -8,6 +8,7 @@
 #import "MatchingViewController.h"
 #import "Parse/Parse.h"
 #import "../Models/UserCell.h"
+#import "../API/APIManager.h"
 
 @interface MatchingViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -53,27 +54,11 @@
     [self fetchUsersWithQuery];
 }
 
-
 - (void)fetchUsersWithQuery
 {
-    PFQuery *query = [PFUser query];
-    [query whereKey:@"username" notEqualTo:self.currUser[@"username"]];
-    [query whereKeyExists:@"level"];
-    [query whereKeyExists:@"gym"];
-    [query orderByDescending:@"createdAt"];
-    query.limit = 100;
-
-    // fetch data asynchronously
-    [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
-        if (users != nil) {
-            [self setScores:users];
-            [self compatibilitySort];
-            [self.tableView reloadData];
-            [self.refreshControl endRefreshing];
-        } else {
-            NSLog(@"%@", error.localizedDescription);
-        }
-    }];
+    self.userArray = [APIManager fetchUsersWithQuery:self.currUser];
+    [self.tableView reloadData];
+    [self.refreshControl endRefreshing];
 }
 
 /*
@@ -86,114 +71,13 @@
 }
 */
 
-- (long)getDistance:(PFUser *)userOne
-{
-    double latitudeOne = [[userOne[@"gym"] valueForKeyPath:@"geocodes.main.latitude"] doubleValue];
-    double longitudeOne = [[userOne[@"gym"] valueForKeyPath:@"geocodes.main.longitude"] doubleValue];
-    CLLocation *userOneLoc = [[CLLocation alloc] initWithLatitude:latitudeOne longitude:longitudeOne];
-    
-    return [self.userLoc distanceFromLocation:userOneLoc];
-}
 
-
-- (void)setScores:(NSArray *)users
-{
-    NSArray *friends = self.currUser[@"friends"];
-    NSArray *pendingFriends = self.currUser[@"pendingFriends"];
-    __block BOOL isValid;
-    __block BOOL isValidPendingFriend;
-    self.compatibilityArray = [[NSMutableArray alloc] init];
-    self.userArray = [[NSMutableArray alloc] init];
-    NSString *currSplit = self.currUser[@"workoutSplit"];
-    NSString *currTime = self.currUser[@"workoutTime"];
-    NSString *currLevel = self.currUser[@"level"];
-    for (PFUser *user in users)
-    {
-        isValid = YES;
-        isValidPendingFriend = YES;
-        for (NSString *friend in friends)
-        {
-            if ([user[@"username"] isEqual:friend])
-            {
-                isValid = NO;
-            }
-        }
-        for (NSString *pendingFriend in pendingFriends)
-        {
-            if ([user[@"username"] isEqual:pendingFriend])
-            {
-                isValid = NO;
-            }
-        }
-        if (isValid)
-        {
-            NSInteger score = 0;
-            if ([[user valueForKeyPath:@"workoutSplit"] isEqual:currSplit])
-            {
-                score += 3;
-            }
-            
-            if ([[user valueForKeyPath:@"workoutTime"] isEqual:currTime])
-            {
-                score += 2;
-            }
-            if ([[user valueForKeyPath:@"level"] isEqual:currLevel])
-            {
-                score += 1;
-            }
-            long distance = [self getDistance:user]*0.00062317;
-            
-            if (distance <= 1)
-            {
-                score += 4;
-            }
-            else if (distance <= 5)
-            {
-                score += 3;
-            }
-            else if (distance <= 10)
-            {
-                score += 2;
-            }
-            else
-            {
-                score += 1;
-            }
-            [self.userArray addObject:user];
-            [self.compatibilityArray addObject:@(score)];
-        }
-    }
-}
-
-- (void)compatibilitySort
-{
-    NSMutableArray *sortedArray = [[NSMutableArray alloc] init];
-    int i = 0;
-    for (int x = 0; x < self.userArray.count; x++)
-    {
-        PFUser *user = self.userArray[x];
-        for (i = 0; i < sortedArray.count; i++)
-        {
-            long y = [self.userArray indexOfObject:sortedArray[i]];
-            if (self.compatibilityArray[x] > self.compatibilityArray[y])
-            {
-                [sortedArray insertObject:user atIndex:i];
-                break;
-            }
-        }
-        if (i == sortedArray.count)
-        {
-            [sortedArray addObject:user];
-        }
-    }
-    self.userArray = sortedArray;
-    [self.tableView reloadData];
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     cell.user = self.userArray[indexPath.row];
-    cell.distanceFromUser = [self getDistance:cell.user];
+    NSLog(@"CELL.USER: %@", cell.user);
+    cell.distanceFromUser = [APIManager getDistance:self.currUser from:cell.user];
     cell.controller = self;
     [cell setData];
     return cell;

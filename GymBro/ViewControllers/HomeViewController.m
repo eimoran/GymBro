@@ -10,6 +10,7 @@
 #import "../Models/PostCell.h"
 #import "../Models/Post.h"
 #import "PostDetailsViewController.h"
+#import "../API/APIManager.h"
 
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -32,8 +33,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    
-    [self fetchPostsWithQuery];
+    self.postArray = [APIManager fetchPostswithTableView:self.tableView andRefresh:self.refreshControl];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchPostsWithQuery) forControlEvents:UIControlEventValueChanged];
@@ -55,22 +55,9 @@
 
 - (void)fetchPostsWithQuery
 {
-    self.postArray = [[NSMutableArray alloc] init];
-    PFQuery *query = [PFQuery queryWithClassName:@"Post"];
-    [query includeKey:@"author"];
-    [query orderByDescending:@"createdAt"];
-    query.limit = 200;
-
-    // fetch data asynchronously
-    [query findObjectsInBackgroundWithBlock:^(NSArray *posts, NSError *error) {
-        if (posts != nil) {
-            self.postArray = posts;
-            [self.tableView reloadData];
-        } else {
-            NSLog(@"%@", error.localizedDescription);
-        }
-        [self.refreshControl endRefreshing];
-    }];
+    self.postArray = [APIManager fetchPostswithTableView:self.tableView andRefresh:self.refreshControl];
+    [self.tableView reloadData];
+    [self.refreshControl endRefreshing];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

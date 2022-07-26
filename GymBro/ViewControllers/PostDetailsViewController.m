@@ -11,6 +11,7 @@
 #import "../Models/CommentCell.h"
 #import "../Models/Post.h"
 
+
 @interface PostDetailsViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -31,12 +32,13 @@
     // Do any additional setup after loading the view.
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"header"];
     
-    [self fetchCommentsWithQuery];
+    [self fetchComments];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(fetchCommentsWithQuery) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl addTarget:self action:@selector(fetchComments) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
 }
 
@@ -50,79 +52,66 @@
 }
 */
 
-- (void)fetchCommentsWithQuery
+// FETCH COMMENTS CORRECTLY AFTER A NEW COMMENT IS POSTED
+
+- (void)fetchComments
 {
     self.commentArray = [[NSMutableArray alloc] init];
-    self.commentArray = self.post.comments;
-    NSLog(@"COMMENTS %@:", self.commentArray);
-    for (Comment *comment in self.commentArray)
-    {
-        [comment fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-            [self.tableView reloadData];
-            if (self.commentArray.count == self.post.comments.count)
-            {
-                [self.tableView reloadData];
-            }
-        }];
-    }
-    [self.refreshControl endRefreshing];
+    [self.post fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        self.commentArray = self.post[@"comments"];
+        [self.tableView reloadData];
+        [self.refreshControl endRefreshing];
+    }];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Post has photo
     if ([[self.post valueForKeyPath:@"photoExists"] isEqual: @1])
+    {
+        if (indexPath.section == 0 && indexPath.row == 0)
+        {
+            PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell" forIndexPath:indexPath];
+            postCell.post = self.post;
+            postCell.tableView = self.tableView;
+            [postCell setPost];
+            return postCell;
+        }
+        else if (indexPath.section == 0 && indexPath.row == 1)
+        {
+            PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell2" forIndexPath:indexPath];
+            postCell.post = self.post;
+            postCell.tableView = self.tableView;
+            [postCell setPostImage];
+            return postCell;
+        }
+        else
+        {
+            Comment *comment = self.commentArray[self.commentArray.count - 1 - indexPath.row];
+            CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
+            commentCell.comment = comment;
+            [commentCell setComment];
+            return commentCell;
+        }
+    }
+    // Post doesn't have photo
+    else
     {
         if (indexPath.section == 0)
         {
             PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell" forIndexPath:indexPath];
             postCell.post = self.post;
             postCell.tableView = self.tableView;
-            if (indexPath.row == 0)
-            {
-                [postCell setPost];
-                self.tableView.rowHeight = 450;
-            }
-            else
-            {
-                [postCell setPostImage];
-                self.tableView.rowHeight = 300;
-            }
+            [postCell setPost];
+            
             return postCell;
+            
         }
         else
         {
             Comment *comment = self.commentArray[self.commentArray.count - 1 - indexPath.row];
             CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
-            [comment fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-                commentCell.comment = comment;
-                [commentCell setComment];
-                self.tableView.rowHeight = 300;
-            }];
             commentCell.comment = comment;
             [commentCell setComment];
-            self.tableView.rowHeight = 300;
-            return commentCell;
-        }
-    }
-    else
-    {
-        if (indexPath.row == 0 && indexPath.section == 0)
-        {
-            PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell" forIndexPath:indexPath];
-            postCell.post = self.post;
-            postCell.tableView = self.tableView;
-            [postCell setPost];
-            self.tableView.rowHeight = 300;
-            return postCell;
-        }
-        else
-        {
-            Comment *comment = self.commentArray[self.commentArray.count - 1 - indexPath.row];
-            CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
-            [comment fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-                commentCell.comment = comment;
-                [commentCell setComment];
-                self.tableView.rowHeight = 300;
-            }];
             return commentCell;
         }
     }
@@ -188,7 +177,7 @@
         [Comment commentWithText:self.commentTextView.text withParent:self.post withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
             if (succeeded)
             {
-                [self fetchCommentsWithQuery];
+                [self fetchComments];
                 [self.tableView reloadData];
             }
             else
@@ -196,9 +185,6 @@
                 NSLog(@"%@", error.localizedDescription);
             }
         }];
-        [self fetchCommentsWithQuery];
-        [self.tableView reloadData];
-        NSLog(@"COMMENTS: %@", self.commentArray);
         self.commentTextView.text = @"";
     }
 }
