@@ -75,7 +75,6 @@
     PFUser *user = [PFUser currentUser];
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" notEqualTo:user[@"username"]];
-//    [query whereKey:@"gymID" equalTo:user[@"gymID"]];
     [query whereKey:@"gymID" equalTo:[self.gym valueForKeyPath:@"fsq_id"]];
     query.limit = 100;
     [query orderByDescending:@"createdAt"];

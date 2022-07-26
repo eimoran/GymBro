@@ -100,7 +100,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HpZ-fq-EQk">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile-Icon" translatesAutoresizingMaskIntoConstraints="NO" id="HpZ-fq-EQk">
                                 <rect key="frame" x="145" y="44" width="124" height="124"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -237,6 +237,7 @@
                         <outlet property="gymLabel" destination="0ds-t4-1cS" id="H5l-7t-Cvu"/>
                         <outlet property="levelLabel" destination="Bql-Pg-d3d" id="xCC-Xh-bQ1"/>
                         <outlet property="mapView" destination="GGF-Lb-FpT" id="8iJ-zn-BoA"/>
+                        <outlet property="profileImageView" destination="HpZ-fq-EQk" id="fIl-He-sv0"/>
                         <outlet property="searchBar" destination="W8y-6K-Tb7" id="wlh-5d-X6N"/>
                         <outlet property="tableView" destination="OUp-Wt-Qcx" id="mhj-78-9xN"/>
                         <outlet property="welcomeLabel" destination="kaE-lV-JGL" id="wQw-E2-Vfk"/>
@@ -1375,6 +1376,7 @@
     <resources>
         <image name="dumbbell" width="512" height="512"/>
         <image name="favor-icon" width="30" height="30"/>
+        <image name="profile-Icon" width="26" height="26"/>
         <image name="reply-icon" width="30" height="30"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
