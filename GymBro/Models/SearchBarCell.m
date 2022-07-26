@@ -22,8 +22,8 @@
 
 - (void)setInfo
 {
-    self.gymNameLabel.text = [self.gym valueForKeyPath:@"place.name"];
-    self.addressLabel.text = [self.gym valueForKeyPath:@"place.location.formatted_address"];
+    self.gymNameLabel.text = [self.gym valueForKeyPath:@"name"];
+    self.addressLabel.text = [self.gym valueForKeyPath:@"location.formatted_address"];
 }
 
 @end

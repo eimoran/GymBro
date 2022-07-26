@@ -37,10 +37,10 @@
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 100;
     
+    NSLog(@"CURR GYM: %@", self.gym);
+    
     self.userArray = [[NSMutableArray alloc] init];
     self.gymName.text = [self.gym valueForKeyPath:@"name"];
-//    [APIManager fetchUsersWithQuery:self.gym];
-//    [APIManager fetchPhotosWithQuery:self.gym];
     [self.tableView reloadData];
     [self fetchPhotosWithQuery];
     [self fetchUsersWithQuery];

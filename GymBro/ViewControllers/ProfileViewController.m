@@ -93,13 +93,12 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
             } else {
                 NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 self.searchBarGyms = [[NSMutableArray alloc] init];
-                NSLog(@"%@", responseDictionary);
-                for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
+                for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results.place"])
                 {
-                    NSArray *gymID = [gym valueForKeyPath:@"place.categories.id"];
+                    NSArray *gymID = [gym valueForKeyPath:@"categories.id"];
                     if (gymID.count > 0)
                     {
-                        if ([[gym valueForKeyPath:@"place.categories.id"][0] isEqual:@18021])
+                        if ([[gym valueForKeyPath:@"categories.id"][0] isEqual:@18021])
                         {
                             [self.searchBarGyms addObject:gym];
                         }
@@ -202,6 +201,13 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 }
 
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.currGym = self.searchBarGyms[indexPath.row];
+    [self performSegueWithIdentifier:@"gymDetails" sender:nil];
+}
+
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [self displayInfo];
@@ -236,6 +242,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     {
         UINavigationController *navController = [segue destinationViewController];
         GymDetailsViewController *detailsVC = navController.topViewController;
+        NSLog(@"SELF CURR GYM: %@", [self.currGym valueForKeyPath:@"fsq_id"]);
         detailsVC.gym = self.currGym;
         detailsVC.delegate = self;
     }

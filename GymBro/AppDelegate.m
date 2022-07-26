@@ -25,20 +25,6 @@
     }];
     
     [Parse initializeWithConfiguration:config];
-    
-    // Test Object Creation
-//    PFObject *gymBro = [PFObject objectWithClassName:@"GymBro"];
-//    gymBro[@"name"] = @"Test User";
-//    gymBro[@"age"] = @20;
-//    gymBro[@"experience"] = @2;
-//    [gymBro saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//        if (succeeded) {
-//            NSLog(@"Object saved!");
-//        } else {
-//            NSLog(@"Error: %@", error.description);
-//        }
-//    }];
-    
     return YES;
 }
 
