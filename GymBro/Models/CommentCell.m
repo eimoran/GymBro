@@ -22,7 +22,6 @@
 
 - (void)setComment {
     [self.comment fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-        NSLog(@"CURR COMMENT: %@", self.comment);
         NSString *text = [NSString stringWithFormat:@"%@ %@", self.comment.author, self.comment.text];
         NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:text];
         NSRange boldRange = [text rangeOfString:self.comment.author];

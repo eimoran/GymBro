@@ -10,6 +10,7 @@
 #import "LoginViewController.h"
 #import "../Models/GymPointAnnotation.h"
 #import "../Models/GymDetailsButton.h"
+#import "../Models/SearchBarCell.h"
 #import "GymDetailsViewController.h"
 #import "Parse/Parse.h"
 #import <CoreLocation/CoreLocation.h>
@@ -20,9 +21,8 @@
 static NSString * const clientID = @"ZQHYEONNNHSSRVKTPJLCMNP3IUBUHIEWLYM4O5ROWKEPZPJZ";
 static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQMZMXDXAHD";
 
-@interface ProfileViewController () <ProfileFormViewControllerDelegate, GymDetailsViewControllerDelegate, CLLocationManagerDelegate>
+@interface ProfileViewController () <ProfileFormViewControllerDelegate, GymDetailsViewControllerDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 
-- (IBAction)updateInfo:(id)sender;
 - (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size;
 
 
@@ -30,6 +30,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) MKPointOfInterestFilter *filter;
 @property (strong, nonatomic) NSMutableArray *gyms;
+@property (strong, nonatomic) NSMutableArray *searchBarGyms;
 @property (strong, nonatomic) NSString *lat;
 @property (strong, nonatomic) NSString *lon;
 
@@ -41,6 +42,8 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (strong, nonatomic) IBOutlet UILabel *gymLabel;
 
 @property (strong, nonatomic) NSDictionary *currGym;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)logout:(id)sender;
 
@@ -56,10 +59,60 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     self.locationManager.distanceFilter = kCLDistanceFilterNone;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     
+    self.searchBar.delegate = self;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.hidden = YES;
+    
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
         [self.locationManager requestWhenInUseAuthorization];
 }
 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(nonnull NSString *)searchText
+{
+    if (searchText.length >= 3)
+    {
+        self.tableView.hidden = NO;
+        self.searchBarGyms = [[NSMutableArray alloc] init];
+        NSDictionary *headers = @{ @"Accept": @"application/json",
+                                   @"Authorization": @"fsq34hUP8/Fm3u/fGWnAv/jMBKdyEQIlaf+ueJvtD52Wn8o=" };
+
+        NSString *queryString = [NSString stringWithFormat:@"https://api.foursquare.com/v3/autocomplete?query=%@&ll=%@,%@&types=place&limit=20", searchText, self.lat, self.lon];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:queryString]
+                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                           timeoutInterval:10.0];
+        [request setHTTPMethod:@"GET"];
+        [request setAllHTTPHeaderFields:headers];
+
+        NSURLSession *session = [NSURLSession sharedSession];
+        NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error) {
+                NSLog(@"%@", error);
+            } else {
+                NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                self.searchBarGyms = [[NSMutableArray alloc] init];
+                NSLog(@"%@", responseDictionary);
+                for (NSDictionary *gym in [responseDictionary valueForKeyPath:@"results"])
+                {
+                    NSArray *gymID = [gym valueForKeyPath:@"place.categories.id"];
+                    if (gymID.count > 0)
+                    {
+                        if ([[gym valueForKeyPath:@"place.categories.id"][0] isEqual:@18021])
+                        {
+                            [self.searchBarGyms addObject:gym];
+                        }
+                    }
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            }
+        }];
+        [dataTask resume];
+    }
+}
 
 - (void)buttonTouchDown:(GymDetailsButton *)sender
 {
@@ -135,6 +188,19 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     NSLog(@"Error: %@", error.localizedDescription);
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    SearchBarCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchBarCell"];
+    cell.gym = self.searchBarGyms[indexPath.row];
+    [cell setInfo];
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.searchBarGyms.count;
+}
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -182,9 +248,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     
 }
 
-
-- (IBAction)updateInfo:(id)sender {
-}
 
 - (IBAction)logout:(id)sender {
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
