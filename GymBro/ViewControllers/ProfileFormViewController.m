@@ -39,7 +39,7 @@
     PFUser *user = [PFUser currentUser];
     self.profileImages = [[NSMutableArray alloc] initWithArray:user[@"profileImages"]];
     NSLog(@"%@", self.profileImages);
-    if (self.profileImages[0])
+    if (user[@"profileImages"])
     {
         PFFileObject *pic = self.profileImages[0];
         NSURL *url = [NSURL URLWithString:pic.url];
@@ -90,10 +90,7 @@
     {
         [self.profileImages replaceObjectAtIndex:self.imageControl.selectedSegmentIndex withObject:[Post getPFFileFromImage:self.profileImagesView.image]];
     }
-    user[@"profileImages"] = self.profileImages;
     [self dismissViewControllerAnimated:YES completion:nil];
-    
-    [[PFUser currentUser] saveInBackground];
 }
 
 - (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
@@ -162,6 +159,7 @@
     user[@"workoutTime"] = self.time;
     user[@"gender"] = self.gender;
     user[@"level"] = self.level;
+    user[@"profileImages"] = self.profileImages;
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded)
         {

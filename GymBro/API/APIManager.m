@@ -33,6 +33,7 @@
     [query whereKey:@"username" notEqualTo:currUser[@"username"]];
     [query whereKeyExists:@"level"];
     [query whereKeyExists:@"gym"];
+    [query whereKeyExists:@"profileImages"];
     if (rejectedUsers.count > 0)
     {
         [query whereKey:@"username" notContainedIn:rejectedUsers];

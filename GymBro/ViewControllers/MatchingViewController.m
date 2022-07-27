@@ -27,7 +27,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.currUser = [PFUser currentUser];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -36,6 +35,17 @@
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Profile Fields"
                                                                        message:@"Please Add Your Local Gym to Your Profile"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                             {}];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    else if (!self.currUser[@"profileImages"])
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Profile Fields"
+                                                                       message:@"Please Add Images To Your Profile"
                                                                 preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
