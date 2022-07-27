@@ -37,8 +37,6 @@
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 100;
     
-    NSLog(@"CURR GYM: %@", self.gym);
-    
     self.userArray = [[NSMutableArray alloc] init];
     self.gymName.text = [self.gym valueForKeyPath:@"name"];
     [self.tableView reloadData];
@@ -116,6 +114,9 @@
                 NSString *suffix = [photo valueForKeyPath:@"suffix"];
                 [self.gymPhotos addObject:[NSString stringWithFormat:@"%@original%@", prefix, suffix]];
             }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self setGymPhotos];
+            });
         }
     }];
     [dataTask resume];

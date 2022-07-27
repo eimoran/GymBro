@@ -30,6 +30,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.navigationItem.leftBarButtonItem.title = @"";
+    self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"add-friend.png"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
