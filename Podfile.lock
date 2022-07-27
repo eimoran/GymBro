@@ -33,11 +33,13 @@ PODS:
     - Parse/Core (= 1.19.3)
   - Parse/Core (1.19.3):
     - Bolts/Tasks (= 1.9.1)
+  - SWTableViewCell (0.3.7)
 
 DEPENDENCIES:
   - AFNetworking
   - GoogleSignIn
   - Parse
+  - SWTableViewCell (~> 0.3.7)
 
 SPEC REPOS:
   trunk:
@@ -48,6 +50,7 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - Parse
+    - SWTableViewCell
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
@@ -57,7 +60,8 @@ SPEC CHECKSUMS:
   GTMAppAuth: 4d8f864896f3646f0c33baf38a28362f4c601e15
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   Parse: 0abb63a0ff6fa34a3f64b81d595a294e2ece143a
+  SWTableViewCell: 2a94aadc9d47b2b611fa064566bf57948b95b579
 
-PODFILE CHECKSUM: f8511f9ff12e84d0e3aea5978bbffe42c65f3d46
+PODFILE CHECKSUM: bd208e35e270b3a314721dd0ab2f4e117a558e99
 
 COCOAPODS: 1.11.3

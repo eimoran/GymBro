@@ -8,7 +8,7 @@
 #import "UserCell.h"
 
 
-@interface UserCell ()
+@interface UserCell () <UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *workoutTypeLabel;

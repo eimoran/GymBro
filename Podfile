@@ -9,6 +9,7 @@ target 'GymBro' do
   pod 'Parse'
   pod 'GoogleSignIn'
   pod 'AFNetworking'
+  pod 'SWTableViewCell', '~> 0.3.7'
 
   target 'GymBroTests' do
     inherit! :search_paths
