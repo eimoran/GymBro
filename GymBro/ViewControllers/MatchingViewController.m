@@ -82,10 +82,6 @@
     cell.distanceFromUser = [APIManager getDistance:self.currUser from:cell.user];
     cell.controller = self;
     cell.rightUtilityButtons = [self rightButtons];
-    
-    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(cellWasSwiped)];
-    swipe.direction = UISwipeGestureRecognizerDirectionLeft;
-    [cell.contentView addGestureRecognizer:swipe];
     [cell setData];
     return cell;
 }
@@ -94,10 +90,6 @@
     return self.userArray.count;
 }
 
-- (void)cellWasSwiped
-{
-    NSLog(@"SWIPED");
-}
 
 - (NSArray *)rightButtons
 {
@@ -116,15 +108,15 @@
     return rightUtilityButtons;
 }
 
-- (void)swipeableTableViewCell:(SWTableViewCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+- (void)swipeableTableViewCell:(UserCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
 {
     switch (index)
     {
         case 0:
-            NSLog(@"ACCEPTED");
+            [self acceptUser:cell];
             break;
         case 1:
-            NSLog(@"REJECTED");
+            [self rejectUser:cell];
             break;
     }
 }
@@ -135,13 +127,57 @@
     return YES;
 }
 
-- (void)rejectUser:(PFUser *)rejectedUser
+- (void)acceptUser:(UserCell *)cell
 {
+    PFUser *acceptedUser = cell.user;
+    PFUser *user = [PFUser currentUser];
+    NSMutableArray *pendingFriendsArray = [[NSMutableArray alloc] initWithArray:user[@"pendingFriends"]];
+    [pendingFriendsArray addObject:[acceptedUser valueForKeyPath:@"username"]];
+    user[@"pendingFriends"] = pendingFriendsArray;
+    
+    NSMutableArray *otherUserFriendRequestArray = [[NSMutableArray alloc] initWithArray:user[@"friendRequests"]];
+    [otherUserFriendRequestArray addObject:[user valueForKeyPath:@"username"]];
+    acceptedUser[@"friendRequests"] = otherUserFriendRequestArray;
+    
+    NSDictionary *params = @{@"username": [acceptedUser valueForKeyPath:@"username"],
+                             @"friendRequests": otherUserFriendRequestArray};
+    
+    [PFCloud callFunctionInBackground:@"sendFriendRequest" withParameters:params block:^(id  _Nullable object, NSError * _Nullable error) {
+    }];
+    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded)
+        {
+            NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
+            [self.userArray removeObjectAtIndex:cellIndexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        else
+        {
+            NSLog(@"Error Sending Friend Request: %@", error.localizedDescription);
+        }
+    }];
+}
+
+- (void)rejectUser:(UserCell *)cell
+{
+    PFUser *rejectedUser = cell.user;
     PFUser *user = [PFUser currentUser];
     NSMutableArray *rejectedUsers = [[NSMutableArray alloc] initWithArray:user[@"rejectedUsers"]];
     [rejectedUsers addObject:rejectedUser];
     user[@"rejectedUsers"] = rejectedUsers;
-    [user saveInBackground];
+    
+    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded)
+        {
+            NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
+            [self.userArray removeObjectAtIndex:cellIndexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        else
+        {
+            NSLog(@"Error Rejected User: %@", error.localizedDescription);
+        }
+    }];
 }
 
 @end

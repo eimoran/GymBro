@@ -503,11 +503,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserCell" rowHeight="284" id="C9a-nO-97f" customClass="UserCell">
-                                        <rect key="frame" x="0.0" y="44.5" width="400" height="284"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserCell" rowHeight="244" id="C9a-nO-97f" customClass="UserCell">
+                                        <rect key="frame" x="0.0" y="44.5" width="400" height="244"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="C9a-nO-97f" id="HQN-b8-8KA">
-                                            <rect key="frame" x="0.0" y="0.0" width="400" height="284"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="244"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilp-cZ-gu1">
@@ -552,15 +552,6 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aIO-Pz-UYK">
-                                                    <rect key="frame" x="128" y="226" width="159" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" title="Send Friend Request"/>
-                                                    <connections>
-                                                        <action selector="sendFriendRequest:" destination="C9a-nO-97f" eventType="touchUpInside" id="cCA-jC-oNW"/>
-                                                    </connections>
-                                                </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Distance From Your Gym:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0xS-Bn-hfp">
                                                     <rect key="frame" x="18" y="185" width="376" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -572,7 +563,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="distanceLabel" destination="0xS-Bn-hfp" id="6X3-VN-JEg"/>
-                                            <outlet property="friendRequestButton" destination="aIO-Pz-UYK" id="H6D-nq-YqT"/>
                                             <outlet property="genderLabel" destination="nWL-wf-qok" id="VFB-wG-nRP"/>
                                             <outlet property="gymLabel" destination="wAw-1I-BMf" id="PKv-K7-Ano"/>
                                             <outlet property="levelLabel" destination="bDT-Ne-ryE" id="UPx-4I-ScC"/>
