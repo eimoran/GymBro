@@ -163,7 +163,7 @@
     PFUser *rejectedUser = cell.user;
     PFUser *user = [PFUser currentUser];
     NSMutableArray *rejectedUsers = [[NSMutableArray alloc] initWithArray:user[@"rejectedUsers"]];
-    [rejectedUsers addObject:rejectedUser];
+    [rejectedUsers addObject:rejectedUser[@"username"]];
     user[@"rejectedUsers"] = rejectedUsers;
     
     [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {

@@ -27,10 +27,16 @@
 // MATCHING
 + (NSMutableArray *)fetchUsersWithQuery:(PFUser *)currUser
 {
+    NSArray *rejectedUsers = currUser[@"rejectedUsers"];
+    
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" notEqualTo:currUser[@"username"]];
     [query whereKeyExists:@"level"];
     [query whereKeyExists:@"gym"];
+    if (rejectedUsers.count > 0)
+    {
+        [query whereKey:@"username" notContainedIn:rejectedUsers];
+    }
     [query orderByDescending:@"createdAt"];
     query.limit = 100;
     
