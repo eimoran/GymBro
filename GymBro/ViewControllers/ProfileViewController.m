@@ -15,6 +15,7 @@
 #import "GymDetailsViewController.h"
 #import "Parse/Parse.h"
 #import <CoreLocation/CoreLocation.h>
+#import "UIImageView+AFNetworking.h"
 #import "MapKit/MapKit.h"
 #import "../AppDelegate.h"
 #import "../API/APIManager.h"
@@ -93,17 +94,13 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     
-    // Get the image captured by the UIImagePickerController
-//    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     self.profileImageView.image = info[UIImagePickerControllerOriginalImage];
-//    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     
     PFUser *user = [PFUser currentUser];
-    CGSize size = CGSizeMake(1000, 1000);
+    CGSize size = CGSizeMake(500, 500);
     self.profileImageView.image = [self resizeImage:self.profileImageView.image withSize:size];
     user[@"profilePic"] = [Post getPFFileFromImage:self.profileImageView.image];
     
-    // Dismiss UIImagePickerController to go back to your original view controller
     [self dismissViewControllerAnimated:YES completion:nil];
     
     [[PFUser currentUser] saveInBackground];
@@ -271,6 +268,14 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 - (void)displayInfo
 {
     PFUser *user = [PFUser currentUser];
+    PFFileObject *pic = user[@"profilePic"];
+    
+    NSURL *url = [NSURL URLWithString:pic.url];
+    
+    if (pic)
+    {
+        [self.profileImageView setImageWithURL:url];
+    }
     self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome, %@!", user[@"username"]];
     self.workoutTypeLabel.text = [NSString stringWithFormat:@"Workout Split: %@", user[@"workoutSplit"]];
     self.workoutTimeLabel.text = [NSString stringWithFormat:@"Time you workout: %@", user[@"workoutTime"]];
