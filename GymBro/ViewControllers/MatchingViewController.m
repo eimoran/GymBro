@@ -26,21 +26,43 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.rowHeight = 270;
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    
-    
-    self.userArray  = [[NSMutableArray alloc] init];
     self.currUser = [PFUser currentUser];
-    [self setLocalGym];
     
-    [self fetchUsersWithQuery];
-    
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(refreshUser) forControlEvents:UIControlEventValueChanged];
-    [self.tableView insertSubview:self.refreshControl atIndex:0];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (!self.currUser[@"gym"])
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Profile Fields"
+                                                                       message:@"Please Add Your Local Gym to Your Profile"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                             {}];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    else
+    {
+        if (self.currUser[@"gym"])
+        {
+            [self setLocalGym];
+            
+            self.tableView.delegate = self;
+            self.tableView.dataSource = self;
+            self.tableView.rowHeight = 270;
+            self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+            
+            
+            self.userArray  = [[NSMutableArray alloc] init];
+            [self fetchUsersWithQuery];
+            
+            self.refreshControl = [[UIRefreshControl alloc] init];
+            [self.refreshControl addTarget:self action:@selector(refreshUser) forControlEvents:UIControlEventValueChanged];
+            [self.tableView insertSubview:self.refreshControl atIndex:0];
+        }
+    }
 }
 
 - (void)setLocalGym
