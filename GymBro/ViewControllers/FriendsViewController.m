@@ -7,9 +7,10 @@
 
 #import "FriendsViewController.h"
 #import "../Models/UserCell.h"
+#import "../API/APIManager.h"
 #import <Parse/Parse.h>
 
-@interface FriendsViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface FriendsViewController () <UITableViewDelegate, UITableViewDataSource, SWTableViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *friendsTableView;
 @property (weak, nonatomic) IBOutlet UITableView *pendingTableView;
@@ -91,6 +92,8 @@
     }
     else if ([tableView isEqual:self.requestTableView])
     {
+        cell.delegate = self;
+        cell.rightUtilityButtons = [self rightButtons];
         cell.user = self.friendRequestsArray[indexPath.row];
     }
     else
@@ -118,6 +121,102 @@
         return self.pendingFriendsArray.count;
     }
     
+}
+
+- (NSArray *)rightButtons
+{
+    NSMutableArray *rightUtilityButtons = [NSMutableArray new];
+    UIImage *checkImage = [UIImage imageNamed:@"add-user.png"];
+    UIImage *rejectImage = [UIImage imageNamed:@"close.png"];
+    checkImage = [APIManager imageWithImage:checkImage convertToSize:CGSizeMake(50, 50)];
+    rejectImage = [APIManager imageWithImage:rejectImage convertToSize:CGSizeMake(50, 50)];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:0.0f green:0.0f blue:1.4f alpha:1.0]
+                                                 icon:checkImage];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:
+     [UIColor colorWithRed:0.8f green:0.0f blue:0.0f alpha:1.0]
+                                                icon:rejectImage];
+    
+    return rightUtilityButtons;
+}
+
+- (void)swipeableTableViewCell:(UserCell *)cell didTriggerRightUtilityButtonWithIndex:(NSInteger)index
+{
+    switch (index)
+    {
+        case 0:
+            [self acceptFriendRequest:cell];
+            break;
+        case 1:
+            [self rejectFriendRequest:cell];
+            break;
+    }
+}
+
+- (BOOL)swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:(SWTableViewCell *)cell
+{
+    // allow just one cell's utility button to be open at once
+    return YES;
+}
+
+- (void)acceptFriendRequest:(UserCell *)cell
+{
+    PFUser *acceptedUser = cell.user;
+    PFUser *user = [PFUser currentUser];
+    NSMutableArray *friendsArray = [[NSMutableArray alloc] initWithArray:user[@"friends"]];
+    [friendsArray addObject:[acceptedUser valueForKeyPath:@"username"]];
+    user[@"friends"] = friendsArray;
+    
+    NSMutableArray *friendRequestsArray = [[NSMutableArray alloc] initWithArray:user[@"friendRequests"]];
+    [friendRequestsArray removeObjectIdenticalTo:[acceptedUser valueForKeyPath:@"username"]];
+    user[@"friendRequests"] = friendRequestsArray;
+    
+    NSMutableArray *otherFriendsArray = [[NSMutableArray alloc] initWithArray:acceptedUser[@"friends"]];
+    [otherFriendsArray addObject:[user valueForKeyPath:@"username"]];
+    
+    NSMutableArray *otherPendingFriendsArray = [[NSMutableArray alloc] initWithArray:acceptedUser[@"pendingFriends"]];
+    [otherPendingFriendsArray removeObjectIdenticalTo:[user valueForKeyPath:@"username"]];
+    
+    NSDictionary *params = @{@"username": [acceptedUser valueForKeyPath:@"username"],
+                             @"friends": otherFriendsArray,
+                             @"pendingFriends": otherPendingFriendsArray};
+    
+    [PFCloud callFunctionInBackground:@"acceptFriendRequest" withParameters:params block:^(id  _Nullable object, NSError * _Nullable error) {
+    }];
+    [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded)
+        {
+            NSIndexPath *cellIndexPath = [self.requestTableView indexPathForCell:cell];
+            [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row];
+            [self.requestTableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        else
+        {
+            NSLog(@"Error Sending Friend Request: %@", error.localizedDescription);
+        }
+    }];
+}
+
+- (void)rejectFriendRequest:(UserCell *)cell
+{
+    PFUser *rejectedUser = cell.user;
+    PFUser *user = [PFUser currentUser];
+    NSMutableArray *rejectedUsers = [[NSMutableArray alloc] initWithArray:user[@"rejectedUsers"]];
+    [rejectedUsers addObject:rejectedUser];
+    user[@"rejectedUsers"] = rejectedUsers;
+    
+    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded)
+        {
+            NSIndexPath *cellIndexPath = [self.requestTableView indexPathForCell:cell];
+            [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row];
+            [self.requestTableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+        else
+        {
+            NSLog(@"Error Rejected User: %@", error.localizedDescription);
+        }
+    }];
 }
 
 - (void)setLocalGym

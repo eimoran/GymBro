@@ -853,15 +853,6 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M8l-dz-idL">
-                                                    <rect key="frame" x="123" y="144" width="171" height="31"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" title="Accept Friend Request"/>
-                                                    <connections>
-                                                        <action selector="acceptFriendRequest:" destination="Vl0-hN-gWU" eventType="touchUpInside" id="XNl-KV-688"/>
-                                                    </connections>
-                                                </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Workout Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b8q-8X-KNe">
                                                     <rect key="frame" x="20" y="20" width="374" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -872,7 +863,6 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="acceptFriendRequestButton" destination="M8l-dz-idL" id="7Zf-ST-yyL"/>
                                             <outlet property="genderLabel" destination="RSv-8m-yAt" id="XTt-Br-pAK"/>
                                             <outlet property="gymLabel" destination="rHh-dC-Zj4" id="DVZ-OP-7ZG"/>
                                             <outlet property="levelLabel" destination="Apv-AQ-W6a" id="vRD-hQ-D4F"/>
