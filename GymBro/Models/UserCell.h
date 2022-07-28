@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIViewController *controller;
 @property (strong, nonatomic) PFUser *user;
 @property (nonatomic) double distanceFromUser;
+@property (nonatomic) int currPhotoIndex;
 - (void) setData;
 
 @end

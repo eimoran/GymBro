@@ -26,7 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *commentCountLabel;
 @property (weak, nonatomic) IBOutlet UIButton *commentButton;
 - (IBAction)comment:(id)sender;
-
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) HomeViewController *homeVC;
 

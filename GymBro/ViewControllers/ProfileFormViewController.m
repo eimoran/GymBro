@@ -38,7 +38,6 @@
     
     PFUser *user = [PFUser currentUser];
     self.profileImages = [[NSMutableArray alloc] initWithArray:user[@"profileImages"]];
-    NSLog(@"%@", self.profileImages);
     if (user[@"profileImages"])
     {
         PFFileObject *pic = self.profileImages[0];
@@ -75,21 +74,22 @@
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    
-    self.profileImagesView.image = info[UIImagePickerControllerOriginalImage];
-    
     PFUser *user = [PFUser currentUser];
-    CGSize size = CGSizeMake(500, 500);
-    self.profileImagesView.image = [self resizeImage:self.profileImagesView.image withSize:size];
-    self.profileImages = [[NSMutableArray alloc] initWithArray:user[@"profileImages"]];
+    CGSize size = CGSizeMake(500, 700);
+    self.profileImagesView.image = [self resizeImage:info[UIImagePickerControllerOriginalImage] withSize:size];
+    
     if (self.profileImages.count == 0 || self.imageControl.selectedSegmentIndex == self.profileImages.count)
     {
+        NSLog(@"ADDING");
         [self.profileImages addObject:[Post getPFFileFromImage:self.profileImagesView.image]];
     }
     else
     {
+        NSLog(@"REPLACING");
         [self.profileImages replaceObjectAtIndex:self.imageControl.selectedSegmentIndex withObject:[Post getPFFileFromImage:self.profileImagesView.image]];
     }
+    user[@"profileImages"] = self.profileImages;
+    [[PFUser currentUser] saveInBackground];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -155,10 +155,38 @@
 - (IBAction)submit:(id)sender {
     // Update User Info
     PFUser *user = [PFUser currentUser];
-    user[@"workoutSplit"] = self.split;
-    user[@"workoutTime"] = self.time;
-    user[@"gender"] = self.gender;
-    user[@"level"] = self.level;
+    if (!self.split)
+    {
+        user[@"workoutSplit"] = @"Whole Body Split";
+    }
+    else
+    {
+        user[@"workoutSplit"] = self.split;
+    }
+    if (!self.time)
+    {
+        user[@"workoutTime"] = @"Morning (6am - 12pm)";
+    }
+    else
+    {
+        user[@"workoutTime"] = self.time;
+    }
+    if (!self.gender)
+    {
+        user[@"gender"] = @"Male";
+    }
+    else
+    {
+        user[@"gender"] = self.gender;
+    }
+    if (!self.level)
+    {
+        user[@"level"] = @"Novice";
+    }
+    else
+    {
+        user[@"level"] = self.level;
+    }
     user[@"profileImages"] = self.profileImages;
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded)

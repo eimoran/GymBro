@@ -61,7 +61,7 @@
             
             self.tableView.delegate = self;
             self.tableView.dataSource = self;
-            self.tableView.rowHeight = 270;
+            self.tableView.rowHeight = UITableViewAutomaticDimension;
             self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
             
             

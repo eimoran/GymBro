@@ -24,15 +24,6 @@
 
 
 - (void)setPost {
-//    if (self.post.photoExists)
-//    {
-//        NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: self.post.image.url]];
-//        self.postImageView.image = [UIImage imageWithData:imageData];
-//    }
-//    else
-//    {
-//        [self.postImageView removeFromSuperview];
-//    }
     PFUser *user = [PFUser currentUser];
     self.postTextLabel.text = [NSString stringWithFormat:@"%@ %@", self.post.author, self.post.text];
     NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:self.postTextLabel.text];
