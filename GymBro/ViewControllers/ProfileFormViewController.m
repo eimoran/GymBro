@@ -21,8 +21,6 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *imageControl;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImagesView;
 @property (strong, nonatomic) NSMutableArray *profileImages;
-
-
 - (IBAction)switchImages:(id)sender;
 
 @end

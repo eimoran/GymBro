@@ -9,8 +9,9 @@
 #import "Parse/Parse.h"
 #import "../Models/UserCell.h"
 #import "../API/APIManager.h"
+#import "FilterViewController.h"
 
-@interface MatchingViewController () <UITableViewDelegate, UITableViewDataSource, SWTableViewCellDelegate>
+@interface MatchingViewController () <UITableViewDelegate, UITableViewDataSource, SWTableViewCellDelegate, FilterViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *userArray;
@@ -95,15 +96,18 @@
     [self.refreshControl endRefreshing];
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    UINavigationController *navVC = [segue destinationViewController];
+    FilterViewController *filterVC = navVC.topViewController;
+    filterVC.delegate = self;
 }
-*/
+
 
 
 
@@ -211,5 +215,15 @@
         }
     }];
 }
+- (void)setFiltersWithArray:(NSArray *)arr
+{
+    NSLog(@"HELLO");
+    NSMutableArray *result = [APIManager setScores:self.currUser ofArray:self.userArray withPriorityArray:arr];
+    self.userArray = result[0];
+    NSMutableArray *compatibilityArray = result[1];
+    self.userArray = [APIManager compatibilitySort:self.userArray withCompatibilityArray:compatibilityArray];
+    [self.tableView reloadData];
+}
+
 
 @end

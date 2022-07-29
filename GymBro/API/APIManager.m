@@ -46,7 +46,8 @@
     __block NSMutableArray *userArray = [[NSMutableArray alloc] init];
     
     NSArray *users = [query findObjects];
-    result = [self setScores:currUser ofArray:users];
+    NSArray *defaultPriorities = [[NSArray alloc] initWithObjects:@3, @2, @1, @4, @3, @2, nil];
+    result = [self setScores:currUser ofArray:users withPriorityArray:defaultPriorities];
     compatibilityArray = result[1];
     userArray = result[0];
     userArray = [self compatibilitySort:userArray withCompatibilityArray:compatibilityArray];
@@ -113,7 +114,7 @@
             {
                 score += 1;
             }
-            long distance = [self getDistance:currUser from:user]*0.00062317;
+            float distance = [self getDistance:currUser from:user]*0.00062317;
             
             if (distance <= 1)
             {
@@ -127,9 +128,74 @@
             {
                 score += 2;
             }
-            else
+            [userArray addObject:user];
+            [compatibilityArray addObject:@(score)];
+        }
+    }
+    [result addObject:userArray];
+    [result addObject:compatibilityArray];
+    return result;
+}
+
++ (NSMutableArray *)setScores:(PFUser *)currUser ofArray:(NSArray *)users withPriorityArray:(NSArray *)arr
+{
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    NSArray *friends = currUser[@"friends"];
+    NSArray *pendingFriends = currUser[@"pendingFriends"];
+    __block BOOL isValid;
+    __block BOOL isValidPendingFriend;
+    NSMutableArray *compatibilityArray = [[NSMutableArray alloc] init];
+    NSMutableArray *userArray = [[NSMutableArray alloc] init];
+    NSString *currSplit = currUser[@"workoutSplit"];
+    NSString *currTime = currUser[@"workoutTime"];
+    NSString *currLevel = currUser[@"level"];
+    for (PFUser *user in users)
+    {
+        isValid = YES;
+        isValidPendingFriend = YES;
+        for (NSString *friend in friends)
+        {
+            if ([user[@"username"] isEqual:friend])
             {
-                score += 1;
+                isValid = NO;
+            }
+        }
+        for (NSString *pendingFriend in pendingFriends)
+        {
+            if ([user[@"username"] isEqual:pendingFriend])
+            {
+                isValid = NO;
+            }
+        }
+        if (isValid)
+        {
+            NSInteger score = 0;
+            if ([[user valueForKeyPath:@"workoutSplit"] isEqual:currSplit])
+            {
+                score += [arr[0] integerValue];;
+            }
+            
+            if ([[user valueForKeyPath:@"workoutTime"] isEqual:currTime])
+            {
+                score += [arr[1] integerValue];
+            }
+            if ([[user valueForKeyPath:@"level"] isEqual:currLevel])
+            {
+                score += [arr[2] integerValue];
+            }
+            float distance = [self getDistance:currUser from:user]*0.00062317;
+            
+            if (distance <= 1)
+            {
+                score += [arr[3] integerValue];
+            }
+            else if (distance <= 5)
+            {
+                score += [arr[4] integerValue];
+            }
+            else if (distance <= 10)
+            {
+                score += [arr[5] integerValue];
             }
             [userArray addObject:user];
             [compatibilityArray addObject:@(score)];
@@ -147,10 +213,12 @@
     for (int x = 0; x < userArray.count; x++)
     {
         PFUser *user = userArray[x];
+        NSInteger currUser = [compatibilityArray[x] integerValue];
         for (i = 0; i < sortedArray.count; i++)
         {
             long y = [userArray indexOfObject:sortedArray[i]];
-            if (compatibilityArray[x] > compatibilityArray[y])
+            NSInteger sortedUser = [compatibilityArray[y] integerValue];
+            if (currUser > sortedUser)
             {
                 [sortedArray insertObject:user atIndex:i];
                 break;

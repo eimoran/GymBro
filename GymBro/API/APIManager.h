@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSMutableArray *)fetchPhotosWithQuery:gym;
 + (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size;
 + (NSMutableArray *)fetchLocationsWithLat:lat Lon:lon Map:(MKMapView *)mapView;
++ (NSMutableArray *)setScores:(PFUser *)currUser ofArray:(NSArray *)users withPriorityArray:(NSArray *)arr;
++ (NSMutableArray *)compatibilitySort:(NSMutableArray *)userArray withCompatibilityArray:(NSMutableArray *)compatibilityArray;
 
 @end
 

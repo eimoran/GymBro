@@ -52,7 +52,6 @@
 }
 */
 
-// FETCH COMMENTS CORRECTLY AFTER A NEW COMMENT IS POSTED
 
 - (void)fetchComments
 {

@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MatchingViewController : UIViewController
 
+- (void)setFiltersWithArray:(NSArray *)arr;
+
 @end
 
 NS_ASSUME_NONNULL_END
