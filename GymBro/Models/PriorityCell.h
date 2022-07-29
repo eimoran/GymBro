@@ -10,11 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PriorityCell : UITableViewCell
+@interface PriorityCell : UITableViewCell <UIPickerViewDelegate, UIPickerViewDataSource>
 
-@property int row;
+@property (nonatomic) NSIndexPath *indexPath;
+@property (weak, nonatomic) IBOutlet UIPickerView *picker;
 @property (weak, nonatomic) IBOutlet UILabel *traitLabel;
 @property (strong, nonatomic) FilterViewController *filterVC;
+@property (nonatomic) BOOL custom;
+@property int filterValue;
+
+- (void)setFilter;
 
 @end
 

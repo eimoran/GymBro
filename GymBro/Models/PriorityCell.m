@@ -7,11 +7,10 @@
 
 #import "PriorityCell.h"
 
-@interface PriorityCell() <UIPickerViewDelegate>
-
-@property (weak, nonatomic) IBOutlet UIPickerView *picker;
+@interface PriorityCell () <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @end
+
 
 @implementation PriorityCell
 
@@ -20,7 +19,9 @@
     // Initialization code
     
     self.picker.delegate = self;
+    self.picker.dataSource = self;
 }
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
@@ -61,31 +62,43 @@
 - (void)pickerView:(UIPickerView *)picker
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component {
-    
+    self.custom = YES;
     //Here, like the table view you can get the each section of each row if you've multiple sections
-    switch (self.row) {
+    self.filterValue = (int)(5 - row);
+    switch (self.indexPath.row) {
         case 0:
-            self.filterVC.workoutType = (int)(5 - row);
+            self.filterVC.workoutType = self.filterValue;
             break;
         case 1:
-            self.filterVC.workoutTime = (int)(5 - row);
+            self.filterVC.workoutTime = self.filterValue;
             break;
         case 2:
-            self.filterVC.level = (int)(5 - row);
+            self.filterVC.level = self.filterValue;
             break;
         case 3:
-            self.filterVC.distance1 = (int)(5 - row);
+            self.filterVC.distance1 = self.filterValue;
             break;
         case 4:
-            self.filterVC.distance2 = (int)(5 - row);
+            self.filterVC.distance2 = self.filterValue;
             break;
         case 5:
-            self.filterVC.distance3 = (int)(5 - row);
+            self.filterVC.distance3 = self.filterValue;
             break;
-            
         default:
             break;
     }
 }
+
+- (void)setFilter
+{
+    if (self.indexPath.row == 0)
+    {
+        NSLog(@"WORKOUT TYPE");
+    }
+        NSLog(@"%d", self.filterValue);
+        [self.picker selectRow:(5-self.filterValue) inComponent:0 animated:YES];
+    
+}
+
 
 @end
