@@ -7,6 +7,7 @@
 
 #import "FilterViewController.h"
 #import "UIKit/UIKit.h"
+#import <Parse/Parse.h>
 #import "../Models/PriorityCell.h"
 
 @interface FilterViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -14,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 - (IBAction)confirm:(id)sender;
 - (IBAction)setDefaultFilters:(id)sender;
+@property (strong, nonatomic) PFUser *currUser;
 
 
 @end
@@ -27,12 +29,15 @@
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 200;
     
-    self.workoutType = 3;
-    self.workoutTime = 2;
-    self.level = 1;
-    self.distance1 = 4;
-    self.distance2 = 3;
-    self.distance3 = 2;
+    self.currUser = [PFUser currentUser];
+    NSArray *filterArray = self.currUser[@"filterArray"];
+    
+    self.workoutType = [filterArray[0] intValue];
+    self.workoutTime = [filterArray[1] intValue];
+    self.level = [filterArray[2] intValue];
+    self.distance1 = [filterArray[3] intValue];
+    self.distance2 = [filterArray[4] intValue];
+    self.distance3 = [filterArray[5] intValue];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
@@ -98,9 +103,12 @@
 }
 
 - (IBAction)confirm:(id)sender {
-    [self.delegate setFiltersWithArray:[[NSArray alloc] initWithObjects:@(self.workoutType), @(self.workoutTime), @(self.level), @(self.distance1), @(self.distance2), @(self.distance3), nil]];
+    NSArray *newFiltersArray = [[NSArray alloc] initWithObjects:@(self.workoutType), @(self.workoutTime), @(self.level), @(self.distance1), @(self.distance2), @(self.distance3), nil];
+    [self.delegate setFiltersWithArray:newFiltersArray];
+    PFUser *user = [PFUser currentUser];
+    user[@"filterArray"] = newFiltersArray;
+    [user saveInBackground];
     [self.tableView reloadData];
-    NSLog(@"WORKOUT TYPE: %d", self.workoutType);
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end

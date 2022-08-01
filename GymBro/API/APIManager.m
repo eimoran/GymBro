@@ -25,7 +25,7 @@
 }
 
 // MATCHING
-+ (NSMutableArray *)fetchUsersWithQuery:(PFUser *)currUser
++ (NSMutableArray *)fetchUsersWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray
 {
     NSArray *rejectedUsers = currUser[@"rejectedUsers"];
     
@@ -46,8 +46,8 @@
     __block NSMutableArray *userArray = [[NSMutableArray alloc] init];
     
     NSArray *users = [query findObjects];
-    NSArray *defaultPriorities = [[NSArray alloc] initWithObjects:@3, @2, @1, @4, @3, @2, nil];
-    result = [self setScores:currUser ofArray:users withPriorityArray:defaultPriorities];
+//    NSArray *defaultPriorities = [[NSArray alloc] initWithObjects:@3, @2, @1, @4, @3, @2, nil];
+    result = [self setScores:currUser ofArray:users withPriorityArray:priorityArray];
     compatibilityArray = result[1];
     userArray = result[0];
     userArray = [self compatibilitySort:userArray withCompatibilityArray:compatibilityArray];

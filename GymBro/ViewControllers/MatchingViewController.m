@@ -91,7 +91,7 @@
 
 - (void)fetchUsersWithQuery
 {
-    self.userArray = [APIManager fetchUsersWithQuery:self.currUser];
+    self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"]];
     [self.tableView reloadData];
     [self.refreshControl endRefreshing];
 }
@@ -217,7 +217,6 @@
 }
 - (void)setFiltersWithArray:(NSArray *)arr
 {
-    NSLog(@"HELLO");
     NSMutableArray *result = [APIManager setScores:self.currUser ofArray:self.userArray withPriorityArray:arr];
     self.userArray = result[0];
     NSMutableArray *compatibilityArray = result[1];
