@@ -34,6 +34,7 @@
     [query whereKeyExists:@"level"];
     [query whereKeyExists:@"gym"];
     [query whereKeyExists:@"profileImages"];
+    [query whereKey:@"bio" notEqualTo:@""];
     if (rejectedUsers.count > 0)
     {
         [query whereKey:@"username" notContainedIn:rejectedUsers];
@@ -63,6 +64,7 @@
     [query whereKeyExists:@"gym"];
     [query whereKeyExists:@"profileImages"];
     [query whereKey:@"gender" equalTo:@"Male"];
+    [query whereKey:@"bio" notEqualTo:@""];
     if (rejectedUsers.count > 0)
     {
         [query whereKey:@"username" notContainedIn:rejectedUsers];
@@ -84,7 +86,7 @@
 
 + (NSMutableArray *)fetchFemalesWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray
 {
-    NSArray *rejectedUsers = currUser[@"rejectedUsers"];
+    NSArray *rejectedUsers = [[NSArray alloc] initWithArray:currUser[@"rejectedUsers"]];
     
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" notEqualTo:currUser[@"username"]];
@@ -92,6 +94,7 @@
     [query whereKeyExists:@"gym"];
     [query whereKeyExists:@"profileImages"];
     [query whereKey:@"gender" equalTo:@"Female"];
+    [query whereKey:@"bio" notEqualTo:@""];
     if (rejectedUsers.count > 0)
     {
         [query whereKey:@"username" notContainedIn:rejectedUsers];

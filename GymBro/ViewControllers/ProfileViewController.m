@@ -38,6 +38,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *bioLabel;
 @property (strong, nonatomic) IBOutlet UILabel *workoutTypeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *workoutTimeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *genderLabel;
@@ -277,7 +278,9 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
         [self.profileImageView setImageWithURL:url];
     }
     self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome, %@!", user[@"username"]];
+    
     self.workoutTypeLabel.text = [NSString stringWithFormat:@"Workout Split: %@", user[@"workoutSplit"]];
+    self.bioLabel.text = [NSString stringWithFormat:@"Bio: %@", user[@"bio"]];
     self.workoutTimeLabel.text = [NSString stringWithFormat:@"Time you workout: %@", user[@"workoutTime"]];
     self.genderLabel.text = [NSString stringWithFormat:@"Gender: %@", user[@"gender"]];
     self.levelLabel.text = [NSString stringWithFormat:@"Level: %@", user[@"level"]];

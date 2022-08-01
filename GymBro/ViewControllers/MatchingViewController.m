@@ -54,6 +54,17 @@
         [alert addAction:ok];
         [self presentViewController:alert animated:YES completion:nil];
     }
+    else if ([self.currUser[@"bio"] stringValue].length == 0)
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Profile Fields"
+                                                                       message:@"Please Add a Bio To Your Profile"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                             {}];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
     else
     {
         [self setLocalGym];

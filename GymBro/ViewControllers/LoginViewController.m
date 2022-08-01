@@ -53,6 +53,9 @@
     newUser[@"pendingFriends"] = @[];
     newUser[@"friendRequests"] = @[];
     newUser[@"likedPosts"] = @[];
+    newUser[@"filterArray"] = @[];
+    newUser[@"genderFilter"] = @0;
+    newUser[@"bio"] = @"";
     
     // call sign up function on the object
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {

@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *imageControl;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImagesView;
 @property (strong, nonatomic) NSMutableArray *profileImages;
+@property (weak, nonatomic) IBOutlet UITextView *bioTextField;
 - (IBAction)switchImages:(id)sender;
 
 @end
@@ -52,6 +53,7 @@
     UITapGestureRecognizer *profileImageChange = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseProfilePic)];
     [profileImageChange setDelegate:self];
     [self.profileImagesView addGestureRecognizer:profileImageChange];
+    self.bioTextField.text = user[@"bio"];
 }
 
 
@@ -185,6 +187,7 @@
     {
         user[@"level"] = self.level;
     }
+    user[@"bio"] = self.bioTextField.text;
     user[@"profileImages"] = self.profileImages;
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded)
