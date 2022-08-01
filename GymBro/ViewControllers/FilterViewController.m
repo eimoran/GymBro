@@ -38,6 +38,7 @@
     self.distance1 = [filterArray[3] intValue];
     self.distance2 = [filterArray[4] intValue];
     self.distance3 = [filterArray[5] intValue];
+    self.gender = [self.currUser[@"genderFilter"] intValue];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
@@ -48,7 +49,6 @@
     
     switch (indexPath.row) {
         case 0:
-            NSLog(@"TYPE: %d", self.workoutType);
             cell.traitLabel.text = @"Workout Type:";
             cell.filterValue = self.workoutType;
             break;
@@ -72,6 +72,10 @@
             cell.traitLabel.text = @"Within 10 Miles Of Your Gym";
             cell.filterValue = self.distance3;
             break;
+        case 6:
+            cell.traitLabel.text = @"Gender";
+            cell.filterValue = self.gender;
+            break;
         default:
             break;
     }
@@ -81,7 +85,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 6;
+    return 7;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -98,15 +102,17 @@
     self.distance1 = 4;
     self.distance2 = 3;
     self.distance3 = 2;
+    self.gender = 0;
     [self.tableView reloadData];
     
 }
 
 - (IBAction)confirm:(id)sender {
     NSArray *newFiltersArray = [[NSArray alloc] initWithObjects:@(self.workoutType), @(self.workoutTime), @(self.level), @(self.distance1), @(self.distance2), @(self.distance3), nil];
-    [self.delegate setFiltersWithArray:newFiltersArray];
+    [self.delegate setFiltersWithArray:newFiltersArray andGenderFilter:self.gender];
     PFUser *user = [PFUser currentUser];
     user[@"filterArray"] = newFiltersArray;
+    user[@"genderFilter"] = @(self.gender);
     [user saveInBackground];
     [self.tableView reloadData];
     [self dismissViewControllerAnimated:YES completion:nil];

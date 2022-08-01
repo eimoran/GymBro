@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MatchingViewController : UIViewController
 
-- (void)setFiltersWithArray:(NSArray *)arr;
+- (void)setFiltersWithArray:(NSArray *)arr andGenderFilter:(NSInteger) gender;
 
 @end
 

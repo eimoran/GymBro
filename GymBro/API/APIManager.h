@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSMutableArray *)fetchPostswithTableView:(UITableView *)tableView andRefresh:(UIRefreshControl *)refreshControl;
 + (NSMutableArray *)fetchUsersWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray;
++ (NSMutableArray *)fetchMalesWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray;
++ (NSMutableArray *)fetchFemalesWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray;
 + (long)getDistance:(PFUser *)currUser from:(PFUser *)userOne;
 + (NSMutableArray *)fetchPhotosWithQuery:gym;
 + (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size;

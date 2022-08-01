@@ -56,23 +56,19 @@
     }
     else
     {
-        if (self.currUser[@"gym"])
-        {
-            [self setLocalGym];
-            
-            self.tableView.delegate = self;
-            self.tableView.dataSource = self;
-            self.tableView.rowHeight = UITableViewAutomaticDimension;
-            self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-            
-            
-            self.userArray  = [[NSMutableArray alloc] init];
-            [self fetchUsersWithQuery];
-            
-            self.refreshControl = [[UIRefreshControl alloc] init];
-            [self.refreshControl addTarget:self action:@selector(refreshUser) forControlEvents:UIControlEventValueChanged];
-            [self.tableView insertSubview:self.refreshControl atIndex:0];
-        }
+        [self setLocalGym];
+        
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+        self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        
+        self.userArray = [[NSMutableArray alloc] init];
+        [self fetchUsersWithQuery];
+        
+        self.refreshControl = [[UIRefreshControl alloc] init];
+        [self.refreshControl addTarget:self action:@selector(refreshUser) forControlEvents:UIControlEventValueChanged];
+        [self.tableView insertSubview:self.refreshControl atIndex:0];
     }
 }
 
@@ -91,7 +87,21 @@
 
 - (void)fetchUsersWithQuery
 {
-    self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"]];
+    int gender = [self.currUser[@"genderFilter"] intValue];
+    switch (gender) {
+        case 0:
+            self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"]];
+            break;
+        case 1:
+            self.userArray = [APIManager fetchMalesWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"]];
+            break;
+        case 2:
+            self.userArray = [APIManager fetchFemalesWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"]];
+            break;
+        default:
+            break;
+    }
+    
     [self.tableView reloadData];
     [self.refreshControl endRefreshing];
 }
@@ -215,12 +225,21 @@
         }
     }];
 }
-- (void)setFiltersWithArray:(NSArray *)arr
+- (void)setFiltersWithArray:(NSArray *)arr andGenderFilter:(NSInteger) gender
 {
-    NSMutableArray *result = [APIManager setScores:self.currUser ofArray:self.userArray withPriorityArray:arr];
-    self.userArray = result[0];
-    NSMutableArray *compatibilityArray = result[1];
-    self.userArray = [APIManager compatibilitySort:self.userArray withCompatibilityArray:compatibilityArray];
+    if (gender == 0)
+    {
+        self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:arr];
+    }
+    else if (gender == 1)
+    {
+        self.userArray = [APIManager fetchMalesWithQuery:self.currUser withPriorityArray:arr];
+    }
+    else
+    {
+        self.userArray = [APIManager fetchFemalesWithQuery:self.currUser withPriorityArray:arr];
+        
+    }
     [self.tableView reloadData];
 }
 

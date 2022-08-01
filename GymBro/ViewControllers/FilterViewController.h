@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol FilterViewControllerDelegate
 
-- (void)setFiltersWithArray:(NSArray *)arr;
+- (void)setFiltersWithArray:(NSArray *)arr andGenderFilter:(NSInteger) gender;
 
 @end
 
@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property int distance1;
 @property int distance2;
 @property int distance3;
+@property int gender;
 @property (strong, nonatomic) id<FilterViewControllerDelegate> delegate;
 
 @end

@@ -16,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
 @property (weak, nonatomic) IBOutlet UILabel *traitLabel;
 @property (strong, nonatomic) FilterViewController *filterVC;
-@property (nonatomic) BOOL custom;
 @property int filterValue;
 
 - (void)setFilter;

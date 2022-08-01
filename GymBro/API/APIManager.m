@@ -46,7 +46,64 @@
     __block NSMutableArray *userArray = [[NSMutableArray alloc] init];
     
     NSArray *users = [query findObjects];
-//    NSArray *defaultPriorities = [[NSArray alloc] initWithObjects:@3, @2, @1, @4, @3, @2, nil];
+    result = [self setScores:currUser ofArray:users withPriorityArray:priorityArray];
+    compatibilityArray = result[1];
+    userArray = result[0];
+    userArray = [self compatibilitySort:userArray withCompatibilityArray:compatibilityArray];
+    return userArray;
+}
+
++ (NSMutableArray *)fetchMalesWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray
+{
+    NSArray *rejectedUsers = currUser[@"rejectedUsers"];
+    
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"username" notEqualTo:currUser[@"username"]];
+    [query whereKeyExists:@"level"];
+    [query whereKeyExists:@"gym"];
+    [query whereKeyExists:@"profileImages"];
+    [query whereKey:@"gender" equalTo:@"Male"];
+    if (rejectedUsers.count > 0)
+    {
+        [query whereKey:@"username" notContainedIn:rejectedUsers];
+    }
+    [query orderByDescending:@"createdAt"];
+    query.limit = 100;
+    
+    __block NSMutableArray *result = [[NSMutableArray alloc] init];
+    __block NSMutableArray *compatibilityArray = [[NSMutableArray alloc] init];
+    __block NSMutableArray *userArray = [[NSMutableArray alloc] init];
+    
+    NSArray *users = [query findObjects];
+    result = [self setScores:currUser ofArray:users withPriorityArray:priorityArray];
+    compatibilityArray = result[1];
+    userArray = result[0];
+    userArray = [self compatibilitySort:userArray withCompatibilityArray:compatibilityArray];
+    return userArray;
+}
+
++ (NSMutableArray *)fetchFemalesWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray
+{
+    NSArray *rejectedUsers = currUser[@"rejectedUsers"];
+    
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"username" notEqualTo:currUser[@"username"]];
+    [query whereKeyExists:@"level"];
+    [query whereKeyExists:@"gym"];
+    [query whereKeyExists:@"profileImages"];
+    [query whereKey:@"gender" equalTo:@"Female"];
+    if (rejectedUsers.count > 0)
+    {
+        [query whereKey:@"username" notContainedIn:rejectedUsers];
+    }
+    [query orderByDescending:@"createdAt"];
+    query.limit = 100;
+    
+    __block NSMutableArray *result = [[NSMutableArray alloc] init];
+    __block NSMutableArray *compatibilityArray = [[NSMutableArray alloc] init];
+    __block NSMutableArray *userArray = [[NSMutableArray alloc] init];
+    
+    NSArray *users = [query findObjects];
     result = [self setScores:currUser ofArray:users withPriorityArray:priorityArray];
     compatibilityArray = result[1];
     userArray = result[0];
