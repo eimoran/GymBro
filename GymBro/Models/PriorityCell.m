@@ -33,7 +33,7 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)picker numberOfRowsInComponent:(NSInteger)component {
-    if (self.indexPath.row != 6)
+    if ([self.reuseIdentifier isEqual:@"PriorityCell"])
     {
         NSLog(@"1 - 5");
         NSLog(@"TITLE: %@, INDEX ROW: %ld", self.traitLabel.text, (long)self.indexPath.row);
@@ -49,7 +49,7 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     NSString * title = nil;
-    if (self.indexPath.row != 6)
+    if ([self.reuseIdentifier isEqual:@"PriorityCell"])
     {
         switch(row) {
             case 0:
@@ -92,7 +92,7 @@
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component {
     //Here, like the table view you can get the each section of each row if you've multiple sections
-    if (self.indexPath.row != 6)
+    if ([self.reuseIdentifier isEqual:@"PriorityCell"])
     {
         self.filterValue = (int)(5 - row);
         switch (self.indexPath.row) {
@@ -138,7 +138,7 @@
 
 - (void)setFilter
 {
-    if (self.indexPath.row != 6)
+    if ([self.reuseIdentifier isEqual:@"PriorityCell"])
     {
         [self.picker selectRow:(5-self.filterValue) inComponent:0 animated:YES];
     }

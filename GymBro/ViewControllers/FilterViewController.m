@@ -43,44 +43,53 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    PriorityCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PriorityCell"];
-    cell.filterVC = self;
-    cell.indexPath = indexPath;
-    
-    switch (indexPath.row) {
-        case 0:
-            cell.traitLabel.text = @"Workout Type:";
-            cell.filterValue = self.workoutType;
-            break;
-        case 1:
-            cell.traitLabel.text = @"Workout Time:";
-            cell.filterValue = self.workoutTime;
-            break;
-        case 2:
-            cell.traitLabel.text = @"Level:";
-            cell.filterValue = self.level;
-            break;
-        case 3:
-            cell.traitLabel.text = @"Within 1 Mile Of Your Gym";
-            cell.filterValue = self.distance1;
-            break;
-        case 4:
-            cell.traitLabel.text = @"Within 5 Miles Of Your Gym";
-            cell.filterValue = self.distance2;
-            break;
-        case 5:
-            cell.traitLabel.text = @"Within 10 Miles Of Your Gym";
-            cell.filterValue = self.distance3;
-            break;
-        case 6:
-            cell.traitLabel.text = @"Gender";
-            cell.filterValue = self.gender;
-            break;
-        default:
-            break;
+    if (indexPath.row < 6)
+    {
+        PriorityCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PriorityCell"];
+        cell.filterVC = self;
+        cell.indexPath = indexPath;
+        
+        switch (indexPath.row) {
+            case 0:
+                cell.traitLabel.text = @"Workout Type:";
+                cell.filterValue = self.workoutType;
+                break;
+            case 1:
+                cell.traitLabel.text = @"Workout Time:";
+                cell.filterValue = self.workoutTime;
+                break;
+            case 2:
+                cell.traitLabel.text = @"Level:";
+                cell.filterValue = self.level;
+                break;
+            case 3:
+                cell.traitLabel.text = @"Within 1 Mile Of Your Gym";
+                cell.filterValue = self.distance1;
+                break;
+            case 4:
+                cell.traitLabel.text = @"Within 5 Miles Of Your Gym";
+                cell.filterValue = self.distance2;
+                break;
+            case 5:
+                cell.traitLabel.text = @"Within 10 Miles Of Your Gym";
+                cell.filterValue = self.distance3;
+                break;
+            default:
+                break;
+        }
+        [cell setFilter];
+        return cell;
     }
-    [cell setFilter];
-    return cell;
+    
+    else
+    {
+        PriorityCell *cell2 = [tableView dequeueReusableCellWithIdentifier:@"PriorityCell2" forIndexPath:indexPath];
+        cell2.traitLabel.text = @"Gender";
+        cell2.filterValue = self.gender;
+        [cell2 setFilter];
+        return cell2;
+    }
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -96,15 +105,14 @@
 
 
 - (IBAction)setDefaultFilters:(id)sender {
-    self.workoutType = 3;
-    self.workoutTime = 2;
+    self.workoutType = 5;
+    self.workoutTime = 3;
     self.level = 1;
-    self.distance1 = 4;
+    self.distance1 = 5;
     self.distance2 = 3;
     self.distance3 = 2;
     self.gender = 0;
     [self.tableView reloadData];
-    
 }
 
 - (IBAction)confirm:(id)sender {

@@ -54,7 +54,7 @@
         [alert addAction:ok];
         [self presentViewController:alert animated:YES completion:nil];
     }
-    else if ([self.currUser[@"bio"] stringValue].length == 0)
+    else if ([self.currUser[@"bio"] isEqual:@""])
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Profile Fields"
                                                                        message:@"Please Add a Bio To Your Profile"

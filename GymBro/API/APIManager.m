@@ -163,12 +163,12 @@
             NSInteger score = 0;
             if ([[user valueForKeyPath:@"workoutSplit"] isEqual:currSplit])
             {
-                score += 3;
+                score += 5;
             }
             
             if ([[user valueForKeyPath:@"workoutTime"] isEqual:currTime])
             {
-                score += 2;
+                score += 3;
             }
             if ([[user valueForKeyPath:@"level"] isEqual:currLevel])
             {
@@ -178,7 +178,7 @@
             
             if (distance <= 1)
             {
-                score += 4;
+                score += 5;
             }
             else if (distance <= 5)
             {
