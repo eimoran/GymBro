@@ -141,7 +141,7 @@
     [self.post saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (!error)
         {
-            NSLog(@"SAVED");
+            NSLog(@"SAVED POST");
         }
     }];
 }

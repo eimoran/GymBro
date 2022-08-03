@@ -76,7 +76,6 @@
 // MATCHING
 + (NSMutableArray *)fetchUsersWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray withGenderFilter:(int)genderFilter
 {
-    NSLog(@"GENDER FILTER: %@", currUser[@"genderFilter"]);
     NSArray *rejectedUsers = currUser[@"rejectedUsers"];
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" notEqualTo:currUser[@"username"]];

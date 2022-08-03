@@ -218,7 +218,7 @@
         }
         else
         {
-            NSLog(@"Error Rejected User: %@", error.localizedDescription);
+            NSLog(@"Error Rejecting User: %@", error.localizedDescription);
         }
     }];
 }

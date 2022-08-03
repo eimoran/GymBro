@@ -37,7 +37,6 @@
     self.level = [filterArray[2] intValue];
     self.gender = [self.currUser[@"genderFilter"] intValue];
     self.distance = [self.currUser[@"distanceFilter"] intValue];
-    NSLog(@"DISTANCE FILTER: %d", self.distance);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath

@@ -42,6 +42,7 @@
 		60D1727128908AA30031214D /* SearchBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1727028908AA30031214D /* SearchBarCell.m */; };
 		60D17274289341AA0031214D /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D17273289341AA0031214D /* FilterViewController.m */; };
 		60D1727728934B8B0031214D /* PriorityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1727628934B8B0031214D /* PriorityCell.m */; };
+		60D1727D289AFBF60031214D /* TipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1727C289AFBF60031214D /* TipCell.m */; };
 		6202BA339D678724A0C43219 /* Pods_GymBro_GymBroUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */; };
 		88F59CF7FC65668745D9B527 /* Pods_GymBro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B357074C47765BDB933E5F0 /* Pods_GymBro.framework */; };
 /* End PBXBuildFile section */
@@ -133,6 +134,8 @@
 		60D17273289341AA0031214D /* FilterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
 		60D1727528934B8B0031214D /* PriorityCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PriorityCell.h; sourceTree = "<group>"; };
 		60D1727628934B8B0031214D /* PriorityCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PriorityCell.m; sourceTree = "<group>"; };
+		60D1727B289AFBF60031214D /* TipCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TipCell.h; sourceTree = "<group>"; };
+		60D1727C289AFBF60031214D /* TipCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TipCell.m; sourceTree = "<group>"; };
 		8077BF8F3ACD7C4A8707DD45 /* Pods_GymBroTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBroTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BAA6A1C74EB6C0CAF771B9 /* Pods_GymBro_GymBroUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymBro_GymBroUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		999B603B8148AF60F4D2BC66 /* Pods-GymBro-GymBroUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBro-GymBroUITests.release.xcconfig"; path = "Target Support Files/Pods-GymBro-GymBroUITests/Pods-GymBro-GymBroUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -286,6 +289,8 @@
 				60D17239287635630031214D /* GenderCell.h */,
 				60D1723A287635630031214D /* GenderCell.m */,
 				60D1723C28779DC70031214D /* GymMapCell.h */,
+				60D1727B289AFBF60031214D /* TipCell.h */,
+				60D1727C289AFBF60031214D /* TipCell.m */,
 				60D1723D28779DC70031214D /* GymMapCell.m */,
 				60D1723F28779FD90031214D /* LevelCell.h */,
 				60D1724028779FD90031214D /* LevelCell.m */,
@@ -578,6 +583,7 @@
 				60D172622887555B0031214D /* Post.m in Sources */,
 				60D172002874AFFA0031214D /* main.m in Sources */,
 				60D1727728934B8B0031214D /* PriorityCell.m in Sources */,
+				60D1727D289AFBF60031214D /* TipCell.m in Sources */,
 				60D17274289341AA0031214D /* FilterViewController.m in Sources */,
 				60D171F22874AFF90031214D /* SceneDelegate.m in Sources */,
 				60D172262874B5B10031214D /* LoginViewController.m in Sources */,

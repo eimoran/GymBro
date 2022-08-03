@@ -8,6 +8,7 @@
 #import "GymDetailsViewController.h"
 #import "Parse/Parse.h"
 #import "../Models/UserCell.h"
+#import "../Models/TipCell.h"
 #import "../API/APIManager.h"
 
 @interface GymDetailsViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -20,8 +21,12 @@
 @property (strong, nonatomic) NSMutableArray *userArray;
 
 @property (strong, nonatomic) NSMutableArray *gymPhotos;
+@property (strong, nonatomic) NSMutableArray *tipArray;
 @property (nonatomic) NSInteger index;
 @property (strong, nonatomic) NSTimer *timer;
+@property (weak, nonatomic) IBOutlet UILabel *tip1Label;
+@property (weak, nonatomic) IBOutlet UILabel *tip2Label;
+@property (weak, nonatomic) IBOutlet UILabel *tip3Label;
 
 - (IBAction)selectGym:(id)sender;
 
@@ -36,12 +41,14 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 100;
+    [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"header"];
     
     self.userArray = [[NSMutableArray alloc] init];
     self.gymName.text = [self.gym valueForKeyPath:@"name"];
     [self.tableView reloadData];
     [self fetchPhotosWithQuery];
     [self fetchUsersWithQuery];
+    [self fetchTipsWithQuery];
     self.timer = [NSTimer scheduledTimerWithTimeInterval: 3.0
                                                   target: self
                                                 selector:@selector(setGymPhotos)
@@ -115,22 +122,113 @@
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self setGymPhotos];
+                [self.tableView reloadData];
             });
+            
+        }
+    }];
+    [dataTask resume];
+}
+
+- (void)fetchTipsWithQuery
+{
+    NSDictionary *headers = @{ @"Accept": @"application/json",
+                               @"Authorization": @"fsq34hUP8/Fm3u/fGWnAv/jMBKdyEQIlaf+ueJvtD52Wn8o=" };
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://api.foursquare.com/v3/places/%@/tips?limit=3", self.gym[@"fsq_id"]]]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"GET"];
+    [request setAllHTTPHeaderFields:headers];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            NSLog(@"%@", error);
+        } else {
+            NSDictionary *tips = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            self.tipArray = [[NSMutableArray alloc] init];
+            for (NSDictionary *tip in tips)
+            {
+                [self.tipArray addObject:tip];
+            }
+            NSLog(@"%@", self.tipArray);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                for (int i = 0; i < self.tipArray.count; i++)
+                {
+                    if (i == 0) {
+                        self.tip1Label.text = self.tipArray[0][@"text"];
+                    }
+                    else if (i == 1)
+                    {
+                        self.tip2Label.text = self.tipArray[1][@"text"];
+                    }
+                    else
+                    {
+                        self.tip3Label.text = self.tipArray[2][@"text"];
+                    }
+                }
+                [self.tableView reloadData];
+            });
+            
         }
     }];
     [dataTask resume];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
-    cell.user = self.userArray[indexPath.row];
-    [cell setData];
-    return cell;
+    if (indexPath.section == 0)
+    {
+        TipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TipCell" forIndexPath:indexPath];
+        if (indexPath.row < self.tipArray.count)
+        {
+            
+        }
+        cell.tipLabel.text = self.tipArray[indexPath.row][@"text"];
+        return cell;
+    }
+    else
+    {
+        UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
+        cell.user = self.userArray[indexPath.row];
+        [cell setData];
+        return cell;
+    }
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0)
+    {
+        return self.tipArray.count;
+    }
+    else
+    {
+        return self.userArray.count;
+    }
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.userArray.count;
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
+    if (section == 0)
+    {
+        header.textLabel.text = @"Tips From Users";
+    }
+    else
+    {
+        header.textLabel.text = @"Users Who Go Here!";
+    }
+    header.textLabel.textColor = [UIColor blackColor];
+    
+    return header;
 }
 
 /*
