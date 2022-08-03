@@ -6,12 +6,14 @@
 //
 
 #import "UserCell.h"
+#import "UIImageView+AFNetworking.h"
 
 
 @interface UserCell () <UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImagesView;
 @property (strong, nonatomic) NSMutableArray *profileImages;
+@property (weak, nonatomic) IBOutlet UIImageView *profilePicView;
 @property (weak, nonatomic) IBOutlet UILabel *bioLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *workoutTypeLabel;
@@ -45,8 +47,19 @@
 {
     self.profileImages = self.user[@"profileImages"];
     PFFileObject *imageObj = self.profileImages[0];
-    NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:imageObj.url]];
-    self.profileImagesView.image = [UIImage imageWithData:data];
+    NSURL *url = [NSURL URLWithString:imageObj.url];
+    [self.profileImagesView setImageWithURL:url];
+    
+    if (self.user[@"profilePic"])
+    {
+        PFFileObject *profilePicObj = self.user[@"profilePic"];
+        NSURL *url2 = [NSURL URLWithString:profilePicObj.url];
+        [self.profilePicView setImageWithURL:url2];
+    }
+    else
+    {
+        self.profilePicView.image = [UIImage imageNamed:@"profile-Icon.png"];
+    }
     
     self.usernameLabel.text = self.user[@"username"];
     self.bioLabel.text = self.user[@"bio"];

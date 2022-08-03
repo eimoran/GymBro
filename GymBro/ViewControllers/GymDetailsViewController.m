@@ -24,9 +24,9 @@
 @property (strong, nonatomic) NSMutableArray *tipArray;
 @property (nonatomic) NSInteger index;
 @property (strong, nonatomic) NSTimer *timer;
-@property (weak, nonatomic) IBOutlet UILabel *tip1Label;
-@property (weak, nonatomic) IBOutlet UILabel *tip2Label;
-@property (weak, nonatomic) IBOutlet UILabel *tip3Label;
+@property (weak, nonatomic) NSString *tip1Label;
+@property (weak, nonatomic) NSString *tip2Label;
+@property (weak, nonatomic) NSString *tip3Label;
 
 - (IBAction)selectGym:(id)sender;
 
@@ -155,20 +155,6 @@
             }
             NSLog(@"%@", self.tipArray);
             dispatch_async(dispatch_get_main_queue(), ^{
-                for (int i = 0; i < self.tipArray.count; i++)
-                {
-                    if (i == 0) {
-                        self.tip1Label.text = self.tipArray[0][@"text"];
-                    }
-                    else if (i == 1)
-                    {
-                        self.tip2Label.text = self.tipArray[1][@"text"];
-                    }
-                    else
-                    {
-                        self.tip3Label.text = self.tipArray[2][@"text"];
-                    }
-                }
                 [self.tableView reloadData];
             });
             
@@ -180,16 +166,19 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0)
     {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         TipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TipCell" forIndexPath:indexPath];
         if (indexPath.row < self.tipArray.count)
         {
             
         }
-        cell.tipLabel.text = self.tipArray[indexPath.row][@"text"];
+        cell.tipLabel.text = [NSString stringWithFormat:@"\"%@\"", self.tipArray[indexPath.row][@"text"]];
+        cell.tipLabel.textColor = [UIColor grayColor];
         return cell;
     }
     else
     {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
         cell.user = self.userArray[indexPath.row];
         [cell setData];
