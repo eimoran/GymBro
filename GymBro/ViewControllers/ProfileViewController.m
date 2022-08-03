@@ -169,7 +169,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 {
     self.currGym = sender.gym;
     [self performSegueWithIdentifier:@"gymDetails" sender:nil];
-    
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(GymPointAnnotation *)annotation {

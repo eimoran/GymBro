@@ -98,21 +98,7 @@
 
 - (void)fetchUsersWithQuery
 {
-    int gender = [self.currUser[@"genderFilter"] intValue];
-    switch (gender) {
-        case 0:
-            self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"]];
-            break;
-        case 1:
-            self.userArray = [APIManager fetchMalesWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"]];
-            break;
-        case 2:
-            self.userArray = [APIManager fetchFemalesWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"]];
-            break;
-        default:
-            break;
-    }
-    
+    self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"] withGenderFilter:(int)(self.currUser[@"genderFilter"])];
     [self.tableView reloadData];
     [self.refreshControl endRefreshing];
 }
@@ -238,19 +224,7 @@
 }
 - (void)setFiltersWithArray:(NSArray *)arr andGenderFilter:(NSInteger) gender
 {
-    if (gender == 0)
-    {
-        self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:arr];
-    }
-    else if (gender == 1)
-    {
-        self.userArray = [APIManager fetchMalesWithQuery:self.currUser withPriorityArray:arr];
-    }
-    else
-    {
-        self.userArray = [APIManager fetchFemalesWithQuery:self.currUser withPriorityArray:arr];
-        
-    }
+    self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:arr withGenderFilter:(int)(gender)];
     [self.tableView reloadData];
 }
 

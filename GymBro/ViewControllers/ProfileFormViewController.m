@@ -208,7 +208,7 @@
     {
         self.imageControl.selectedSegmentIndex = 0;
     }
-    if (self.imageControl.selectedSegmentIndex == self.profileImages.count)
+    else if (self.imageControl.selectedSegmentIndex == self.profileImages.count)
     {
         self.profileImagesView.image = [UIImage imageNamed:@"camera-icon.png"];
     }

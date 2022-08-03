@@ -55,7 +55,7 @@
     self.genderLabel.text = [NSString stringWithFormat:@"· %@", self.user[@"gender"]];
     self.levelLabel.text = [NSString stringWithFormat:@"· %@", self.user[@"level"]];
     self.gymLabel.text = [NSString stringWithFormat:@"· %@", [self.user[@"gym"] valueForKeyPath:@"name"]];
-    self.distanceLabel.text = [NSString stringWithFormat:@"· %.2f mi away", self.distanceFromUser*0.00062137];
+    self.distanceLabel.text = [NSString stringWithFormat:@"· %.2f mi away", self.distanceFromUser * 0.00062317];
 }
 
 - (void)swipedLeft

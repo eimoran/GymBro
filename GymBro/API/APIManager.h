@@ -14,13 +14,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface APIManager : NSObject
 
+// LOGIN
++ (void)signupUserWithController:(UIViewController *)controller withEmail:(NSString *)email withUsername:(NSString *)username withPassword:(NSString *)password;
++ (void)loginUserWithController:(UIViewController *)controller withUsername:(NSString *)username withPassword:(NSString *)password;
+
+// HOME
 + (NSMutableArray *)fetchPostswithTableView:(UITableView *)tableView andRefresh:(UIRefreshControl *)refreshControl;
-+ (NSMutableArray *)fetchUsersWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray;
-+ (NSMutableArray *)fetchMalesWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray;
-+ (NSMutableArray *)fetchFemalesWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray;
+
+// MATCHING
++ (NSMutableArray *)fetchUsersWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray withGenderFilter:(int)genderFilter;
 + (long)getDistance:(PFUser *)currUser from:(PFUser *)userOne;
 + (NSMutableArray *)fetchPhotosWithQuery:gym;
 + (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size;
+
+// PROFILE
 + (NSMutableArray *)fetchLocationsWithLat:lat Lon:lon Map:(MKMapView *)mapView;
 + (NSMutableArray *)setScores:(PFUser *)currUser ofArray:(NSArray *)users withPriorityArray:(NSArray *)arr;
 + (NSMutableArray *)compatibilitySort:(NSMutableArray *)userArray withCompatibilityArray:(NSMutableArray *)compatibilityArray;

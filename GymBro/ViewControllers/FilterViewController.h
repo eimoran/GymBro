@@ -20,9 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property int workoutType;
 @property int workoutTime;
 @property int level;
-@property int distance1;
-@property int distance2;
-@property int distance3;
+@property int distance;
 @property int gender;
 @property (strong, nonatomic) id<FilterViewControllerDelegate> delegate;
 

@@ -65,7 +65,6 @@
     NSString *currPhoto = [self.gymPhotos objectAtIndex:self.index];
     NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:currPhoto]];
     self.gymPhotosView.image = [UIImage imageWithData:imageData];
-    
 }
 
 - (void)fetchUsersWithQuery

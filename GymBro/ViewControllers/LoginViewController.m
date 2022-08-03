@@ -7,6 +7,7 @@
 
 #import "LoginViewController.h"
 #import "Parse/Parse.h"
+#import "../API/APIManager.h"
 
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
@@ -38,52 +39,11 @@
 */
 
 - (void)registerUser {
-    // initialize a user object
-    PFUser *newUser = [PFUser user];
-    
-    // set user properties
-    newUser.username = self.usernameField.text;
-    newUser.email = self.emailField.text;
-    newUser.password = self.passwordField.text;
-    newUser[@"level"] = @"Novice";
-    newUser[@"gender"] = @"Male";
-    newUser[@"workoutSplit"] = @"Whole Body Split";
-    newUser[@"workoutTime"] = @"Morning (6am - 12pm)";
-    newUser[@"friends"] = @[];
-    newUser[@"pendingFriends"] = @[];
-    newUser[@"friendRequests"] = @[];
-    newUser[@"likedPosts"] = @[];
-    newUser[@"filterArray"] = @[];
-    newUser[@"genderFilter"] = @0;
-    newUser[@"bio"] = @"";
-    
-    // call sign up function on the object
-    [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
-        if (error != nil) {
-            NSLog(@"Error: %@", error.localizedDescription);
-        } else {
-            NSLog(@"User registered successfully");
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController *tabViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
-            self.view.window.rootViewController = tabViewController;
-        }
-    }];
+    [APIManager signupUserWithController:self withEmail:self.emailField.text withUsername:self.usernameField.text withPassword:self.passwordField.text];
 }
 
 - (void)loginUser {
-    NSString *username = self.usernameField.text;
-    NSString *password = self.passwordField.text;
-    
-    [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
-        if (error != nil) {
-            NSLog(@"User log in failed: %@", error.localizedDescription);
-        } else {
-            NSLog(@"User logged in successfully");
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController *tabViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
-            self.view.window.rootViewController = tabViewController;
-        }
-    }];
+    [APIManager loginUserWithController:self withUsername:self.usernameField.text withPassword:self.passwordField.text];
 }
 
 

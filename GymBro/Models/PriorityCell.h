@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSIndexPath *indexPath;
 @property (weak, nonatomic) IBOutlet UIPickerView *picker;
 @property (weak, nonatomic) IBOutlet UILabel *traitLabel;
+@property (weak, nonatomic) IBOutlet UITextField *distanceTextField;
 @property (strong, nonatomic) FilterViewController *filterVC;
 @property int filterValue;
 

@@ -9,9 +9,58 @@
 #import <Parse/Parse.h>
 #import "../Models/GymPointAnnotation.h"
 #import "../Models/GymDetailsButton.h"
-
 @implementation APIManager
 
+
+// LOGIN
++ (void)signupUserWithController:(UIViewController *)controller withEmail:(NSString *)email withUsername:(NSString *)username withPassword:(NSString *)password
+{
+    PFUser *newUser = [PFUser user];
+    
+    // set user properties
+    newUser.username = username;
+    newUser.email = email;
+    newUser.password = password;
+    newUser[@"level"] = @"Novice";
+    newUser[@"gender"] = @"Male";
+    newUser[@"workoutSplit"] = @"Whole Body Split";
+    newUser[@"workoutTime"] = @"Morning (6am - 12pm)";
+    newUser[@"friends"] = @[];
+    newUser[@"pendingFriends"] = @[];
+    newUser[@"friendRequests"] = @[];
+    newUser[@"rejectedUsers"] = @[];
+    newUser[@"likedPosts"] = @[];
+    newUser[@"filterArray"] = @[];
+    newUser[@"genderFilter"] = @0;
+    newUser[@"bio"] = @"";
+    newUser[@"filterArray"] = @[@5,@3,@1,@5,@3,@2];
+    
+    // call sign up function on the object
+    [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
+        if (error != nil) {
+            NSLog(@"Error: %@", error.localizedDescription);
+        } else {
+            NSLog(@"User registered successfully");
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController *tabViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
+            controller.view.window.rootViewController = tabViewController;
+        }
+    }];
+}
+
++ (void)loginUserWithController:(UIViewController *)controller withUsername:(NSString *)username withPassword:(NSString *)password
+{
+    [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
+        if (error != nil) {
+            NSLog(@"User log in failed: %@", error.localizedDescription);
+        } else {
+            NSLog(@"User logged in successfully");
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UIViewController *tabViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
+            controller.view.window.rootViewController = tabViewController;
+        }
+    }];
+}
 
 // HOME
 + (NSMutableArray *)fetchPostswithTableView:(UITableView *)tableView andRefresh:(UIRefreshControl *)refreshControl
@@ -25,10 +74,10 @@
 }
 
 // MATCHING
-+ (NSMutableArray *)fetchUsersWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray
++ (NSMutableArray *)fetchUsersWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray withGenderFilter:(int)genderFilter
 {
+    NSLog(@"GENDER FILTER: %@", currUser[@"genderFilter"]);
     NSArray *rejectedUsers = currUser[@"rejectedUsers"];
-    
     PFQuery *query = [PFUser query];
     [query whereKey:@"username" notEqualTo:currUser[@"username"]];
     [query whereKeyExists:@"level"];
@@ -39,35 +88,15 @@
     {
         [query whereKey:@"username" notContainedIn:rejectedUsers];
     }
-    [query orderByDescending:@"createdAt"];
-    query.limit = 100;
-    
-    __block NSMutableArray *result = [[NSMutableArray alloc] init];
-    __block NSMutableArray *compatibilityArray = [[NSMutableArray alloc] init];
-    __block NSMutableArray *userArray = [[NSMutableArray alloc] init];
-    
-    NSArray *users = [query findObjects];
-    result = [self setScores:currUser ofArray:users withPriorityArray:priorityArray];
-    compatibilityArray = result[1];
-    userArray = result[0];
-    userArray = [self compatibilitySort:userArray withCompatibilityArray:compatibilityArray];
-    return userArray;
-}
-
-+ (NSMutableArray *)fetchMalesWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray
-{
-    NSArray *rejectedUsers = currUser[@"rejectedUsers"];
-    
-    PFQuery *query = [PFUser query];
-    [query whereKey:@"username" notEqualTo:currUser[@"username"]];
-    [query whereKeyExists:@"level"];
-    [query whereKeyExists:@"gym"];
-    [query whereKeyExists:@"profileImages"];
-    [query whereKey:@"gender" equalTo:@"Male"];
-    [query whereKey:@"bio" notEqualTo:@""];
-    if (rejectedUsers.count > 0)
+    switch ([currUser[@"genderFilter"] intValue])
     {
-        [query whereKey:@"username" notContainedIn:rejectedUsers];
+        case 0:
+            break;
+        case 1:
+            [query whereKey:@"gender" equalTo:@"Male"];
+            break;
+        case 2:
+            [query whereKey:@"gender" equalTo:@"Female"];
     }
     [query orderByDescending:@"createdAt"];
     query.limit = 100;
@@ -76,37 +105,15 @@
     __block NSMutableArray *compatibilityArray = [[NSMutableArray alloc] init];
     __block NSMutableArray *userArray = [[NSMutableArray alloc] init];
     
-    NSArray *users = [query findObjects];
-    result = [self setScores:currUser ofArray:users withPriorityArray:priorityArray];
-    compatibilityArray = result[1];
-    userArray = result[0];
-    userArray = [self compatibilitySort:userArray withCompatibilityArray:compatibilityArray];
-    return userArray;
-}
-
-+ (NSMutableArray *)fetchFemalesWithQuery:(PFUser *)currUser withPriorityArray:(NSArray *)priorityArray
-{
-    NSArray *rejectedUsers = [[NSArray alloc] initWithArray:currUser[@"rejectedUsers"]];
-    
-    PFQuery *query = [PFUser query];
-    [query whereKey:@"username" notEqualTo:currUser[@"username"]];
-    [query whereKeyExists:@"level"];
-    [query whereKeyExists:@"gym"];
-    [query whereKeyExists:@"profileImages"];
-    [query whereKey:@"gender" equalTo:@"Female"];
-    [query whereKey:@"bio" notEqualTo:@""];
-    if (rejectedUsers.count > 0)
+    NSArray *userObjects = [query findObjects];
+    NSMutableArray * users = [[NSMutableArray alloc] init];
+    for (PFUser *user in userObjects)
     {
-        [query whereKey:@"username" notContainedIn:rejectedUsers];
+        if (([self getDistance:currUser from:user] * 0.00062317) <= [currUser[@"distanceFilter"] intValue])
+        {
+            [users addObject:user];
+        }
     }
-    [query orderByDescending:@"createdAt"];
-    query.limit = 100;
-    
-    __block NSMutableArray *result = [[NSMutableArray alloc] init];
-    __block NSMutableArray *compatibilityArray = [[NSMutableArray alloc] init];
-    __block NSMutableArray *userArray = [[NSMutableArray alloc] init];
-    
-    NSArray *users = [query findObjects];
     result = [self setScores:currUser ofArray:users withPriorityArray:priorityArray];
     compatibilityArray = result[1];
     userArray = result[0];
@@ -127,75 +134,6 @@
     return [userLoc distanceFromLocation:userOneLoc];
 }
 
-
-+ (NSMutableArray *)setScores:(PFUser *)currUser ofArray:(NSArray *)users
-{
-    NSMutableArray *result = [[NSMutableArray alloc] init];
-    NSArray *friends = currUser[@"friends"];
-    NSArray *pendingFriends = currUser[@"pendingFriends"];
-    __block BOOL isValid;
-    __block BOOL isValidPendingFriend;
-    NSMutableArray *compatibilityArray = [[NSMutableArray alloc] init];
-    NSMutableArray *userArray = [[NSMutableArray alloc] init];
-    NSString *currSplit = currUser[@"workoutSplit"];
-    NSString *currTime = currUser[@"workoutTime"];
-    NSString *currLevel = currUser[@"level"];
-    for (PFUser *user in users)
-    {
-        isValid = YES;
-        isValidPendingFriend = YES;
-        for (NSString *friend in friends)
-        {
-            if ([user[@"username"] isEqual:friend])
-            {
-                isValid = NO;
-            }
-        }
-        for (NSString *pendingFriend in pendingFriends)
-        {
-            if ([user[@"username"] isEqual:pendingFriend])
-            {
-                isValid = NO;
-            }
-        }
-        if (isValid)
-        {
-            NSInteger score = 0;
-            if ([[user valueForKeyPath:@"workoutSplit"] isEqual:currSplit])
-            {
-                score += 5;
-            }
-            
-            if ([[user valueForKeyPath:@"workoutTime"] isEqual:currTime])
-            {
-                score += 3;
-            }
-            if ([[user valueForKeyPath:@"level"] isEqual:currLevel])
-            {
-                score += 1;
-            }
-            float distance = [self getDistance:currUser from:user]*0.00062317;
-            
-            if (distance <= 1)
-            {
-                score += 5;
-            }
-            else if (distance <= 5)
-            {
-                score += 3;
-            }
-            else if (distance <= 10)
-            {
-                score += 2;
-            }
-            [userArray addObject:user];
-            [compatibilityArray addObject:@(score)];
-        }
-    }
-    [result addObject:userArray];
-    [result addObject:compatibilityArray];
-    return result;
-}
 
 + (NSMutableArray *)setScores:(PFUser *)currUser ofArray:(NSArray *)users withPriorityArray:(NSArray *)arr
 {
@@ -243,24 +181,26 @@
             {
                 score += [arr[2] integerValue];
             }
-            float distance = [self getDistance:currUser from:user]*0.00062317;
+            float distance = [self getDistance:currUser from:user] * 0.00062317;
             
+            // Don't let user customize these values, have them filter distance as a whole
             if (distance <= 1)
             {
-                score += [arr[3] integerValue];
+                score += 5;
             }
             else if (distance <= 5)
             {
-                score += [arr[4] integerValue];
+                score += 3;
             }
             else if (distance <= 10)
             {
-                score += [arr[5] integerValue];
+                score += 1;
             }
             [userArray addObject:user];
             [compatibilityArray addObject:@(score)];
         }
     }
+    // Make dictionary of these arrays and sort the dictionary
     [result addObject:userArray];
     [result addObject:compatibilityArray];
     return result;
@@ -295,7 +235,7 @@
 
 // PROFILE
 
-+(NSMutableArray *)fetchLocationsWithLat:lat Lon:lon Map:(MKMapView *)mapView
++ (NSMutableArray *)fetchLocationsWithLat:lat Lon:lon Map:(MKMapView *)mapView
 {
     __block NSMutableArray *result = [[NSMutableArray alloc] init];
     __block NSMutableArray *gyms = [[NSMutableArray alloc] init];

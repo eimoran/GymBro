@@ -35,15 +35,14 @@
     self.workoutType = [filterArray[0] intValue];
     self.workoutTime = [filterArray[1] intValue];
     self.level = [filterArray[2] intValue];
-    self.distance1 = [filterArray[3] intValue];
-    self.distance2 = [filterArray[4] intValue];
-    self.distance3 = [filterArray[5] intValue];
     self.gender = [self.currUser[@"genderFilter"] intValue];
+    self.distance = [self.currUser[@"distanceFilter"] intValue];
+    NSLog(@"DISTANCE FILTER: %d", self.distance);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    if (indexPath.row < 6)
+    if (indexPath.row < 3)
     {
         PriorityCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PriorityCell"];
         cell.filterVC = self;
@@ -62,39 +61,36 @@
                 cell.traitLabel.text = @"Level:";
                 cell.filterValue = self.level;
                 break;
-            case 3:
-                cell.traitLabel.text = @"Within 1 Mile Of Your Gym";
-                cell.filterValue = self.distance1;
-                break;
-            case 4:
-                cell.traitLabel.text = @"Within 5 Miles Of Your Gym";
-                cell.filterValue = self.distance2;
-                break;
-            case 5:
-                cell.traitLabel.text = @"Within 10 Miles Of Your Gym";
-                cell.filterValue = self.distance3;
-                break;
             default:
                 break;
         }
         [cell setFilter];
         return cell;
     }
-    
-    else
+    else if (indexPath.row == 3)
     {
         PriorityCell *cell2 = [tableView dequeueReusableCellWithIdentifier:@"PriorityCell2" forIndexPath:indexPath];
+        cell2.filterVC = self;
         cell2.traitLabel.text = @"Gender";
         cell2.filterValue = self.gender;
         [cell2 setFilter];
         return cell2;
+    }
+    else
+    {
+        PriorityCell *cell3 = [tableView dequeueReusableCellWithIdentifier:@"PriorityCell3" forIndexPath:indexPath];
+        cell3.filterVC = self;
+        cell3.traitLabel.text = @"Distance";
+        cell3.filterValue = self.distance;
+        [cell3 setFilter];
+        return cell3;
     }
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 7;
+    return 5;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -103,26 +99,26 @@
 }
 
 
-
 - (IBAction)setDefaultFilters:(id)sender {
     self.workoutType = 5;
     self.workoutTime = 3;
     self.level = 1;
-    self.distance1 = 5;
-    self.distance2 = 3;
-    self.distance3 = 2;
     self.gender = 0;
+    self.distance = 62;
     [self.tableView reloadData];
 }
 
+
 - (IBAction)confirm:(id)sender {
-    NSArray *newFiltersArray = [[NSArray alloc] initWithObjects:@(self.workoutType), @(self.workoutTime), @(self.level), @(self.distance1), @(self.distance2), @(self.distance3), nil];
-    [self.delegate setFiltersWithArray:newFiltersArray andGenderFilter:self.gender];
+    NSArray *newPriorityArray = [[NSArray alloc] initWithObjects:@(self.workoutType), @(self.workoutTime), @(self.level), nil];
     PFUser *user = [PFUser currentUser];
-    user[@"filterArray"] = newFiltersArray;
+    user[@"priorityArray"] = newPriorityArray;
+    user[@"distanceFilter"] = @(self.distance);
     user[@"genderFilter"] = @(self.gender);
-    [user saveInBackground];
-    [self.tableView reloadData];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        [self.delegate setFiltersWithArray:newPriorityArray andGenderFilter:self.gender];
+        [self.tableView reloadData];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
 }
 @end

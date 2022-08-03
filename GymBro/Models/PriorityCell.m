@@ -7,7 +7,9 @@
 
 #import "PriorityCell.h"
 
-@interface PriorityCell () <UIPickerViewDelegate, UIPickerViewDataSource>
+@interface PriorityCell () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>
+
+- (IBAction)textChanged:(id)sender;
 
 @end
 
@@ -35,14 +37,10 @@
 - (NSInteger)pickerView:(UIPickerView *)picker numberOfRowsInComponent:(NSInteger)component {
     if ([self.reuseIdentifier isEqual:@"PriorityCell"])
     {
-        NSLog(@"1 - 5");
-        NSLog(@"TITLE: %@, INDEX ROW: %ld", self.traitLabel.text, (long)self.indexPath.row);
         return 5;
     }
     else
     {
-        NSLog(@"GENDER");
-        NSLog(@"TITLE: %@, INDEX ROW: %ld", self.traitLabel.text, (long)self.indexPath.row);
         return 3;
     }
 }
@@ -105,34 +103,14 @@
             case 2:
                 self.filterVC.level = self.filterValue;
                 break;
-            case 3:
-                self.filterVC.distance1 = self.filterValue;
-                break;
-            case 4:
-                self.filterVC.distance2 = self.filterValue;
-                break;
-            case 5:
-                self.filterVC.distance3 = self.filterValue;
-                break;
             default:
                 break;
         }
     }
-    else
+    else if ([self.reuseIdentifier isEqual:@"PriorityCell2"])
     {
-        switch (row) {
-            case 0:
-                self.filterVC.gender = 0;
-                break;
-            case 1:
-                self.filterVC.gender = 1;
-                break;
-            case 2:
-                self.filterVC.gender = 2;
-                break;
-            default:
-                break;
-        }
+        self.filterValue = (int)row;
+        self.filterVC.gender = self.filterValue;
     }
 }
 
@@ -142,11 +120,44 @@
     {
         [self.picker selectRow:(5-self.filterValue) inComponent:0 animated:YES];
     }
-    else
+    else if ([self.reuseIdentifier isEqual:@"PriorityCell2"])
     {
         [self.picker selectRow:self.filterValue inComponent:0 animated:YES];
     }
+    else
+    {
+        self.distanceTextField.delegate = self;
+        self.distanceTextField.text = [NSString stringWithFormat:@"%d", self.filterVC.distance];
+    }
 }
 
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    /* for backspace */
+    if([string length]==0){
+        return YES;
+    }
+    
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    if (newLength > 2)
+    {
+        return NO;
+    }
+    
+    /*  limit to only numeric characters  */
+    NSCharacterSet *myCharSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+    for (int i = 0; i < [string length]; i++) {
+        unichar c = [string characterAtIndex:i];
+        if ([myCharSet characterIsMember:c]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (IBAction)textChanged:(id)sender {
+    self.filterVC.distance = [self.distanceTextField.text intValue];
+}
 
 @end
