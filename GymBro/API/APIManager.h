@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size;
 
 // PROFILE
++ (long)fetchPostCountOfUser:(PFUser *)user;
 + (NSMutableArray *)fetchLocationsWithLat:lat Lon:lon Map:(MKMapView *)mapView;
 + (NSMutableArray *)setScores:(PFUser *)currUser ofArray:(NSArray *)users withPriorityArray:(NSArray *)arr;
 + (NSMutableArray *)compatibilitySort:(NSMutableArray *)userArray withCompatibilityArray:(NSMutableArray *)compatibilityArray;

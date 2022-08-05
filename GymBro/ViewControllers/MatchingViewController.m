@@ -19,6 +19,7 @@
 @property (strong, nonatomic) PFUser *currUser;
 @property (strong, nonatomic) CLLocation *userLoc;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (weak, nonatomic) IBOutlet UIButton *filterButton;
 
 @end
 
@@ -28,10 +29,26 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.currUser = [PFUser currentUser];
+    self.filterButton.hidden = YES;
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(200, 0, 00, 30)];
+    titleLabel.text = @"Your Matches!";
+    titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:18];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.navigationItem.titleView = titleLabel;
+    
+    self.tabBarController.tabBar.barTintColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
+    self.tabBarController.tabBar.backgroundColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
+    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
+    self.tabBarController.tabBar.barTintColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
+    self.tabBarController.tabBar.backgroundColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
+    self.view.backgroundColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
+    
     if (!self.currUser[@"gym"])
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Profile Fields"
@@ -67,6 +84,11 @@
     }
     else
     {
+        self.filterButton.hidden = NO;
+        
+        
+        
+        
         [self setLocalGym];
         
         self.tableView.delegate = self;
@@ -98,7 +120,7 @@
 
 - (void)fetchUsersWithQuery
 {
-    self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"] withGenderFilter:(int)(self.currUser[@"genderFilter"])];
+    self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"] withGenderFilter:[self.currUser[@"genderFilter"] intValue]];
     [self.tableView reloadData];
     [self.refreshControl endRefreshing];
 }

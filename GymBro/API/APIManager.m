@@ -62,7 +62,6 @@
             controller.view.window.rootViewController = tabBarController;
             
             UITabBar *tabBar=tabBarController.tabBar;
-            tabBar.tintColor = [UIColor colorWithHue:0.6 saturation:0.66 brightness:0.66 alpha:1];
             UITabBarItem *tabBarItem1=[[tabBar items] objectAtIndex:0];
             UIImage *homeIcon = [UIImage imageNamed:@"gym.png"];
             homeIcon = [homeIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -99,7 +98,6 @@
             controller.view.window.rootViewController = tabBarController;
             
             UITabBar *tabBar = tabBarController.tabBar;
-            tabBar.tintColor = [UIColor colorWithHue:0.6 saturation:0.66 brightness:0.66 alpha:1];
             UITabBarItem *tabBarItem1 = [[tabBar items] objectAtIndex:0];
             UIImage *homeIcon = [UIImage imageNamed:@"gym.png"];
             homeIcon = [homeIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -295,6 +293,16 @@
 }
 
 // PROFILE
+
++ (long)fetchPostCountOfUser:(PFUser *)user
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Post"];
+    [query whereKey:@"author" equalTo:user[@"username"]];
+    query.limit = 200;
+    NSArray *posts = [query findObjects];
+    return posts.count;
+}
+
 
 + (NSMutableArray *)fetchLocationsWithLat:lat Lon:lon Map:(MKMapView *)mapView
 {

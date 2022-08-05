@@ -32,18 +32,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithHue:0.58 saturation:0.40 brightness:0.66 alpha:1];
-    self.tabBarController.tabBar.backgroundColor = [UIColor colorWithHue:0.6 saturation:0.66 brightness:0.66 alpha:1];
-//    self.view.backgroundColor = [UIColor colorWithHue:0.6 saturation:0.66 brightness:0.66 alpha:1];
     UIImage *friendsIcon = [UIImage imageNamed:@"friends.png"];
-    friendsIcon = [APIManager resizeImage:friendsIcon withSize:CGSizeMake(50, 50)];
+    friendsIcon = [APIManager resizeImage:friendsIcon withSize:CGSizeMake(45, 45)];
     [self.friendsButton setTitle:@"" forState:UIControlStateNormal];
     [self.friendsButton setImage:friendsIcon forState:UIControlStateNormal];
     
     UIImage *composeIcon = [UIImage imageNamed:@"compose.png"];
-    composeIcon = [APIManager resizeImage:composeIcon withSize:CGSizeMake(50, 50)];
+    composeIcon = [APIManager resizeImage:composeIcon withSize:CGSizeMake(45, 45)];
     [self.composeButton setTitle:@"" forState:UIControlStateNormal];
     [self.composeButton setImage:composeIcon forState:UIControlStateNormal];
+    
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = @"GymBro";
+    titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:30];
+    self.navigationItem.titleView = titleLabel;
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -54,6 +56,16 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchPostsWithQuery) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithHue:0.6 saturation:0.15 brightness:1 alpha:1];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHue:0.6 saturation:0.15 brightness:1 alpha:1];
+    
+    self.tabBarController.tabBar.barTintColor = [UIColor colorWithHue:0.6 saturation:0.15 brightness:1 alpha:1];
+    self.tabBarController.tabBar.backgroundColor = [UIColor colorWithHue:0.6 saturation:0.15 brightness:1 alpha:1];
+    self.view.backgroundColor = [UIColor colorWithHue:0.6 saturation:0.15 brightness:1 alpha:1];
 }
 
 

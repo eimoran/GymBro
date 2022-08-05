@@ -25,9 +25,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 
 @interface ProfileViewController () <ProfileFormViewControllerDelegate, GymDetailsViewControllerDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 
-- (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size;
-
-
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) MKPointOfInterestFilter *filter;
@@ -37,7 +34,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (strong, nonatomic) NSString *lon;
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
-@property (weak, nonatomic) IBOutlet UILabel *welcomeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bioLabel;
 @property (strong, nonatomic) IBOutlet UILabel *workoutTypeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *workoutTimeLabel;
@@ -48,6 +44,12 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (strong, nonatomic) NSDictionary *currGym;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *topBackgroundView;
+
+@property (weak, nonatomic) IBOutlet UILabel *postCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *friendCountLabel;
+
+@property (strong, nonatomic) PFUser *currUser;
 
 - (IBAction)logout:(id)sender;
 
@@ -58,6 +60,18 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.currUser = [PFUser currentUser];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(200, 0, 00, 30)];
+    titleLabel.text = self.currUser[@"username"];
+    titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:18];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.navigationItem.titleView = titleLabel;
+    
+    self.postCountLabel.text = [NSString stringWithFormat:@"%lu", [APIManager fetchPostCountOfUser:self.currUser]];
+    
+    NSArray *currUserFriends = self.currUser[@"friends"];
+    self.friendCountLabel.text = [NSString stringWithFormat:@"%lu", currUserFriends.count];
+    
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     self.locationManager.distanceFilter = kCLDistanceFilterNone;
@@ -75,6 +89,16 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     UITapGestureRecognizer *profileImageChange = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseProfilePic)];
     [profileImageChange setDelegate:self];
     [self.profileImageView addGestureRecognizer:profileImageChange];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
+    self.tabBarController.tabBar.barTintColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
+    self.tabBarController.tabBar.backgroundColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
+    self.topBackgroundView.backgroundColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
+    self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.height/2.0;
 }
 
 - (void)chooseProfilePic
@@ -97,10 +121,9 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     
     self.profileImageView.image = info[UIImagePickerControllerOriginalImage];
     
-    PFUser *user = [PFUser currentUser];
     CGSize size = CGSizeMake(500, 500);
     self.profileImageView.image = [APIManager resizeImage:self.profileImageView.image withSize:size];
-    user[@"profilePic"] = [Post getPFFileFromImage:self.profileImageView.image];
+    self.currUser[@"profilePic"] = [Post getPFFileFromImage:self.profileImageView.image];
     
     [self dismissViewControllerAnimated:YES completion:nil];
     
@@ -109,7 +132,11 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(nonnull NSString *)searchText
 {
-    if (searchText.length >= 3)
+    if (searchText.length < 3)
+    {
+        self.tableView.hidden = YES;
+    }
+    else
     {
         self.tableView.hidden = NO;
         self.searchBarGyms = [[NSMutableArray alloc] init];
@@ -262,7 +289,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     {
         [self.profileImageView setImageWithURL:url];
     }
-    self.welcomeLabel.text = [NSString stringWithFormat:@"Welcome, %@!", user[@"username"]];
     
     self.workoutTypeLabel.text = [NSString stringWithFormat:@"Workout Split: %@", user[@"workoutSplit"]];
     self.bioLabel.text = [NSString stringWithFormat:@"Bio: %@", user[@"bio"]];
