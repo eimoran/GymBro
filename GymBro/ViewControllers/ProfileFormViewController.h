@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) NSString *gender;
 @property (weak, nonatomic) NSString *gym;
 @property (weak, nonatomic) NSString *level;
+@property (strong, nonatomic) NSString *bio;
 
 @end
 

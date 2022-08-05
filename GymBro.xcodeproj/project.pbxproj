@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		086221C3A619353E33EB50DD /* Pods_GymBroTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8077BF8F3ACD7C4A8707DD45 /* Pods_GymBroTests.framework */; };
+		60C5AB47289DDD8A00F39113 /* ProfileFormCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60C5AB46289DDD8A00F39113 /* ProfileFormCell.m */; };
 		60D171EF2874AFF90031214D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D171EE2874AFF90031214D /* AppDelegate.m */; };
 		60D171F22874AFF90031214D /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D171F12874AFF90031214D /* SceneDelegate.m */; };
 		60D171F82874AFF90031214D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60D171F62874AFF90031214D /* Main.storyboard */; };
@@ -69,6 +70,8 @@
 		1C09A1A622B3A18550535DE1 /* Pods-GymBroTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBroTests.release.xcconfig"; path = "Target Support Files/Pods-GymBroTests/Pods-GymBroTests.release.xcconfig"; sourceTree = "<group>"; };
 		419E88129D7641FABC7B561F /* Pods-GymBro.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBro.debug.xcconfig"; path = "Target Support Files/Pods-GymBro/Pods-GymBro.debug.xcconfig"; sourceTree = "<group>"; };
 		5A0B043EABA469F0DE4576BB /* Pods-GymBro-GymBroUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymBro-GymBroUITests.debug.xcconfig"; path = "Target Support Files/Pods-GymBro-GymBroUITests/Pods-GymBro-GymBroUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		60C5AB45289DDD8A00F39113 /* ProfileFormCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileFormCell.h; sourceTree = "<group>"; };
+		60C5AB46289DDD8A00F39113 /* ProfileFormCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileFormCell.m; sourceTree = "<group>"; };
 		60D171EA2874AFF90031214D /* GymBro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymBro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D171ED2874AFF90031214D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		60D171EE2874AFF90031214D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -285,6 +288,8 @@
 				60D172332874EA220031214D /* WorkoutSplitCell.h */,
 				60D172342874EA220031214D /* WorkoutSplitCell.m */,
 				60D17236287605760031214D /* WorkoutTimeCell.h */,
+				60C5AB45289DDD8A00F39113 /* ProfileFormCell.h */,
+				60C5AB46289DDD8A00F39113 /* ProfileFormCell.m */,
 				60D17237287605760031214D /* WorkoutTimeCell.m */,
 				60D17239287635630031214D /* GenderCell.h */,
 				60D1723A287635630031214D /* GenderCell.m */,
@@ -584,6 +589,7 @@
 				60D172002874AFFA0031214D /* main.m in Sources */,
 				60D1727728934B8B0031214D /* PriorityCell.m in Sources */,
 				60D1727D289AFBF60031214D /* TipCell.m in Sources */,
+				60C5AB47289DDD8A00F39113 /* ProfileFormCell.m in Sources */,
 				60D17274289341AA0031214D /* FilterViewController.m in Sources */,
 				60D171F22874AFF90031214D /* SceneDelegate.m in Sources */,
 				60D172262874B5B10031214D /* LoginViewController.m in Sources */,

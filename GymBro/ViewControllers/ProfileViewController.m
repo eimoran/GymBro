@@ -49,6 +49,8 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (weak, nonatomic) IBOutlet UILabel *postCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *friendCountLabel;
 
+@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
+@property (weak, nonatomic) IBOutlet UIButton *editProfileButton;
 @property (strong, nonatomic) PFUser *currUser;
 
 - (IBAction)logout:(id)sender;
@@ -71,6 +73,16 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     
     NSArray *currUserFriends = self.currUser[@"friends"];
     self.friendCountLabel.text = [NSString stringWithFormat:@"%lu", currUserFriends.count];
+    
+    UIImage *logoutIcon = [UIImage imageNamed:@"logout.png"];
+    logoutIcon = [APIManager resizeImage:logoutIcon withSize:CGSizeMake(45, 45)];
+    [self.logoutButton setTitle:@"" forState:UIControlStateNormal];
+    [self.logoutButton setImage:logoutIcon forState:UIControlStateNormal];
+    
+    UIImage *editProfileIcon = [UIImage imageNamed:@"edit.png"];
+    editProfileIcon = [APIManager resizeImage:editProfileIcon withSize:CGSizeMake(45, 45)];
+    [self.editProfileButton setTitle:@"" forState:UIControlStateNormal];
+    [self.editProfileButton setImage:editProfileIcon forState:UIControlStateNormal];
     
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;

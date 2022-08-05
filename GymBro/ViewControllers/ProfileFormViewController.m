@@ -9,6 +9,7 @@
 #import "../Models/WorkoutSplitCell.h"
 #import "../Models/WorkoutTimeCell.h"
 #import "../Models/GenderCell.h"
+#import "../Models/ProfileFormCell.h"
 #import "../Models/Post.h"
 #import "../API/APIManager.h"
 #import "UIImageView+AFNetworking.h"
@@ -22,7 +23,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *imageControl;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImagesView;
 @property (strong, nonatomic) NSMutableArray *profileImages;
-@property (weak, nonatomic) IBOutlet UITextView *bioTextField;
+@property (strong, nonatomic) PFUser *currUser;
 - (IBAction)switchImages:(id)sender;
 
 @end
@@ -31,9 +32,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.currUser = [PFUser currentUser];
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    // Do any additional setup after loading the view.
     self.tableView.rowHeight = 200;
     
     PFUser *user = [PFUser currentUser];
@@ -54,7 +56,6 @@
     UITapGestureRecognizer *profileImageChange = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseProfilePic)];
     [profileImageChange setDelegate:self];
     [self.profileImagesView addGestureRecognizer:profileImageChange];
-    self.bioTextField.text = user[@"bio"];
 }
 
 
@@ -98,25 +99,32 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (indexPath.row == 0)
     {
-        WorkoutSplitCell *splitCell = [tableView dequeueReusableCellWithIdentifier:@"WorkoutSplitCell" forIndexPath:indexPath];
+        ProfileFormCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormBio"];
+        cell.controller = self;
+        cell.bioTextView.text = self.curr
+        return cell;
+    }
+    if (indexPath.row == 1)
+    {
+        WorkoutSplitCell *splitCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormSplit" forIndexPath:indexPath];
         splitCell.controller = self;
         return splitCell;
     }
-    else if (indexPath.row == 1)
+    else if (indexPath.row == 2)
     {
-        WorkoutTimeCell *workoutTimeCell = [tableView dequeueReusableCellWithIdentifier:@"WorkoutTimeCell" forIndexPath:indexPath];
+        WorkoutTimeCell *workoutTimeCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormTime" forIndexPath:indexPath];
         workoutTimeCell.controller = self;
         return workoutTimeCell;
     }
-    else if (indexPath.row == 2)
+    else if (indexPath.row == 3)
     {
-        GenderCell *genderCell = [tableView dequeueReusableCellWithIdentifier:@"GenderCell" forIndexPath:indexPath];
+        GenderCell *genderCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormGender" forIndexPath:indexPath];
         genderCell.controller = self;
         return genderCell;
     }
-    else if (indexPath.row == 3)
+    else if (indexPath.row == 4)
     {
-        GenderCell *gymMapCell = [tableView dequeueReusableCellWithIdentifier:@"LevelCell" forIndexPath:indexPath];
+        GenderCell *gymMapCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormLevel" forIndexPath:indexPath];
         gymMapCell.controller = self;
         return gymMapCell;
     }
@@ -126,7 +134,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return 5;
 }
 
 /*
@@ -174,7 +182,7 @@
     {
         user[@"level"] = self.level;
     }
-    user[@"bio"] = self.bioTextField.text;
+    user[@"bio"] = self.bio;
     user[@"profileImages"] = self.profileImages;
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded)
