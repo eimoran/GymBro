@@ -10,6 +10,7 @@
 #import "../Models/WorkoutTimeCell.h"
 #import "../Models/GenderCell.h"
 #import "../Models/Post.h"
+#import "../API/APIManager.h"
 #import "UIImageView+AFNetworking.h"
 #import "Parse/Parse.h"
 
@@ -76,7 +77,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     PFUser *user = [PFUser currentUser];
     CGSize size = CGSizeMake(500, 700);
-    self.profileImagesView.image = [self resizeImage:info[UIImagePickerControllerOriginalImage] withSize:size];
+    self.profileImagesView.image = [APIManager resizeImage:info[UIImagePickerControllerOriginalImage] withSize:size];
     
     if (self.profileImages.count == 0 || self.imageControl.selectedSegmentIndex == self.profileImages.count)
     {
@@ -91,20 +92,6 @@
     user[@"profileImages"] = self.profileImages;
     [[PFUser currentUser] saveInBackground];
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
-    UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    
-    resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
-    resizeImageView.image = image;
-    
-    UIGraphicsBeginImageContext(size);
-    [resizeImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return newImage;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -99,26 +99,12 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     
     PFUser *user = [PFUser currentUser];
     CGSize size = CGSizeMake(500, 500);
-    self.profileImageView.image = [self resizeImage:self.profileImageView.image withSize:size];
+    self.profileImageView.image = [APIManager resizeImage:self.profileImageView.image withSize:size];
     user[@"profilePic"] = [Post getPFFileFromImage:self.profileImageView.image];
     
     [self dismissViewControllerAnimated:YES completion:nil];
     
     [[PFUser currentUser] saveInBackground];
-}
-
-- (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
-    UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    
-    resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
-    resizeImageView.image = image;
-    
-    UIGraphicsBeginImageContext(size);
-    [resizeImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return newImage;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(nonnull NSString *)searchText

@@ -12,6 +12,22 @@
 @implementation APIManager
 
 
+// GENERAL
+
++ (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
+    UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    
+    resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
+    resizeImageView.image = image;
+    
+    UIGraphicsBeginImageContext(size);
+    [resizeImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
 // LOGIN
 + (void)signupUserWithController:(UIViewController *)controller withEmail:(NSString *)email withUsername:(NSString *)username withPassword:(NSString *)password
 {
@@ -42,8 +58,31 @@
         } else {
             NSLog(@"User registered successfully");
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController *tabViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
-            controller.view.window.rootViewController = tabViewController;
+            UITabBarController *tabBarController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
+            controller.view.window.rootViewController = tabBarController;
+            
+            UITabBar *tabBar=tabBarController.tabBar;
+            tabBar.tintColor = [UIColor colorWithHue:0.6 saturation:0.66 brightness:0.66 alpha:1];
+            UITabBarItem *tabBarItem1=[[tabBar items] objectAtIndex:0];
+            UIImage *homeIcon = [UIImage imageNamed:@"gym.png"];
+            homeIcon = [homeIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            homeIcon = [APIManager resizeImage:homeIcon withSize:CGSizeMake(45, 45)];
+            [tabBarItem1 setImage:homeIcon];
+            [tabBarItem1 setTitle:@""];
+            
+            UITabBarItem *tabBarItem2=[[tabBar items] objectAtIndex:1];
+            UIImage *matchingIcon = [UIImage imageNamed:@"matching.png"];
+            matchingIcon = [matchingIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            matchingIcon = [APIManager resizeImage:matchingIcon withSize:CGSizeMake(45, 45)];
+            [tabBarItem2 setImage:matchingIcon];
+            [tabBarItem2 setTitle:@""];
+            
+            UITabBarItem *tabBarItem3 = [[tabBar items] objectAtIndex:2];
+            UIImage *profileIcon = [UIImage imageNamed:@"profile.png"];
+            profileIcon = [profileIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            profileIcon = [APIManager resizeImage:profileIcon withSize:CGSizeMake(45, 45)];
+            [tabBarItem3 setImage:profileIcon];
+            [tabBarItem3 setTitle:@""];
         }
     }];
 }
@@ -56,8 +95,31 @@
         } else {
             NSLog(@"User logged in successfully");
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UIViewController *tabViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
-            controller.view.window.rootViewController = tabViewController;
+            UITabBarController *tabBarController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
+            controller.view.window.rootViewController = tabBarController;
+            
+            UITabBar *tabBar = tabBarController.tabBar;
+            tabBar.tintColor = [UIColor colorWithHue:0.6 saturation:0.66 brightness:0.66 alpha:1];
+            UITabBarItem *tabBarItem1 = [[tabBar items] objectAtIndex:0];
+            UIImage *homeIcon = [UIImage imageNamed:@"gym.png"];
+            homeIcon = [homeIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            homeIcon = [APIManager resizeImage:homeIcon withSize:CGSizeMake(45, 45)];
+            [tabBarItem1 setImage:homeIcon];
+            [tabBarItem1 setTitle:@""];
+            
+            UITabBarItem *tabBarItem2 = [[tabBar items] objectAtIndex:1];
+            UIImage *matchingIcon = [UIImage imageNamed:@"matching.png"];
+            matchingIcon = [matchingIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            matchingIcon = [APIManager resizeImage:matchingIcon withSize:CGSizeMake(45, 45)];
+            [tabBarItem2 setImage:matchingIcon];
+            [tabBarItem2 setTitle:@""];
+            
+            UITabBarItem *tabBarItem3 = [[tabBar items] objectAtIndex:2];
+            UIImage *profileIcon = [UIImage imageNamed:@"profile.png"];
+            profileIcon = [profileIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            profileIcon = [APIManager resizeImage:profileIcon withSize:CGSizeMake(45, 45)];
+            [tabBarItem3 setImage:profileIcon];
+            [tabBarItem3 setTitle:@""];
         }
     }];
 }

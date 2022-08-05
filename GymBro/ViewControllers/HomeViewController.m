@@ -21,6 +21,8 @@
 @property (strong, nonatomic) NSMutableArray *likedPostsArray;
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
+@property (weak, nonatomic) IBOutlet UIButton *friendsButton;
+@property (weak, nonatomic) IBOutlet UIButton *composeButton;
 
 
 @end
@@ -30,10 +32,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationItem.leftBarButtonItem.title = @"";
-    self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"add-friend.png"];
+    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithHue:0.58 saturation:0.40 brightness:0.66 alpha:1];
+    self.tabBarController.tabBar.backgroundColor = [UIColor colorWithHue:0.6 saturation:0.66 brightness:0.66 alpha:1];
+//    self.view.backgroundColor = [UIColor colorWithHue:0.6 saturation:0.66 brightness:0.66 alpha:1];
+    UIImage *friendsIcon = [UIImage imageNamed:@"friends.png"];
+    friendsIcon = [APIManager resizeImage:friendsIcon withSize:CGSizeMake(50, 50)];
+    [self.friendsButton setTitle:@"" forState:UIControlStateNormal];
+    [self.friendsButton setImage:friendsIcon forState:UIControlStateNormal];
+    
+    UIImage *composeIcon = [UIImage imageNamed:@"compose.png"];
+    composeIcon = [APIManager resizeImage:composeIcon withSize:CGSizeMake(50, 50)];
+    [self.composeButton setTitle:@"" forState:UIControlStateNormal];
+    [self.composeButton setImage:composeIcon forState:UIControlStateNormal];
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     self.postArray = [APIManager fetchPostswithTableView:self.tableView andRefresh:self.refreshControl];
     
@@ -76,7 +90,6 @@
     cell.homeVC = self;
     cell.tableView = self.tableView;
     [cell setPost];
-    self.tableView.rowHeight = 200;
     
     return cell;
 }

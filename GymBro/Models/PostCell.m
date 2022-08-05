@@ -7,7 +7,9 @@
 
 #import "PostCell.h"
 #import "Post.h"
+#import "UIImageView+AFNetworking.h"
 #import <Parse/Parse.h>
+#import "../API/APIManager.h"
 
 @implementation PostCell
 
@@ -24,6 +26,25 @@
 
 
 - (void)setPost {
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"username" equalTo:self.post[@"author"]];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (objects.count > 0)
+        {
+            PFUser *author = objects[0];
+            if (author[@"profilePic"])
+            {
+                self.authorProfilePicView.layer.cornerRadius = self.authorProfilePicView.frame.size.height/2.0;
+                PFFileObject *profilePicObj = author[@"profilePic"];
+                NSURL *url = [NSURL URLWithString:profilePicObj.url];
+                [self.authorProfilePicView setImageWithURL:url];
+            }
+            else
+            {
+                self.authorProfilePicView.image = [UIImage imageNamed:@"profile-Icon.png"];
+            }
+        }
+    }];
     PFUser *user = [PFUser currentUser];
     self.postTextLabel.text = [NSString stringWithFormat:@"%@ %@", self.post.author, self.post.text];
     NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:self.postTextLabel.text];
@@ -54,12 +75,17 @@
     }
     if (self.hasBeenLiked)
     {
-        favoriteIcon = [UIImage imageNamed:@"favor-icon-red.png"];
+        favoriteIcon = [UIImage imageNamed:@"liked.png"];
     }
     else{
-        favoriteIcon = [UIImage imageNamed:@"favor-icon.png"];
+        favoriteIcon = [UIImage imageNamed:@"like.png"];
     }
+    favoriteIcon = [APIManager resizeImage:favoriteIcon withSize:CGSizeMake(30, 30)];
     [self.likeButton setImage:favoriteIcon forState:UIControlStateNormal];
+    
+    UIImage *commentIcon = [UIImage imageNamed:@"comment.png"];
+    commentIcon = [APIManager resizeImage:commentIcon withSize:CGSizeMake(30, 30)];
+    [self.commentButton setImage:commentIcon forState:UIControlStateNormal];
 }
 
 - (void)setPostImage
@@ -113,6 +139,7 @@
     }
     NSString *elapsed = [formatter2 stringFromDate:date toDate:[NSDate date]];
     label.text = [NSString stringWithFormat:@"%@ ago", elapsed];
+    label.textColor = [UIColor lightGrayColor];
 }
 
 - (IBAction)like:(id)sender {

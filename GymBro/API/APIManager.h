@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface APIManager : NSObject
 
+// GENERAL
+
++ (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size;
+
 // LOGIN
 + (void)signupUserWithController:(UIViewController *)controller withEmail:(NSString *)email withUsername:(NSString *)username withPassword:(NSString *)password;
 + (void)loginUserWithController:(UIViewController *)controller withUsername:(NSString *)username withPassword:(NSString *)password;
