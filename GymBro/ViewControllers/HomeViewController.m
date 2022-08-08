@@ -15,6 +15,7 @@
 @interface HomeViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) NSArray *userArray;
+@property (strong, nonatomic) PFUser *currUser;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *postArray;
@@ -32,6 +33,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.currUser = [PFUser currentUser];
     UIImage *friendsIcon = [UIImage imageNamed:@"friends.png"];
     friendsIcon = [APIManager resizeImage:friendsIcon withSize:CGSizeMake(45, 45)];
     [self.friendsButton setTitle:@"" forState:UIControlStateNormal];
@@ -91,14 +93,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PostCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
     cell.post = self.postArray[indexPath.row];
-    cell.hasBeenLiked = NO;
-    for (Post *post in cell.post[@"likedPosts"])
-    {
-        if ([cell.post isEqual:post])
-        {
-            cell.hasBeenLiked = YES;
-        }
-    }
     cell.homeVC = self;
     cell.tableView = self.tableView;
     [cell setPost];

@@ -6,6 +6,15 @@
 //
 
 #import "CommentCell.h"
+#import "../API/APIManager.h"
+
+@interface CommentCell ()
+
+- (IBAction)like:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *likeCommentButton;
+@property (weak, nonatomic) IBOutlet UILabel *likeCount;
+
+@end
 
 @implementation CommentCell
 
@@ -21,6 +30,7 @@
 }
 
 - (void)setComment {
+    PFUser *currUser = [PFUser currentUser];
     [self.comment fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
         NSString *text = [NSString stringWithFormat:@"%@ %@", self.comment.author, self.comment.text];
         NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:text];
@@ -29,6 +39,31 @@
         [self.postTextLabel setAttributedText: postText];
         
         [self setTimestamp];
+        self.likeCount.text = [self.comment[@"likeCount"] stringValue];
+        self.hasBeenLiked = NO;
+        NSArray *likedComments = [[NSMutableArray alloc] initWithArray:currUser[@"likedComments"]];
+        for (int i = 0; i < likedComments.count; i++)
+        {
+            Comment *comment = likedComments[i];
+            if ([self.comment.objectId isEqual:comment.objectId])
+            {
+                self.hasBeenLiked = YES;
+                self.likedCommentsIndex = i;
+            }
+        }
+        
+        UIImage *likeCommentIcon = [[UIImage alloc] init];
+        if (self.hasBeenLiked)
+        {
+            likeCommentIcon = [UIImage imageNamed:@"liked.png"];
+        }
+        else
+        {
+            likeCommentIcon = [UIImage imageNamed:@"like.png"];
+        }
+        likeCommentIcon = [APIManager resizeImage:likeCommentIcon withSize:CGSizeMake(30, 30)];
+        [self.likeCommentButton setTitle:@"" forState:UIControlStateNormal];
+        [self.likeCommentButton setImage:likeCommentIcon forState:UIControlStateNormal];
     }];
 }
 
@@ -74,6 +109,41 @@
     }
     NSString *elapsed = [formatter2 stringFromDate:date toDate:[NSDate date]];
     self.timestampLabel.text = [NSString stringWithFormat:@"%@ ago", elapsed];
+    self.timestampLabel.textColor = [UIColor lightGrayColor];
 }
 
+- (IBAction)like:(id)sender {
+    NSInteger likes = [self.comment[@"likeCount"] integerValue];
+    PFUser *user = [PFUser currentUser];
+    NSMutableArray *likedComments = [[NSMutableArray alloc] initWithArray:user[@"likedComments"]];
+    if (self.hasBeenLiked) {
+        self.hasBeenLiked = NO;
+        likes = [self.comment[@"likeCount"] intValue] - 1;
+//        likes = [NSNumber numberWithInt:[self.comment[@"likeCount"] intValue] - 1];
+        [likedComments removeObjectAtIndex:self.likedCommentsIndex];
+    }
+    else {
+        self.hasBeenLiked = YES;
+        likes = [self.comment[@"likeCount"] intValue] + 1;
+//        likes = [NSNumber numberWithInt:[self.comment[@"likeCount"] intValue] + 1];
+        [likedComments addObject:self.comment];
+    }
+    self.comment[@"likeCount"] = @(likes);
+    user[@"likedComments"] = likedComments;
+    [self setComment];
+    
+    [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (succeeded)
+        {
+            NSLog(@"SAVED USER");
+        }
+    }];
+    
+    [self.comment saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if (!error)
+        {
+            NSLog(@"SAVED COMMENT");
+        }
+    }];
+}
 @end

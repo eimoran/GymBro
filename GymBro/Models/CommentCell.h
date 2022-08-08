@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) IBOutlet UILabel *postTextLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
+@property (nonatomic) BOOL hasBeenLiked;
+@property (nonatomic) int likedCommentsIndex;
 @property (strong, nonatomic) Comment *comment;
 
 - (void)setComment;

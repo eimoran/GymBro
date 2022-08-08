@@ -10,13 +10,15 @@
 #import "../Models/PostCell.h"
 #import "../Models/CommentCell.h"
 #import "../Models/Post.h"
+#import "../Models/Comment.h"
 
 
-@interface PostDetailsViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface PostDetailsViewController () <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *commentArray;
 @property (weak, nonatomic) IBOutlet UITextView *commentTextView;
+@property (strong, nonatomic) PFUser *currUser;
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 - (IBAction)goHome:(id)sender;
@@ -30,6 +32,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.currUser = [PFUser currentUser];
+    self.commentTextView.delegate = self;
+    self.commentTextView.text = @"Write a Comment";
+    self.commentTextView.textColor = [UIColor lightGrayColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -52,19 +58,52 @@
 }
 */
 
+NSInteger intSort(id num1, id num2, void* context)
+{
+    int v1 = [num1[@"likeCount"] intValue];
+    int v2 = [num2[@"likeCount"] intValue];
+    if (v1 < v2)
+        return NSOrderedAscending;
+    else if (v1 > v2)
+        return NSOrderedDescending;
+    else
+        return NSOrderedSame;
+}
 
 - (void)fetchComments
 {
+    __block NSArray *comments = [[NSArray alloc] init];
     self.commentArray = [[NSMutableArray alloc] init];
     [self.post fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-        self.commentArray = self.post[@"comments"];
         [self.tableView reloadData];
-        [self.refreshControl endRefreshing];
+        PFQuery *query = [PFQuery queryWithClassName:@"Comment"];
+        [query orderByAscending:@"likeCount"];
+        query.limit = 100;
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            comments = objects;
+            NSLog(@"%@", objects);
+            NSArray *postComments = [[NSArray alloc] initWithArray:self.post[@"comments"]];
+            NSLog(@"POST COMMENTS: %@", postComments);
+            for (Comment *comment in comments)
+            {
+                for (Comment *postComment in postComments)
+                {
+                    if ([comment.objectId isEqual:postComment.objectId])
+                    {
+                        NSLog(@"COMMENT: %@", comment);
+                        [self.commentArray addObject:comment];
+                    }
+                }
+            }
+            [self.tableView reloadData];
+            [self.refreshControl endRefreshing];
+        }];
     }];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Post has photo
+    tableView.rowHeight = UITableViewAutomaticDimension;
     if ([[self.post valueForKeyPath:@"photoExists"] isEqual: @1])
     {
         if (indexPath.section == 0 && indexPath.row == 0)
@@ -77,6 +116,7 @@
         }
         else if (indexPath.section == 0 && indexPath.row == 1)
         {
+//            tableView.rowHeight = 400;
             PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell2" forIndexPath:indexPath];
             postCell.post = self.post;
             postCell.tableView = self.tableView;
@@ -85,9 +125,8 @@
         }
         else
         {
-            Comment *comment = self.commentArray[self.commentArray.count - 1 - indexPath.row];
             CommentCell *commentCell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
-            commentCell.comment = comment;
+            commentCell.comment = self.commentArray[self.commentArray.count - 1 - indexPath.row];
             [commentCell setComment];
             return commentCell;
         }
@@ -156,8 +195,27 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 20;
+    return 15;
 }
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@"Write a Comment"])
+    {
+        textView.text = @"";
+        textView.textColor = [UIColor blackColor];
+    }
+    [textView becomeFirstResponder];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@""]) {
+        textView.text = @"Write a Comment";
+    }
+    [textView resignFirstResponder];
+}
+
 
 - (IBAction)comment:(id)sender {
     if (self.commentTextView.text.length == 0)

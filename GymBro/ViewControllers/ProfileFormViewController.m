@@ -101,7 +101,7 @@
     {
         ProfileFormCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormBio"];
         cell.controller = self;
-        cell.bioTextView.text = self.curr
+        cell.bioTextView.text = self.currUser[@"bio"];
         return cell;
     }
     if (indexPath.row == 1)

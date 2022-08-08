@@ -122,6 +122,10 @@
     }];
 }
 
+// POST DETAILS
+//+ (NSMutableArray *)fetchCommentsWithTableView:(UITableView *)tableVIew andRefresh:(UIRefreshControl *)refreshControl
+
+
 // HOME
 + (NSMutableArray *)fetchPostswithTableView:(UITableView *)tableView andRefresh:(UIRefreshControl *)refreshControl
 {
