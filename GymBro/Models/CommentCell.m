@@ -119,13 +119,11 @@
     if (self.hasBeenLiked) {
         self.hasBeenLiked = NO;
         likes = [self.comment[@"likeCount"] intValue] - 1;
-//        likes = [NSNumber numberWithInt:[self.comment[@"likeCount"] intValue] - 1];
         [likedComments removeObjectAtIndex:self.likedCommentsIndex];
     }
     else {
         self.hasBeenLiked = YES;
         likes = [self.comment[@"likeCount"] intValue] + 1;
-//        likes = [NSNumber numberWithInt:[self.comment[@"likeCount"] intValue] + 1];
         [likedComments addObject:self.comment];
     }
     self.comment[@"likeCount"] = @(likes);

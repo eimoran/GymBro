@@ -12,9 +12,7 @@
 
 @interface FriendsViewController () <UITableViewDelegate, UITableViewDataSource, SWTableViewCellDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *friendsTableView;
-@property (weak, nonatomic) IBOutlet UITableView *pendingTableView;
-@property (weak, nonatomic) IBOutlet UITableView *requestTableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray *friendsArray;
 @property (strong, nonatomic) NSMutableArray *pendingFriendsArray;
@@ -23,8 +21,12 @@
 @property (strong, nonatomic) PFUser *currUser;
 @property (strong, nonatomic) CLLocation *userLoc;
 
-- (IBAction)goHome:(id)sender;
 - (IBAction)refresh:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *refreshButton;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+- (IBAction)switchSegments:(id)sender;
+
+@property int segment;
 
 @end
 
@@ -33,18 +35,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.friendsTableView.delegate = self;
-    self.friendsTableView.dataSource = self;
-    self.friendsTableView.rowHeight = 250;
+    UIImage *refreshIcon = [UIImage imageNamed:@"refresh.png"];
+    refreshIcon = [APIManager resizeImage:refreshIcon withSize:CGSizeMake(45, 45)];
+    [self.refreshButton setTitle:@"" forState:UIControlStateNormal];
+    [self.refreshButton setImage:refreshIcon forState:UIControlStateNormal];
     
-    self.pendingTableView.delegate = self;
-    self.pendingTableView.dataSource = self;
-    self.pendingTableView.rowHeight = 250;
-    
-    self.requestTableView.delegate = self;
-    self.requestTableView.dataSource = self;
-    self.requestTableView.rowHeight = 250;
-    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.rowHeight = 250;
     self.currUser = [PFUser currentUser];
     [self setLocalGym];
     
@@ -65,9 +63,9 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
         if (users != nil) {
             [self filterFriends:users];
-            [self.friendsTableView reloadData];
-            [self.requestTableView reloadData];
-            [self.pendingTableView reloadData];
+            [self.tableView reloadData];
+//            [self.requestTableView reloadData];
+//            [self.pendingTableView reloadData];
         } else {
             NSLog(@"%@", error.localizedDescription);
         }
@@ -86,19 +84,20 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
-    if ([tableView isEqual: self.friendsTableView])
-    {
-        cell.user = self.friendsArray[indexPath.row];
-    }
-    else if ([tableView isEqual:self.requestTableView])
-    {
-        cell.delegate = self;
-        cell.rightUtilityButtons = [self rightButtons];
-        cell.user = self.friendRequestsArray[indexPath.row];
-    }
-    else
-    {
-        cell.user = self.pendingFriendsArray[indexPath.row];
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case 0:
+            cell.user = self.friendsArray[indexPath.row];
+            break;
+        case 1:
+            cell.delegate = self;
+            cell.rightUtilityButtons = [self rightButtons];
+            cell.user = self.friendRequestsArray[indexPath.row];
+            break;
+        case 2:
+            cell.user = self.pendingFriendsArray[indexPath.row];
+            break;
+        default:
+            break;
     }
     cell.distanceFromUser = [self getDistance:cell.user];
     cell.controller = self;
@@ -108,19 +107,17 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([tableView isEqual:self.friendsTableView])
-    {
-        return self.friendsArray.count;
+    switch (self.segmentedControl.selectedSegmentIndex) {
+        case 0:
+            return self.friendsArray.count;
+            break;
+        case 1:
+            return self.friendRequestsArray.count;
+            break;
+        default:
+            return self.pendingFriendsArray.count;
+            break;
     }
-    else if ([tableView isEqual:self.requestTableView])
-    {
-        return self.friendRequestsArray.count;
-    }
-    else
-    {
-        return self.pendingFriendsArray.count;
-    }
-    
 }
 
 - (NSArray *)rightButtons
@@ -274,25 +271,23 @@
         if (isValidFriend)
         {
             [self.friendsArray addObject:user];
-            [self.friendsTableView reloadData];
+            [self.tableView reloadData];
         }
         else if (isValidFriendRequest)
         {
             [self.friendRequestsArray addObject:user];
-            [self.requestTableView reloadData];
         }
         else if (isValidPendingFriend)
         {
             [self.pendingFriendsArray addObject:user];
-            [self.pendingTableView reloadData];
         }
     }
 }
 
-- (IBAction)goHome:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 - (IBAction)refresh:(id)sender {
     [self fetchUsersWithQuery];
+}
+- (IBAction)switchSegments:(id)sender {
+    [self.tableView reloadData];
 }
 @end

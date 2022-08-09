@@ -58,18 +58,6 @@
 }
 */
 
-NSInteger intSort(id num1, id num2, void* context)
-{
-    int v1 = [num1[@"likeCount"] intValue];
-    int v2 = [num2[@"likeCount"] intValue];
-    if (v1 < v2)
-        return NSOrderedAscending;
-    else if (v1 > v2)
-        return NSOrderedDescending;
-    else
-        return NSOrderedSame;
-}
-
 - (void)fetchComments
 {
     __block NSArray *comments = [[NSArray alloc] init];
@@ -81,16 +69,13 @@ NSInteger intSort(id num1, id num2, void* context)
         query.limit = 100;
         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
             comments = objects;
-            NSLog(@"%@", objects);
             NSArray *postComments = [[NSArray alloc] initWithArray:self.post[@"comments"]];
-            NSLog(@"POST COMMENTS: %@", postComments);
             for (Comment *comment in comments)
             {
                 for (Comment *postComment in postComments)
                 {
                     if ([comment.objectId isEqual:postComment.objectId])
                     {
-                        NSLog(@"COMMENT: %@", comment);
                         [self.commentArray addObject:comment];
                     }
                 }
@@ -116,7 +101,6 @@ NSInteger intSort(id num1, id num2, void* context)
         }
         else if (indexPath.section == 0 && indexPath.row == 1)
         {
-//            tableView.rowHeight = 400;
             PostCell *postCell = [tableView dequeueReusableCellWithIdentifier:@"PostCell2" forIndexPath:indexPath];
             postCell.post = self.post;
             postCell.tableView = self.tableView;

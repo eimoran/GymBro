@@ -9,11 +9,13 @@
 #import "UIKit/UIKit.h"
 #import <Parse/Parse.h>
 #import "../Models/PriorityCell.h"
+#import "../API/APIManager.h"
 
 @interface FilterViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 - (IBAction)confirm:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 - (IBAction)setDefaultFilters:(id)sender;
 @property (strong, nonatomic) PFUser *currUser;
 
@@ -28,6 +30,11 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 200;
+    
+    UIImage *confirmIcon = [UIImage imageNamed:@"filter2.png"];
+    confirmIcon = [APIManager resizeImage:confirmIcon withSize:CGSizeMake(40, 40)];
+    [self.confirmButton setTitle:@"" forState:UIControlStateNormal];
+    [self.confirmButton setImage:confirmIcon forState:UIControlStateNormal];
     
     self.currUser = [PFUser currentUser];
     NSArray *filterArray = self.currUser[@"filterArray"];

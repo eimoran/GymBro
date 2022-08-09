@@ -16,6 +16,7 @@
 
 - (IBAction)choosePhoto:(id)sender;
 - (IBAction)post:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *postButton;
 
 @property (nonatomic) BOOL hasChosenImage;
 
@@ -27,6 +28,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.hasChosenImage = NO;
+    
+    UIImage *composeIcon = [UIImage imageNamed:@"send.png"];
+    composeIcon = [APIManager resizeImage:composeIcon withSize:CGSizeMake(45, 45)];
+    [self.postButton setTitle:@"" forState:UIControlStateNormal];
+    [self.postButton setImage:composeIcon forState:UIControlStateNormal];
     
     UITapGestureRecognizer *imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(choosePhoto:)];
     [imageTap setDelegate:self];

@@ -85,7 +85,10 @@
     else
     {
         self.filterButton.hidden = NO;
-        
+        UIImage *filterIcon = [UIImage imageNamed:@"filter.png"];
+        filterIcon = [APIManager resizeImage:filterIcon withSize:CGSizeMake(45, 45)];
+        [self.filterButton setTitle:@"" forState:UIControlStateNormal];
+        [self.filterButton setImage:filterIcon forState:UIControlStateNormal];
         
         
         
