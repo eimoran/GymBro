@@ -46,12 +46,16 @@
 - (void)setData
 {
     self.profileImages = self.user[@"profileImages"];
-    PFFileObject *imageObj = self.profileImages[0];
-    NSURL *url = [NSURL URLWithString:imageObj.url];
-    [self.profileImagesView setImageWithURL:url];
+    if (self.profileImages.count > 0)
+    {
+        PFFileObject *imageObj = self.profileImages[0];
+        NSURL *url = [NSURL URLWithString:imageObj.url];
+        [self.profileImagesView setImageWithURL:url];
+    }
     
     if (self.user[@"profilePic"])
     {
+        self.profilePicView.layer.cornerRadius = self.profilePicView.frame.size.height/2.0;
         PFFileObject *profilePicObj = self.user[@"profilePic"];
         NSURL *url2 = [NSURL URLWithString:profilePicObj.url];
         [self.profilePicView setImageWithURL:url2];

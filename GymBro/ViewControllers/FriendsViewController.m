@@ -42,7 +42,7 @@
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.rowHeight = 250;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.currUser = [PFUser currentUser];
     [self setLocalGym];
     
@@ -64,8 +64,6 @@
         if (users != nil) {
             [self filterFriends:users];
             [self.tableView reloadData];
-//            [self.requestTableView reloadData];
-//            [self.pendingTableView reloadData];
         } else {
             NSLog(@"%@", error.localizedDescription);
         }
@@ -183,9 +181,9 @@
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded)
         {
-            NSIndexPath *cellIndexPath = [self.requestTableView indexPathForCell:cell];
+            NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
             [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row];
-            [self.requestTableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         else
         {
@@ -205,9 +203,9 @@
     [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded)
         {
-            NSIndexPath *cellIndexPath = [self.requestTableView indexPathForCell:cell];
+            NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
             [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row];
-            [self.requestTableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         else
         {
