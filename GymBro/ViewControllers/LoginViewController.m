@@ -9,7 +9,7 @@
 #import "Parse/Parse.h"
 #import "../API/APIManager.h"
 
-@interface LoginViewController ()
+@interface LoginViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
@@ -17,6 +17,7 @@
 - (IBAction)signup:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *signupButton;
+@property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
 
 @end
 
@@ -28,7 +29,9 @@
     
     // Hide email field unless user is trying to sign up
     self.emailField.hidden = true;
-    
+    self.usernameField.delegate = self;
+    self.passwordField.delegate = self;
+    self.emailField.delegate = self;
     
     UIImage *loginIcon = [UIImage imageNamed:@"login.png"];
     loginIcon = [APIManager resizeImage:loginIcon withSize:CGSizeMake(45,45)];
@@ -39,6 +42,18 @@
     signupIcon = [APIManager resizeImage:signupIcon withSize:CGSizeMake(45,45)];
     [self.signupButton setTitle:@"" forState:UIControlStateNormal];
     [self.signupButton setImage:signupIcon forState:UIControlStateNormal];
+    
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:
+    UIKeyboardWillShowNotification object:nil];
+
+    [nc addObserver:self selector:@selector(keyboardWillHide:) name:
+    UIKeyboardWillHideNotification object:nil];
+
+    self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+    action:@selector(didTapAnywhere:)];
 }
 
 /*
@@ -94,5 +109,24 @@
     else{
         [self loginUser];
     }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.view endEditing:YES];
+    return YES;
+}
+
+-(void)didTapAnywhere: (UITapGestureRecognizer*) recognizer {
+    [self.view endEditing:YES];
+}
+
+-(void) keyboardWillShow:(NSNotification *) note {
+    [self.view addGestureRecognizer:self.tapRecognizer];
+}
+
+-(void) keyboardWillHide:(NSNotification *) note
+{
+    [self.view removeGestureRecognizer:self.tapRecognizer];
 }
 @end

@@ -20,6 +20,8 @@
 @property (strong, nonatomic) CLLocation *userLoc;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (weak, nonatomic) IBOutlet UIButton *filterButton;
+@property (nonatomic) NSInteger rowCount;
+@property BOOL deleting;
 
 @end
 
@@ -30,6 +32,7 @@
     // Do any additional setup after loading the view.
     self.currUser = [PFUser currentUser];
     self.filterButton.hidden = YES;
+    self.deleting = NO;
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(200, 0, 00, 30)];
     titleLabel.text = @"Your Matches!";
@@ -123,6 +126,7 @@
 - (void)fetchUsersWithQuery
 {
     self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"priorityArray"] withGenderFilter:[self.currUser[@"genderFilter"] intValue]];
+    self.rowCount = self.userArray.count;
     [self.tableView reloadData];
     [self.refreshControl endRefreshing];
 }
@@ -145,7 +149,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row % 2 == 0)
     {
-        self.tableView.rowHeight = UITableViewAutomaticDimension;
         UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
         cell.delegate = self;
         cell.user = self.userArray[indexPath.row/2];
@@ -158,7 +161,6 @@
     }
     else
     {
-        self.tableView.rowHeight = 10;
         UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"separator" forIndexPath:indexPath];
         cell.indexPath = indexPath;
         [cell createSeparator];
@@ -228,8 +230,9 @@
         if (succeeded)
         {
             NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
-            [self.userArray removeObjectAtIndex:cellIndexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self.userArray removeObjectAtIndex:cellIndexPath.row/2];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cellIndexPath.row+1 inSection:cellIndexPath.section], cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         else
         {
@@ -250,8 +253,8 @@
         if (succeeded)
         {
             NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
-            [self.userArray removeObjectAtIndex:cellIndexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.userArray removeObjectAtIndex:cellIndexPath.row/2];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cellIndexPath.row+1 inSection:cellIndexPath.section], cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         else
         {

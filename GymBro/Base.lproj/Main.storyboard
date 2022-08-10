@@ -622,15 +622,15 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="74B-3G-faM">
-                                                    <rect key="frame" x="30" y="0.0" width="330" height="400"/>
+                                                    <rect key="frame" x="40" y="0.0" width="320" height="400"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="400" id="HfM-R0-Qel"/>
                                                     </constraints>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ld-qL-6oL">
-                                                    <rect key="frame" x="360" y="174" width="30" height="40"/>
+                                                    <rect key="frame" x="360" y="174" width="40" height="40"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="30" id="059-ST-iXE"/>
+                                                        <constraint firstAttribute="width" constant="40" id="059-ST-iXE"/>
                                                         <constraint firstAttribute="height" constant="40" id="Z8N-ld-oLa"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -640,9 +640,9 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uWa-QA-wjn">
-                                                    <rect key="frame" x="0.0" y="174" width="30" height="40"/>
+                                                    <rect key="frame" x="0.0" y="174" width="40" height="40"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="30" id="9DB-QC-LQ0"/>
+                                                        <constraint firstAttribute="width" constant="40" id="9DB-QC-LQ0"/>
                                                         <constraint firstAttribute="height" constant="40" id="U5O-KM-xlj"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -693,7 +693,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="KkU-Ks-Vbo" secondAttribute="trailing" constant="20" id="dhH-sy-3cu"/>
                                                 <constraint firstItem="wAw-1I-BMf" firstAttribute="top" secondItem="bDT-Ne-ryE" secondAttribute="bottom" constant="10" id="eG0-xA-Yv7"/>
                                                 <constraint firstAttribute="bottom" secondItem="0xS-Bn-hfp" secondAttribute="bottom" constant="10" id="ed9-9n-rqT"/>
-                                                <constraint firstAttribute="trailing" secondItem="3Ld-qL-6oL" secondAttribute="trailing" constant="10" id="hTX-gC-Z2c"/>
+                                                <constraint firstAttribute="trailing" secondItem="3Ld-qL-6oL" secondAttribute="trailing" id="hTX-gC-Z2c"/>
                                                 <constraint firstItem="74B-3G-faM" firstAttribute="top" secondItem="HQN-b8-8KA" secondAttribute="top" id="ihs-bV-OJc"/>
                                                 <constraint firstAttribute="trailing" secondItem="ilp-cZ-gu1" secondAttribute="trailing" constant="20" id="inU-73-4kd"/>
                                                 <constraint firstItem="ilp-cZ-gu1" firstAttribute="leading" secondItem="HQN-b8-8KA" secondAttribute="leading" constant="20" id="kOP-Pr-pKO"/>

@@ -9,6 +9,7 @@
 
 @interface PriorityCell () <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>
 
+@property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
 - (IBAction)textChanged:(id)sender;
 
 @end
@@ -21,6 +22,18 @@
     // Initialization code
     self.picker.delegate = self;
     self.picker.dataSource = self;
+    self.distanceTextField.delegate = self;
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:
+    UIKeyboardWillShowNotification object:nil];
+
+    [nc addObserver:self selector:@selector(keyboardWillHide:) name:
+    UIKeyboardWillHideNotification object:nil];
+
+    self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+    action:@selector(didTapAnywhere:)];
 }
 
 
@@ -158,6 +171,25 @@
 
 - (IBAction)textChanged:(id)sender {
     self.filterVC.distance = [self.distanceTextField.text intValue];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.filterVC.view endEditing:YES];
+    return YES;
+}
+
+-(void)didTapAnywhere: (UITapGestureRecognizer*) recognizer {
+    [self.filterVC.view endEditing:YES];
+}
+
+-(void) keyboardWillShow:(NSNotification *) note {
+    [self.filterVC.view addGestureRecognizer:self.tapRecognizer];
+}
+
+-(void) keyboardWillHide:(NSNotification *) note
+{
+    [self.filterVC.view removeGestureRecognizer:self.tapRecognizer];
 }
 
 @end

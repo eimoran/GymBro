@@ -23,7 +23,7 @@
 static NSString * const clientID = @"ZQHYEONNNHSSRVKTPJLCMNP3IUBUHIEWLYM4O5ROWKEPZPJZ";
 static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQMZMXDXAHD";
 
-@interface ProfileViewController () <ProfileFormViewControllerDelegate, GymDetailsViewControllerDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface ProfileViewController () <ProfileFormViewControllerDelegate, GymDetailsViewControllerDelegate, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) CLLocationManager *locationManager;
@@ -52,6 +52,8 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UIButton *editProfileButton;
 @property (strong, nonatomic) PFUser *currUser;
+
+@property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
 
 - (IBAction)logout:(id)sender;
 
@@ -101,6 +103,18 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     UITapGestureRecognizer *profileImageChange = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseProfilePic)];
     [profileImageChange setDelegate:self];
     [self.profileImageView addGestureRecognizer:profileImageChange];
+    
+    self.searchBar.delegate = self;
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:
+    UIKeyboardWillShowNotification object:nil];
+
+    [nc addObserver:self selector:@selector(keyboardWillHide:) name:
+    UIKeyboardWillHideNotification object:nil];
+
+    self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+    action:@selector(didTapAnywhere:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -349,6 +363,20 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
             self.view.window.rootViewController = loginVC;
         }
     }];
+}
+
+
+-(void)didTapAnywhere: (UITapGestureRecognizer*) recognizer {
+    [self.view endEditing:YES];
+}
+
+-(void) keyboardWillShow:(NSNotification *) note {
+    [self.view addGestureRecognizer:self.tapRecognizer];
+}
+
+-(void) keyboardWillHide:(NSNotification *) note
+{
+    [self.view removeGestureRecognizer:self.tapRecognizer];
 }
 @end
 

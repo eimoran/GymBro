@@ -25,7 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *refreshButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 - (IBAction)switchSegments:(id)sender;
-
+@property (nonatomic) NSInteger rowCount;
 @property int segment;
 
 @end
@@ -63,6 +63,7 @@
     [query findObjectsInBackgroundWithBlock:^(NSArray *users, NSError *error) {
         if (users != nil) {
             [self filterFriends:users];
+            self.rowCount = users.count;
             [self.tableView reloadData];
         } else {
             NSLog(@"%@", error.localizedDescription);
@@ -83,7 +84,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row % 2 == 0)
     {
-        self.tableView.rowHeight = UITableViewAutomaticDimension;
         UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
         switch (self.segmentedControl.selectedSegmentIndex) {
             case 0:
@@ -107,7 +107,6 @@
     }
     else
     {
-        self.tableView.rowHeight = 10;
         UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"separator" forIndexPath:indexPath];
         cell.indexPath = indexPath;
         [cell createSeparator];
@@ -194,8 +193,8 @@
         if (succeeded)
         {
             NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
-            [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row/2];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cellIndexPath.row+1 inSection:cellIndexPath.section], cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         else
         {
@@ -219,8 +218,8 @@
         if (succeeded)
         {
             NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
-            [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row/2];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cellIndexPath.row+1 inSection:cellIndexPath.section], cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         else
         {
