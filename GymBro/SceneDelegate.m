@@ -6,6 +6,8 @@
 //
 
 #import "SceneDelegate.h"
+#import <Parse/Parse.h>
+#import "API/APIManager.h"
 
 @interface SceneDelegate ()
 
@@ -15,9 +17,43 @@
 
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
-    // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-    // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-    // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+    ParseClientConfiguration *config = [ParseClientConfiguration  configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
+
+        configuration.applicationId = @"sdhQay3CsZ8mOLs5iIuvrSHkPtabXqHesQ7diKqY";
+        configuration.clientKey = @"TCRiRrtUWmmtI1khFzvJdmRinX1N2tg7kaYrV304";
+        configuration.server = @"https://parseapi.back4app.com";
+    }];
+
+    [Parse initializeWithConfiguration:config];
+    
+    if ([PFUser currentUser]) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UITabBarController *tabBarController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
+        
+        UITabBar *tabBar = tabBarController.tabBar;
+        UITabBarItem *tabBarItem1 = [[tabBar items] objectAtIndex:0];
+        UIImage *homeIcon = [UIImage imageNamed:@"gym.png"];
+        homeIcon = [homeIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        homeIcon = [APIManager resizeImage:homeIcon withSize:CGSizeMake(45, 45)];
+        [tabBarItem1 setImage:homeIcon];
+        [tabBarItem1 setTitle:@""];
+        
+        UITabBarItem *tabBarItem2 = [[tabBar items] objectAtIndex:1];
+        UIImage *matchingIcon = [UIImage imageNamed:@"matching.png"];
+        matchingIcon = [matchingIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        matchingIcon = [APIManager resizeImage:matchingIcon withSize:CGSizeMake(45, 45)];
+        [tabBarItem2 setImage:matchingIcon];
+        [tabBarItem2 setTitle:@""];
+        
+        UITabBarItem *tabBarItem3 = [[tabBar items] objectAtIndex:2];
+        UIImage *profileIcon = [UIImage imageNamed:@"profile.png"];
+        profileIcon = [profileIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        profileIcon = [APIManager resizeImage:profileIcon withSize:CGSizeMake(45, 45)];
+        [tabBarItem3 setImage:profileIcon];
+        [tabBarItem3 setTitle:@""];
+        
+        self.window.rootViewController = tabBarController;
+    }
 }
 
 

@@ -111,14 +111,14 @@
             homeIcon = [APIManager resizeImage:homeIcon withSize:CGSizeMake(45, 45)];
             [tabBarItem1 setImage:homeIcon];
             [tabBarItem1 setTitle:@""];
-            
+
             UITabBarItem *tabBarItem2 = [[tabBar items] objectAtIndex:1];
             UIImage *matchingIcon = [UIImage imageNamed:@"matching.png"];
             matchingIcon = [matchingIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             matchingIcon = [APIManager resizeImage:matchingIcon withSize:CGSizeMake(45, 45)];
             [tabBarItem2 setImage:matchingIcon];
             [tabBarItem2 setTitle:@""];
-            
+
             UITabBarItem *tabBarItem3 = [[tabBar items] objectAtIndex:2];
             UIImage *profileIcon = [UIImage imageNamed:@"profile.png"];
             profileIcon = [profileIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
