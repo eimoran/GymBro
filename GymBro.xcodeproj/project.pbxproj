@@ -23,10 +23,6 @@
 		60D1722C2874D8470031214D /* MatchingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1722B2874D8470031214D /* MatchingViewController.m */; };
 		60D1722F2874D8510031214D /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1722E2874D8510031214D /* ProfileViewController.m */; };
 		60D172322874E5710031214D /* ProfileFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172312874E5710031214D /* ProfileFormViewController.m */; };
-		60D172352874EA220031214D /* WorkoutSplitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D172342874EA220031214D /* WorkoutSplitCell.m */; };
-		60D17238287605760031214D /* WorkoutTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D17237287605760031214D /* WorkoutTimeCell.m */; };
-		60D1723B287635630031214D /* GenderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1723A287635630031214D /* GenderCell.m */; };
-		60D1723E28779DC70031214D /* GymMapCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1723D28779DC70031214D /* GymMapCell.m */; };
 		60D1724128779FD90031214D /* LevelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1724028779FD90031214D /* LevelCell.m */; };
 		60D17246287CE0CB0031214D /* GymDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D17245287CE0CB0031214D /* GymDetailsViewController.m */; };
 		60D1724F287CEAF30031214D /* GymDetailsButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D1724E287CEAF30031214D /* GymDetailsButton.m */; };
@@ -97,14 +93,6 @@
 		60D1722E2874D8510031214D /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		60D172302874E5710031214D /* ProfileFormViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileFormViewController.h; sourceTree = "<group>"; };
 		60D172312874E5710031214D /* ProfileFormViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileFormViewController.m; sourceTree = "<group>"; };
-		60D172332874EA220031214D /* WorkoutSplitCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WorkoutSplitCell.h; sourceTree = "<group>"; };
-		60D172342874EA220031214D /* WorkoutSplitCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WorkoutSplitCell.m; sourceTree = "<group>"; };
-		60D17236287605760031214D /* WorkoutTimeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WorkoutTimeCell.h; sourceTree = "<group>"; };
-		60D17237287605760031214D /* WorkoutTimeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WorkoutTimeCell.m; sourceTree = "<group>"; };
-		60D17239287635630031214D /* GenderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenderCell.h; sourceTree = "<group>"; };
-		60D1723A287635630031214D /* GenderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GenderCell.m; sourceTree = "<group>"; };
-		60D1723C28779DC70031214D /* GymMapCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GymMapCell.h; sourceTree = "<group>"; };
-		60D1723D28779DC70031214D /* GymMapCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GymMapCell.m; sourceTree = "<group>"; };
 		60D1723F28779FD90031214D /* LevelCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LevelCell.h; sourceTree = "<group>"; };
 		60D1724028779FD90031214D /* LevelCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LevelCell.m; sourceTree = "<group>"; };
 		60D17244287CE0CB0031214D /* GymDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GymDetailsViewController.h; sourceTree = "<group>"; };
@@ -285,18 +273,10 @@
 		60D172232874B4950031214D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				60D172332874EA220031214D /* WorkoutSplitCell.h */,
-				60D172342874EA220031214D /* WorkoutSplitCell.m */,
-				60D17236287605760031214D /* WorkoutTimeCell.h */,
 				60C5AB45289DDD8A00F39113 /* ProfileFormCell.h */,
 				60C5AB46289DDD8A00F39113 /* ProfileFormCell.m */,
-				60D17237287605760031214D /* WorkoutTimeCell.m */,
-				60D17239287635630031214D /* GenderCell.h */,
-				60D1723A287635630031214D /* GenderCell.m */,
-				60D1723C28779DC70031214D /* GymMapCell.h */,
 				60D1727B289AFBF60031214D /* TipCell.h */,
 				60D1727C289AFBF60031214D /* TipCell.m */,
-				60D1723D28779DC70031214D /* GymMapCell.m */,
 				60D1723F28779FD90031214D /* LevelCell.h */,
 				60D1724028779FD90031214D /* LevelCell.m */,
 				60D1724D287CEAF30031214D /* GymDetailsButton.h */,
@@ -310,9 +290,9 @@
 				60D1726C2888817C0031214D /* CommentCell.h */,
 				60D1726D2888817C0031214D /* CommentCell.m */,
 				60D172602887555B0031214D /* Post.h */,
+				60D172612887555B0031214D /* Post.m */,
 				60D1726F28908AA30031214D /* SearchBarCell.h */,
 				60D1727028908AA30031214D /* SearchBarCell.m */,
-				60D172612887555B0031214D /* Post.m */,
 				60D1726928887F540031214D /* Comment.h */,
 				60D1726A28887F540031214D /* Comment.m */,
 				60D1727528934B8B0031214D /* PriorityCell.h */,
@@ -568,15 +548,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60D1723B287635630031214D /* GenderCell.m in Sources */,
 				60D17259287E41A70031214D /* APIManager.m in Sources */,
 				60D1725C288227EF0031214D /* FriendsViewController.m in Sources */,
-				60D17238287605760031214D /* WorkoutTimeCell.m in Sources */,
 				60D1724F287CEAF30031214D /* GymDetailsButton.m in Sources */,
 				60D1722C2874D8470031214D /* MatchingViewController.m in Sources */,
 				60D17255287E25700031214D /* UserCell.m in Sources */,
 				60D1726B28887F540031214D /* Comment.m in Sources */,
-				60D172352874EA220031214D /* WorkoutSplitCell.m in Sources */,
 				60D1724128779FD90031214D /* LevelCell.m in Sources */,
 				60D1722F2874D8510031214D /* ProfileViewController.m in Sources */,
 				60D1727128908AA30031214D /* SearchBarCell.m in Sources */,
@@ -593,7 +570,6 @@
 				60D17274289341AA0031214D /* FilterViewController.m in Sources */,
 				60D171F22874AFF90031214D /* SceneDelegate.m in Sources */,
 				60D172262874B5B10031214D /* LoginViewController.m in Sources */,
-				60D1723E28779DC70031214D /* GymMapCell.m in Sources */,
 				60D172322874E5710031214D /* ProfileFormViewController.m in Sources */,
 				60D1726528875E0C0031214D /* ComposeViewController.m in Sources */,
 				60D172292874D8370031214D /* HomeViewController.m in Sources */,

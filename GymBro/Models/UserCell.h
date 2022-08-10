@@ -18,7 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) PFUser *user;
 @property (nonatomic) double distanceFromUser;
 @property (nonatomic) int currPhotoIndex;
+@property (strong, nonatomic) NSIndexPath *indexPath;
 - (void) setData;
+- (void) createSeparator;
 
 @end
 

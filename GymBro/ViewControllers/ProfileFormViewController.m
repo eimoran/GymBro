@@ -6,9 +6,6 @@
 //
 
 #import "ProfileFormViewController.h"
-#import "../Models/WorkoutSplitCell.h"
-#import "../Models/WorkoutTimeCell.h"
-#import "../Models/GenderCell.h"
 #import "../Models/ProfileFormCell.h"
 #import "../Models/Post.h"
 #import "../API/APIManager.h"
@@ -40,7 +37,7 @@
     
     PFUser *user = [PFUser currentUser];
     self.profileImages = [[NSMutableArray alloc] initWithArray:user[@"profileImages"]];
-    if (user[@"profileImages"])
+    if (self.profileImages.count > 0)
     {
         PFFileObject *pic = self.profileImages[0];
         NSURL *url = [NSURL URLWithString:pic.url];
@@ -50,8 +47,6 @@
     {
         self.profileImagesView.image = [UIImage imageNamed:@"camera-icon.png"];
     }
-    
-    
     
     UITapGestureRecognizer *profileImageChange = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseProfilePic)];
     [profileImageChange setDelegate:self];
@@ -77,7 +72,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     PFUser *user = [PFUser currentUser];
-    CGSize size = CGSizeMake(500, 700);
+    CGSize size = CGSizeMake(400, 400);
     self.profileImagesView.image = [APIManager resizeImage:info[UIImagePickerControllerOriginalImage] withSize:size];
     
     if (self.profileImages.count == 0 || self.imageControl.selectedSegmentIndex == self.profileImages.count)
@@ -101,32 +96,46 @@
     {
         ProfileFormCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormBio"];
         cell.controller = self;
+        self.bio = self.currUser[@"bio"];
         cell.bioTextView.text = self.currUser[@"bio"];
+        [cell setTraits];
         return cell;
     }
     if (indexPath.row == 1)
     {
-        WorkoutSplitCell *splitCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormSplit" forIndexPath:indexPath];
+        ProfileFormCell *splitCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormSplit" forIndexPath:indexPath];
         splitCell.controller = self;
+        NSArray *splitOptions = [[NSArray alloc] initWithObjects:@"Whole Body Split", @"Upper And Lower Body Split", @"Push/Pull/Legs",  @"Four Day Split", @"Five Day Split", @"Yoga", @"Other", nil];
+        splitCell.traitValue = (int)[splitOptions indexOfObject:self.currUser[@"workoutSplit"]];
+        [splitCell setTraits];
         return splitCell;
     }
     else if (indexPath.row == 2)
     {
-        WorkoutTimeCell *workoutTimeCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormTime" forIndexPath:indexPath];
+        ProfileFormCell *workoutTimeCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormTime" forIndexPath:indexPath];
         workoutTimeCell.controller = self;
+        NSArray *timeOptions = [[NSArray alloc] initWithObjects:@"Morning (6am - 12pm)", @"Afternoon (12 - 5pm)", @"Evening (5 - 9pm)", @"Late Night (past 9pm)", nil];
+        workoutTimeCell.traitValue = (int)[timeOptions indexOfObject:self.currUser[@"workoutTime"]];
+        [workoutTimeCell setTraits];
         return workoutTimeCell;
     }
     else if (indexPath.row == 3)
     {
-        GenderCell *genderCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormGender" forIndexPath:indexPath];
+        ProfileFormCell *genderCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormGender" forIndexPath:indexPath];
         genderCell.controller = self;
+        NSArray *genderOptions = [[NSArray alloc] initWithObjects:@"Male", @"Female", nil];
+        genderCell.traitValue = (int)[genderOptions indexOfObject:self.currUser[@"gender"]];
+        [genderCell setTraits];
         return genderCell;
     }
     else if (indexPath.row == 4)
     {
-        GenderCell *gymMapCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormLevel" forIndexPath:indexPath];
-        gymMapCell.controller = self;
-        return gymMapCell;
+        ProfileFormCell *levelCell = [tableView dequeueReusableCellWithIdentifier:@"ProfileFormLevel" forIndexPath:indexPath];
+        levelCell.controller = self;
+        NSArray *levelOptions = [[NSArray alloc] initWithObjects:@"Novei", @"Intermediate", @"Advanced", nil];
+        levelCell.traitValue = (int)[levelOptions indexOfObject:self.currUser[@"level"]];
+        [levelCell setTraits];
+        return levelCell;
     }
     
     return cell;
@@ -148,7 +157,6 @@
 */
 
 - (IBAction)submit:(id)sender {
-    // Update User Info
     PFUser *user = [PFUser currentUser];
     if (!self.split)
     {
@@ -183,7 +191,10 @@
         user[@"level"] = self.level;
     }
     user[@"bio"] = self.bio;
-    user[@"profileImages"] = self.profileImages;
+    if (self.profileImages.count > 0)
+    {
+        user[@"profileImages"] = self.profileImages;
+    }
     [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (succeeded)
         {
@@ -202,6 +213,9 @@
     if (self.imageControl.selectedSegmentIndex > self.profileImages.count)
     {
         self.imageControl.selectedSegmentIndex = 0;
+        PFFileObject *pic = self.profileImages[self.imageControl.selectedSegmentIndex];
+        NSURL *url = [NSURL URLWithString:pic.url];
+        [self.profileImagesView setImageWithURL:url];
     }
     else if (self.imageControl.selectedSegmentIndex == self.profileImages.count)
     {

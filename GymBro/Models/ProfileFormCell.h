@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) IBOutlet UITextView *bioTextView;
 @property (strong, nonatomic) ProfileFormViewController *controller;
+@property int traitValue;
+- (void)setTraits;
 
 @end
 

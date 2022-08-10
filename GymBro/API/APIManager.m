@@ -46,10 +46,10 @@
     newUser[@"friendRequests"] = @[];
     newUser[@"rejectedUsers"] = @[];
     newUser[@"likedPosts"] = @[];
-    newUser[@"filterArray"] = @[];
     newUser[@"genderFilter"] = @0;
+    newUser[@"distanceFilter"] = @62;
     newUser[@"bio"] = @"";
-    newUser[@"filterArray"] = @[@5,@3,@1,@5,@3,@2];
+    newUser[@"priorityArray"] = @[@5,@3,@1];
     
     // call sign up function on the object
     [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
@@ -90,7 +90,14 @@
 {
     [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
         if (error != nil) {
-            NSLog(@"User log in failed: %@", error.localizedDescription);
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Login Failed"
+                                                                           message:@"Please Check The Information You Entered"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                                 {}];
+            [alert addAction:ok];
+            [controller presentViewController:alert animated:YES completion:nil];
         } else {
             NSLog(@"User logged in successfully");
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -121,10 +128,6 @@
         }
     }];
 }
-
-// POST DETAILS
-//+ (NSMutableArray *)fetchCommentsWithTableView:(UITableView *)tableVIew andRefresh:(UIRefreshControl *)refreshControl
-
 
 // HOME
 + (NSMutableArray *)fetchPostswithTableView:(UITableView *)tableView andRefresh:(UIRefreshControl *)refreshControl

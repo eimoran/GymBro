@@ -31,17 +31,22 @@
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 200;
     
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = @"Customize";
+    titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:20];
+    self.navigationItem.titleView = titleLabel;
+    
     UIImage *confirmIcon = [UIImage imageNamed:@"filter2.png"];
     confirmIcon = [APIManager resizeImage:confirmIcon withSize:CGSizeMake(40, 40)];
     [self.confirmButton setTitle:@"" forState:UIControlStateNormal];
     [self.confirmButton setImage:confirmIcon forState:UIControlStateNormal];
     
     self.currUser = [PFUser currentUser];
-    NSArray *filterArray = self.currUser[@"filterArray"];
+    NSArray *priorityArray = self.currUser[@"priorityArray"];
     
-    self.workoutType = [filterArray[0] intValue];
-    self.workoutTime = [filterArray[1] intValue];
-    self.level = [filterArray[2] intValue];
+    self.workoutType = [priorityArray[0] intValue];
+    self.workoutTime = [priorityArray[1] intValue];
+    self.level = [priorityArray[2] intValue];
     self.gender = [self.currUser[@"genderFilter"] intValue];
     self.distance = [self.currUser[@"distanceFilter"] intValue];
 }
@@ -86,7 +91,7 @@
     {
         PriorityCell *cell3 = [tableView dequeueReusableCellWithIdentifier:@"PriorityCell3" forIndexPath:indexPath];
         cell3.filterVC = self;
-        cell3.traitLabel.text = @"Distance";
+        cell3.traitLabel.text = @"Max Distance From You";
         cell3.filterValue = self.distance;
         [cell3 setFilter];
         return cell3;

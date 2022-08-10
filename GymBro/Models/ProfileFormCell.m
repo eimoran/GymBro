@@ -156,6 +156,8 @@
     return title;
 }
 
+// WORK ON SETTING DEFAULT VALUES ON PICKER
+
 - (void)pickerView:(UIPickerView *)picker
       didSelectRow:(NSInteger)row
        inComponent:(NSInteger)component {
@@ -227,7 +229,26 @@
                 break;
         }
     }
-    
+}
+
+- (void)setTraits
+{
+    if ([self.reuseIdentifier isEqual:@"ProfileFormSplit"])
+    {
+        [self.picker selectRow:self.traitValue inComponent:0 animated:YES];
+    }
+    else if ([self.reuseIdentifier isEqual:@"ProfileFormTime"])
+    {
+        [self.picker selectRow:self.traitValue inComponent:0 animated:YES];
+    }
+    else if ([self.reuseIdentifier isEqual:@"ProfileFormGender"])
+    {
+        [self.picker selectRow:self.traitValue inComponent:0 animated:YES];
+    }
+    else if ([self.reuseIdentifier isEqual:@"ProfileFormLevel"])
+    {
+        [self.picker selectRow:self.traitValue inComponent:0 animated:YES];
+    }
 }
 
 @end

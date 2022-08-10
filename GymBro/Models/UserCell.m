@@ -27,6 +27,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *previousImageButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextImageButton;
 
+@property BOOL separatorAdded;
+
 @end
 
 @implementation UserCell
@@ -35,6 +37,7 @@
     [super awakeFromNib];
     // Initialization code
     self.previousImageButton.imageView.transform = CGAffineTransformMakeScale(-1, 1);
+    self.separatorAdded = NO;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -73,6 +76,29 @@
     self.levelLabel.text = [NSString stringWithFormat:@"· %@", self.user[@"level"]];
     self.gymLabel.text = [NSString stringWithFormat:@"· %@", [self.user[@"gym"] valueForKeyPath:@"name"]];
     self.distanceLabel.text = [NSString stringWithFormat:@"· %.2f mi away", self.distanceFromUser * 0.00062317];
+}
+
+- (void)createSeparator
+{
+    if (!self.separatorAdded)
+    {
+        UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 5, self.frame.size.width, 5)];
+        
+        if (self.indexPath.row % 3 == 0)
+        {
+            separatorView.backgroundColor = [UIColor systemPinkColor];
+        }
+        else if ((self.indexPath.row - 1) % 3 == 0)
+        {
+            separatorView.backgroundColor = [UIColor blueColor];
+        }
+        else if ((self.indexPath.row - 2) % 3 == 0)
+        {
+            separatorView.backgroundColor = [UIColor greenColor];
+        }
+        [self addSubview:separatorView];
+        self.separatorAdded = YES;
+    }
 }
 
 - (void)swipedLeft

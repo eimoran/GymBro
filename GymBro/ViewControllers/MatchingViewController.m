@@ -97,7 +97,6 @@
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.tableView.rowHeight = UITableViewAutomaticDimension;
-        self.tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
         
         self.userArray = [[NSMutableArray alloc] init];
         [self fetchUsersWithQuery];
@@ -123,7 +122,7 @@
 
 - (void)fetchUsersWithQuery
 {
-    self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"filterArray"] withGenderFilter:[self.currUser[@"genderFilter"] intValue]];
+    self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"priorityArray"] withGenderFilter:[self.currUser[@"genderFilter"] intValue]];
     [self.tableView reloadData];
     [self.refreshControl endRefreshing];
 }
@@ -144,18 +143,31 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
-    cell.delegate = self;
-    cell.user = self.userArray[indexPath.row];
-    cell.distanceFromUser = [APIManager getDistance:self.currUser from:cell.user];
-    cell.controller = self;
-    cell.rightUtilityButtons = [self rightButtons];
-    [cell setData];
-    return cell;
+    if (indexPath.row % 2 == 0)
+    {
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+        UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
+        cell.delegate = self;
+        cell.user = self.userArray[indexPath.row/2];
+        cell.distanceFromUser = [APIManager getDistance:self.currUser from:cell.user];
+        cell.controller = self;
+        cell.rightUtilityButtons = [self rightButtons];
+        
+        [cell setData];
+        return cell;
+    }
+    else
+    {
+        self.tableView.rowHeight = 10;
+        UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"separator" forIndexPath:indexPath];
+        cell.indexPath = indexPath;
+        [cell createSeparator];
+        return cell;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.userArray.count;
+    return self.userArray.count * 2;
 }
 
 

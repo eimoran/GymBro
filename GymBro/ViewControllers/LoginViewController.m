@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 - (IBAction)login:(id)sender;
 - (IBAction)signup:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIButton *signupButton;
 
 @end
 
@@ -26,6 +28,17 @@
     
     // Hide email field unless user is trying to sign up
     self.emailField.hidden = true;
+    
+    
+    UIImage *loginIcon = [UIImage imageNamed:@"login.png"];
+    loginIcon = [APIManager resizeImage:loginIcon withSize:CGSizeMake(45,45)];
+    [self.loginButton setTitle:@"" forState:UIControlStateNormal];
+    [self.loginButton setImage:loginIcon forState:UIControlStateNormal];
+    
+    UIImage *signupIcon = [UIImage imageNamed:@"signup.png"];
+    signupIcon = [APIManager resizeImage:signupIcon withSize:CGSizeMake(45,45)];
+    [self.signupButton setTitle:@"" forState:UIControlStateNormal];
+    [self.signupButton setImage:signupIcon forState:UIControlStateNormal];
 }
 
 /*
