@@ -35,6 +35,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = @"Friends";
+    titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:25];
+    self.navigationItem.titleView = titleLabel;
+    
     UIImage *refreshIcon = [UIImage imageNamed:@"refresh.png"];
     refreshIcon = [APIManager resizeImage:refreshIcon withSize:CGSizeMake(45, 45)];
     [self.refreshButton setTitle:@"" forState:UIControlStateNormal];

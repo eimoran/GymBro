@@ -7,6 +7,7 @@
 
 #import "CommentCell.h"
 #import "../API/APIManager.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface CommentCell ()
 
@@ -64,6 +65,26 @@
         likeCommentIcon = [APIManager resizeImage:likeCommentIcon withSize:CGSizeMake(30, 30)];
         [self.likeCommentButton setTitle:@"" forState:UIControlStateNormal];
         [self.likeCommentButton setImage:likeCommentIcon forState:UIControlStateNormal];
+    }];
+    
+    PFQuery *query = [PFUser query];
+    [query whereKey:@"username" equalTo:self.comment[@"author"]];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if (objects.count > 0)
+        {
+            PFUser *author = objects[0];
+            if (author[@"profilePic"])
+            {
+                self.authorProfilePicView.layer.cornerRadius = self.authorProfilePicView.frame.size.height/2.0;
+                PFFileObject *profilePicObj = author[@"profilePic"];
+                NSURL *url = [NSURL URLWithString:profilePicObj.url];
+                [self.authorProfilePicView setImageWithURL:url];
+            }
+            else
+            {
+                self.authorProfilePicView.image = [UIImage imageNamed:@"profile-Icon.png"];
+            }
+        }
     }];
 }
 

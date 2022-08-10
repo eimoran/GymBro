@@ -21,7 +21,6 @@
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (weak, nonatomic) IBOutlet UIButton *filterButton;
 @property (nonatomic) NSInteger rowCount;
-@property BOOL deleting;
 
 @end
 
@@ -31,9 +30,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.currUser = [PFUser currentUser];
-    self.filterButton.hidden = YES;
-    self.deleting = NO;
-    
+    self.filterButton.hidden = YES;    
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(200, 0, 00, 30)];
     titleLabel.text = @"Your Matches!";
     titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:18];

@@ -29,6 +29,11 @@
     // Do any additional setup after loading the view.
     self.hasChosenImage = NO;
     
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = @"Create a Post";
+    titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:20];
+    self.navigationItem.titleView = titleLabel;
+    
     UIImage *composeIcon = [UIImage imageNamed:@"send.png"];
     composeIcon = [APIManager resizeImage:composeIcon withSize:CGSizeMake(45, 45)];
     [self.postButton setTitle:@"" forState:UIControlStateNormal];
