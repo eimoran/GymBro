@@ -67,7 +67,7 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     self.currUser = [PFUser currentUser];
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(200, 0, 00, 30)];
     titleLabel.text = self.currUser[@"username"];
-    titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:18];
+    titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:20];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     self.navigationItem.titleView = titleLabel;
     
@@ -317,10 +317,35 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     }
     
     self.workoutTypeLabel.text = [NSString stringWithFormat:@"Workout Split: %@", user[@"workoutSplit"]];
+    NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:self.workoutTypeLabel.text];
+    NSRange boldRange = [self.workoutTypeLabel.text rangeOfString:@"Workout Split: "];
+    [postText addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:14] range:boldRange];
+    [self.workoutTypeLabel setAttributedText: postText];
+    
     self.bioLabel.text = [NSString stringWithFormat:@"Bio: %@", user[@"bio"]];
-    self.workoutTimeLabel.text = [NSString stringWithFormat:@"Time you workout: %@", user[@"workoutTime"]];
+    NSMutableAttributedString *postText2 = [[NSMutableAttributedString alloc] initWithString:self.bioLabel.text];
+    NSRange boldRange2 = [self.bioLabel.text rangeOfString:@"Bio: "];
+    [postText2 addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:14] range:boldRange2];
+    [self.bioLabel setAttributedText: postText2];
+    
+    self.workoutTimeLabel.text = [NSString stringWithFormat:@"Time You Workout: %@", user[@"workoutTime"]];
+    NSMutableAttributedString *postText3 = [[NSMutableAttributedString alloc] initWithString:self.workoutTimeLabel.text];
+    NSRange boldRange3 = [self.workoutTimeLabel.text rangeOfString:@"Time You Workout: "];
+    [postText3 addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:14] range:boldRange3];
+    [self.workoutTimeLabel setAttributedText: postText3];
+    
     self.genderLabel.text = [NSString stringWithFormat:@"Gender: %@", user[@"gender"]];
+    NSMutableAttributedString *postText4 = [[NSMutableAttributedString alloc] initWithString:self.genderLabel.text];
+    NSRange boldRange4 = [self.genderLabel.text rangeOfString:@"Gender: "];
+    [postText4 addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:14] range:boldRange4];
+    [self.genderLabel setAttributedText: postText4];
+    
     self.levelLabel.text = [NSString stringWithFormat:@"Level: %@", user[@"level"]];
+    NSMutableAttributedString *postText5 = [[NSMutableAttributedString alloc] initWithString:self.levelLabel.text];
+    NSRange boldRange5 = [self.levelLabel.text rangeOfString:@"Level: "];
+    [postText5 addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:14] range:boldRange5];
+    [self.levelLabel setAttributedText: postText5];
+    
     if (!user[@"gym"])
     {
         self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: n/a"];
@@ -329,6 +354,10 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
     {
         self.gymLabel.text = [NSString stringWithFormat:@"Local Gym: %@", [user[@"gym"] valueForKeyPath:@"name"]];
     }
+    NSMutableAttributedString *postText6 = [[NSMutableAttributedString alloc] initWithString:self.gymLabel.text];
+    NSRange boldRange6 = [self.gymLabel.text rangeOfString:@"Local Gym: "];
+    [postText6 addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:14] range:boldRange6];
+    [self.gymLabel setAttributedText: postText6];
 }
 
 
@@ -349,6 +378,11 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
         UINavigationController *navigationController = [segue destinationViewController];
         ProfileFormViewController *formController = (ProfileFormViewController*)navigationController.topViewController;
         formController.delegate = self;
+    }
+    else if ([segue.identifier isEqual:@"Activity"])
+    {
+        UINavigationController *navVC = [segue destinationViewController];
+        
     }
     
 }

@@ -60,28 +60,6 @@
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UITabBarController *tabBarController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
             controller.view.window.rootViewController = tabBarController;
-            
-            UITabBar *tabBar=tabBarController.tabBar;
-            UITabBarItem *tabBarItem1=[[tabBar items] objectAtIndex:0];
-            UIImage *homeIcon = [UIImage imageNamed:@"gym.png"];
-            homeIcon = [homeIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            homeIcon = [APIManager resizeImage:homeIcon withSize:CGSizeMake(45, 45)];
-            [tabBarItem1 setImage:homeIcon];
-            [tabBarItem1 setTitle:@""];
-            
-            UITabBarItem *tabBarItem2=[[tabBar items] objectAtIndex:1];
-            UIImage *matchingIcon = [UIImage imageNamed:@"matching.png"];
-            matchingIcon = [matchingIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            matchingIcon = [APIManager resizeImage:matchingIcon withSize:CGSizeMake(45, 45)];
-            [tabBarItem2 setImage:matchingIcon];
-            [tabBarItem2 setTitle:@""];
-            
-            UITabBarItem *tabBarItem3 = [[tabBar items] objectAtIndex:2];
-            UIImage *profileIcon = [UIImage imageNamed:@"profile.png"];
-            profileIcon = [profileIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            profileIcon = [APIManager resizeImage:profileIcon withSize:CGSizeMake(45, 45)];
-            [tabBarItem3 setImage:profileIcon];
-            [tabBarItem3 setTitle:@""];
         }
     }];
 }
@@ -103,28 +81,6 @@
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UITabBarController *tabBarController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
             controller.view.window.rootViewController = tabBarController;
-            
-            UITabBar *tabBar = tabBarController.tabBar;
-            UITabBarItem *tabBarItem1 = [[tabBar items] objectAtIndex:0];
-            UIImage *homeIcon = [UIImage imageNamed:@"gym.png"];
-            homeIcon = [homeIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            homeIcon = [APIManager resizeImage:homeIcon withSize:CGSizeMake(45, 45)];
-            [tabBarItem1 setImage:homeIcon];
-            [tabBarItem1 setTitle:@""];
-
-            UITabBarItem *tabBarItem2 = [[tabBar items] objectAtIndex:1];
-            UIImage *matchingIcon = [UIImage imageNamed:@"matching.png"];
-            matchingIcon = [matchingIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            matchingIcon = [APIManager resizeImage:matchingIcon withSize:CGSizeMake(45, 45)];
-            [tabBarItem2 setImage:matchingIcon];
-            [tabBarItem2 setTitle:@""];
-
-            UITabBarItem *tabBarItem3 = [[tabBar items] objectAtIndex:2];
-            UIImage *profileIcon = [UIImage imageNamed:@"profile.png"];
-            profileIcon = [profileIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            profileIcon = [APIManager resizeImage:profileIcon withSize:CGSizeMake(45, 45)];
-            [tabBarItem3 setImage:profileIcon];
-            [tabBarItem3 setTitle:@""];
         }
     }];
 }
@@ -137,7 +93,7 @@
     [query orderByDescending:@"createdAt"];
     query.limit = 200;
 
-    return [query findObjects];
+    return [[NSMutableArray alloc] initWithArray:[query findObjects]];
 }
 
 // MATCHING
@@ -360,6 +316,14 @@
     return destImage;
 }
 
+// ACTIVITY
++ (NSMutableArray *)fetchPostsOfUser:(PFUser *)user
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Post"];
+    [query whereKey:@"author" equalTo:user[@"username"]];
+    query.limit = 200;
+    return [[NSMutableArray alloc] initWithArray:[query findObjects]];
+}
 
 
 @end

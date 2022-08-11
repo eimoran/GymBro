@@ -5,9 +5,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Allow GymBro to Access and Take Photos?</string>
 	<key>CFBundleIconFiles</key>
-	<array>
-		<string>dumbbell120.png</string>
-	</array>
+	<array/>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Need Location to Access Local Gyms</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

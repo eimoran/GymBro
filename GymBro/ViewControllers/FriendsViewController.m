@@ -27,6 +27,8 @@
 - (IBAction)switchSegments:(id)sender;
 @property (nonatomic) NSInteger rowCount;
 @property int segment;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
+- (IBAction)goBack:(id)sender;
 
 @end
 
@@ -39,6 +41,11 @@
     titleLabel.text = @"Friends";
     titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:25];
     self.navigationItem.titleView = titleLabel;
+    
+    UIImage *backIcon = [UIImage imageNamed:@"back.png"];
+    backIcon = [APIManager resizeImage:backIcon withSize:CGSizeMake(40,30)];
+    [self.backButton setTitle:@"" forState:UIControlStateNormal];
+    [self.backButton setImage:backIcon forState:UIControlStateNormal];
     
     UIImage *refreshIcon = [UIImage imageNamed:@"refresh.png"];
     refreshIcon = [APIManager resizeImage:refreshIcon withSize:CGSizeMake(45, 45)];
@@ -306,5 +313,8 @@
 }
 - (IBAction)switchSegments:(id)sender {
     [self.tableView reloadData];
+}
+- (IBAction)goBack:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end

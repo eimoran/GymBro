@@ -37,6 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSMutableArray *)setScores:(PFUser *)currUser ofArray:(NSArray *)users withPriorityArray:(NSArray *)arr;
 + (NSMutableArray *)compatibilitySort:(NSMutableArray *)userArray withCompatibilityArray:(NSMutableArray *)compatibilityArray;
 
+// ACTIVITY
++ (NSMutableArray *)fetchPostsOfUser:(PFUser *)user;
 @end
 
 NS_ASSUME_NONNULL_END

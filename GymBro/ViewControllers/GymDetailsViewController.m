@@ -40,8 +40,12 @@
     // Do any additional setup after loading the view.
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.rowHeight = 100;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:@"header"];
+    
+    self.gymName.text = @"GymBro";
+    self.gymName.font = [UIFont fontWithName:@"Menlo Bold" size:20];
     
     self.userArray = [[NSMutableArray alloc] init];
     self.gymName.text = [self.gym valueForKeyPath:@"name"];
@@ -153,7 +157,6 @@
             {
                 [self.tipArray addObject:tip];
             }
-            NSLog(@"%@", self.tipArray);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
             });
@@ -166,7 +169,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0)
     {
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         TipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TipCell" forIndexPath:indexPath];
         if (indexPath.row < self.tipArray.count)
         {
@@ -178,11 +180,20 @@
     }
     else
     {
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
-        cell.user = self.userArray[indexPath.row];
-        [cell setData];
-        return cell;
+        if (indexPath.row % 2 == 0)
+        {
+            UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
+            cell.user = self.userArray[indexPath.row/2];
+            [cell setData];
+            return cell;
+        }
+        else
+        {
+            UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"separator" forIndexPath:indexPath];
+            cell.indexPath = indexPath;
+            [cell createSeparator];
+            return cell;
+        }
     }
 }
 
@@ -199,7 +210,7 @@
     }
     else
     {
-        return self.userArray.count;
+        return self.userArray.count * 2;
     }
 }
 

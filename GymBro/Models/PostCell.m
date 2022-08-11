@@ -11,6 +11,10 @@
 #import <Parse/Parse.h>
 #import "../API/APIManager.h"
 
+@interface PostCell ()
+
+@end
+
 @implementation PostCell
 
 - (void)awakeFromNib {
@@ -26,66 +30,68 @@
 
 
 - (void)setPost {
-    PFQuery *query = [PFUser query];
-    [query whereKey:@"username" equalTo:self.post[@"author"]];
-    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-        if (objects.count > 0)
-        {
-            PFUser *author = objects[0];
-            if (author[@"profilePic"])
+    [self.post fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        PFQuery *query = [PFUser query];
+        [query whereKey:@"username" equalTo:self.post[@"author"]];
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            if (objects.count > 0)
             {
-                self.authorProfilePicView.layer.cornerRadius = self.authorProfilePicView.frame.size.height/2.0;
-                PFFileObject *profilePicObj = author[@"profilePic"];
-                NSURL *url = [NSURL URLWithString:profilePicObj.url];
-                [self.authorProfilePicView setImageWithURL:url];
+                PFUser *author = objects[0];
+                if (author[@"profilePic"])
+                {
+                    self.authorProfilePicView.layer.cornerRadius = self.authorProfilePicView.frame.size.height/2.0;
+                    PFFileObject *profilePicObj = author[@"profilePic"];
+                    NSURL *url = [NSURL URLWithString:profilePicObj.url];
+                    [self.authorProfilePicView setImageWithURL:url];
+                }
+                else
+                {
+                    self.authorProfilePicView.image = [UIImage imageNamed:@"profile-Icon.png"];
+                }
             }
-            else
+        }];
+        PFUser *user = [PFUser currentUser];
+        self.postTextLabel.text = [NSString stringWithFormat:@"%@ %@", self.post.author, self.post.text];
+        NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:self.postTextLabel.text];
+        NSRange boldRange = [self.postTextLabel.text rangeOfString:self.post.author];
+        [postText addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:16] range:boldRange];
+        [self.postTextLabel setAttributedText: postText];
+        
+        [self setTimestamp:self.timestampLabel ofPost:self.post];
+        
+        
+        self.likeCountLabel.text = [self.post[@"likeCount"] stringValue];
+        
+        NSArray *comments = self.post[@"comments"];
+        self.commentCountLabel.text = [[NSNumber numberWithLong:comments.count] stringValue];;
+        
+        UIImage *favoriteIcon;
+        self.hasBeenLiked = NO;
+        self.likedPostsIndex = -1;
+        NSArray *likedPosts = user[@"likedPosts"];
+        for (int x = 0; x < likedPosts.count; x++)
+        {
+            Post *post = likedPosts[x];
+            if ([post.objectId isEqual:self.post.objectId])
             {
-                self.authorProfilePicView.image = [UIImage imageNamed:@"profile-Icon.png"];
+                self.likedPostsIndex = x;
+                self.hasBeenLiked = YES;
             }
         }
+        if (self.hasBeenLiked)
+        {
+            favoriteIcon = [UIImage imageNamed:@"liked.png"];
+        }
+        else{
+            favoriteIcon = [UIImage imageNamed:@"like.png"];
+        }
+        favoriteIcon = [APIManager resizeImage:favoriteIcon withSize:CGSizeMake(30, 30)];
+        [self.likeButton setImage:favoriteIcon forState:UIControlStateNormal];
+        
+        UIImage *commentIcon = [UIImage imageNamed:@"comment.png"];
+        commentIcon = [APIManager resizeImage:commentIcon withSize:CGSizeMake(30, 30)];
+        [self.commentButton setImage:commentIcon forState:UIControlStateNormal];
     }];
-    PFUser *user = [PFUser currentUser];
-    self.postTextLabel.text = [NSString stringWithFormat:@"%@ %@", self.post.author, self.post.text];
-    NSMutableAttributedString *postText = [[NSMutableAttributedString alloc] initWithString:self.postTextLabel.text];
-    NSRange boldRange = [self.postTextLabel.text rangeOfString:self.post.author];
-    [postText addAttribute: NSFontAttributeName value:[UIFont boldSystemFontOfSize:16] range:boldRange];
-    [self.postTextLabel setAttributedText: postText];
-    
-    [self setTimestamp:self.timestampLabel ofPost:self.post];
-    
-    
-    self.likeCountLabel.text = [self.post[@"likeCount"] stringValue];
-    
-    NSArray *comments = self.post[@"comments"];
-    self.commentCountLabel.text = [[NSNumber numberWithLong:comments.count] stringValue];;
-    
-    UIImage *favoriteIcon;
-    self.hasBeenLiked = NO;
-    self.likedPostsIndex = -1;
-    NSArray *likedPosts = user[@"likedPosts"];
-    for (int x = 0; x < likedPosts.count; x++)
-    {
-        Post *post = likedPosts[x];
-        if ([post.objectId isEqual:self.post.objectId])
-        {
-            self.likedPostsIndex = x;
-            self.hasBeenLiked = YES;
-        }
-    }
-    if (self.hasBeenLiked)
-    {
-        favoriteIcon = [UIImage imageNamed:@"liked.png"];
-    }
-    else{
-        favoriteIcon = [UIImage imageNamed:@"like.png"];
-    }
-    favoriteIcon = [APIManager resizeImage:favoriteIcon withSize:CGSizeMake(30, 30)];
-    [self.likeButton setImage:favoriteIcon forState:UIControlStateNormal];
-    
-    UIImage *commentIcon = [UIImage imageNamed:@"comment.png"];
-    commentIcon = [APIManager resizeImage:commentIcon withSize:CGSizeMake(30, 30)];
-    [self.commentButton setImage:commentIcon forState:UIControlStateNormal];
 }
 
 - (void)setPostImage
@@ -176,4 +182,6 @@
 - (IBAction)comment:(id)sender {
     [self.homeVC performSegueWithIdentifier:@"postDetails" sender:nil];
 }
+
+
 @end

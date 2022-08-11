@@ -22,6 +22,9 @@
 @property (strong, nonatomic) NSMutableArray *profileImages;
 @property (strong, nonatomic) PFUser *currUser;
 - (IBAction)switchImages:(id)sender;
+- (IBAction)goBack:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
 
 @end
 
@@ -34,6 +37,11 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.rowHeight = 200;
+    
+    UIImage *backIcon = [UIImage imageNamed:@"back.png"];
+    backIcon = [APIManager resizeImage:backIcon withSize:CGSizeMake(40,30)];
+    [self.backButton setTitle:@"" forState:UIControlStateNormal];
+    [self.backButton setImage:backIcon forState:UIControlStateNormal];
     
     PFUser *user = [PFUser currentUser];
     self.profileImages = [[NSMutableArray alloc] initWithArray:user[@"profileImages"]];
@@ -51,6 +59,17 @@
     UITapGestureRecognizer *profileImageChange = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseProfilePic)];
     [profileImageChange setDelegate:self];
     [self.profileImagesView addGestureRecognizer:profileImageChange];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:
+    UIKeyboardWillShowNotification object:nil];
+
+    [nc addObserver:self selector:@selector(keyboardWillHide:) name:
+    UIKeyboardWillHideNotification object:nil];
+
+    self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+    action:@selector(didTapAnywhere:)];
 }
 
 
@@ -77,12 +96,10 @@
     
     if (self.profileImages.count == 0 || self.imageControl.selectedSegmentIndex == self.profileImages.count)
     {
-        NSLog(@"ADDING");
         [self.profileImages addObject:[Post getPFFileFromImage:self.profileImagesView.image]];
     }
     else
     {
-        NSLog(@"REPLACING");
         [self.profileImages replaceObjectAtIndex:self.imageControl.selectedSegmentIndex withObject:[Post getPFFileFromImage:self.profileImagesView.image]];
     }
     user[@"profileImages"] = self.profileImages;
@@ -208,6 +225,11 @@
         }
     }];
 }
+
+- (IBAction)goBack:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction)switchImages:(id)sender {
     self.profileImages = [[NSMutableArray alloc] initWithArray:[PFUser currentUser][@"profileImages"]];
     if (self.imageControl.selectedSegmentIndex > self.profileImages.count)
@@ -227,5 +249,18 @@
         NSURL *url = [NSURL URLWithString:pic.url];
         [self.profileImagesView setImageWithURL:url];
     }
+}
+
+-(void)didTapAnywhere: (UITapGestureRecognizer*) recognizer {
+    [self.view endEditing:YES];
+}
+
+-(void) keyboardWillShow:(NSNotification *) note {
+    [self.view addGestureRecognizer:self.tapRecognizer];
+}
+
+-(void) keyboardWillHide:(NSNotification *) note
+{
+    [self.view removeGestureRecognizer:self.tapRecognizer];
 }
 @end

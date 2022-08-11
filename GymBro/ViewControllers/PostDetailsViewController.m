@@ -11,6 +11,7 @@
 #import "../Models/CommentCell.h"
 #import "../Models/Post.h"
 #import "../Models/Comment.h"
+#import "../API/APIManager.h"
 
 
 @interface PostDetailsViewController () <UITableViewDelegate, UITableViewDataSource, UITextViewDelegate>
@@ -19,10 +20,11 @@
 @property (strong, nonatomic) NSMutableArray *commentArray;
 @property (weak, nonatomic) IBOutlet UITextView *commentTextView;
 @property (strong, nonatomic) PFUser *currUser;
-
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 - (IBAction)goHome:(id)sender;
 - (IBAction)comment:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
 
 
 @end
@@ -46,6 +48,22 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchComments) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
+    
+    UIImage *backIcon = [UIImage imageNamed:@"back.png"];
+    backIcon = [APIManager resizeImage:backIcon withSize:CGSizeMake(40, 30)];
+    [self.backButton setTitle:@"" forState:UIControlStateNormal];
+    [self.backButton setImage:backIcon forState:UIControlStateNormal];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:
+    UIKeyboardWillShowNotification object:nil];
+
+    [nc addObserver:self selector:@selector(keyboardWillHide:) name:
+    UIKeyboardWillHideNotification object:nil];
+
+    self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+    action:@selector(didTapAnywhere:)];
 }
 
 /*
@@ -233,4 +251,18 @@
 - (IBAction)goHome:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+-(void)didTapAnywhere: (UITapGestureRecognizer*) recognizer {
+    [self.view endEditing:YES];
+}
+
+-(void) keyboardWillShow:(NSNotification *) note {
+    [self.view addGestureRecognizer:self.tapRecognizer];
+}
+
+-(void) keyboardWillHide:(NSNotification *) note
+{
+    [self.view removeGestureRecognizer:self.tapRecognizer];
+}
+
 @end

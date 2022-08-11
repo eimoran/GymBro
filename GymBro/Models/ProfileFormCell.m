@@ -49,7 +49,7 @@
     }
     
     NSUInteger newLength = [textView.text length] + [text length] - range.length;
-    if (newLength > 240)
+    if (newLength > 260)
     {
         return NO;
     }
@@ -155,8 +155,6 @@
     
     return title;
 }
-
-// WORK ON SETTING DEFAULT VALUES ON PICKER
 
 - (void)pickerView:(UIPickerView *)picker
       didSelectRow:(NSInteger)row

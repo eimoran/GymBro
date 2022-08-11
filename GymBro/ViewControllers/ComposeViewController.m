@@ -62,55 +62,69 @@
 }
 
 - (IBAction)post:(id)sender {
-    if (self.hasChosenImage)
+    if ([self.postTextView.text isEqual:@""])
     {
-        CGSize size = CGSizeMake(1000, 1000);
-        self.postImageView.image = [APIManager resizeImage:self.postImageView.image withSize:size];
-        [Post postUserImage:self.postImageView.image withCaption:self.postTextView.text withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
-            if (!error)
-            {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success!"
-                                             message:@"Successfully Created Post"
-                                             preferredStyle:UIAlertControllerStyleAlert];
-
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-                 {}];
-                [alert addAction:ok];
-                [self presentViewController:alert animated:YES completion:nil];
-                
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                UIViewController *tabBarController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
-                self.view.window.rootViewController = tabBarController;
-            }
-            else
-            {
-                NSLog(@"%@", error.localizedDescription);
-            }
-        }];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Invalid Post"
+                                                                       message:@"Please Enter Text To Make a Post"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                             {}];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
     }
     else
     {
-        [Post postWithText:self.postTextView.text withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
-            if (!error)
-            {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success!"
-                                             message:@"Successfully Created Post"
-                                             preferredStyle:UIAlertControllerStyleAlert];
+        if (self.hasChosenImage)
+        {
+            CGSize size = CGSizeMake(1000, 1000);
+            self.postImageView.image = [APIManager resizeImage:self.postImageView.image withSize:size];
+            [Post postUserImage:self.postImageView.image withCaption:self.postTextView.text withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+                if (!error)
+                {
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success!"
+                                                 message:@"Successfully Created Post"
+                                                 preferredStyle:UIAlertControllerStyleAlert];
 
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-                 {}];
-                [alert addAction:ok];
-                [self presentViewController:alert animated:YES completion:nil];
-                
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                UIViewController *tabBarController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
-                self.view.window.rootViewController = tabBarController;
-            }
-            else
-            {
-                NSLog(@"%@", error.localizedDescription);
-            }
-        }];
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                     {}];
+                    [alert addAction:ok];
+                    [self presentViewController:alert animated:YES completion:nil];
+                    
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    UIViewController *tabBarController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
+                    self.view.window.rootViewController = tabBarController;
+                }
+                else
+                {
+                    NSLog(@"%@", error.localizedDescription);
+                }
+            }];
+        }
+        else
+        {
+            [Post postWithText:self.postTextView.text withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+                if (!error)
+                {
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Success!"
+                                                 message:@"Successfully Created Post"
+                                                 preferredStyle:UIAlertControllerStyleAlert];
+
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                     {}];
+                    [alert addAction:ok];
+                    [self presentViewController:alert animated:YES completion:nil];
+                    
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    UIViewController *tabBarController = [storyboard instantiateViewControllerWithIdentifier:@"TabBarController"];
+                    self.view.window.rootViewController = tabBarController;
+                }
+                else
+                {
+                    NSLog(@"%@", error.localizedDescription);
+                }
+            }];
+        }
     }
 }
 
@@ -129,4 +143,6 @@
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
 
+- (IBAction)backButton:(id)sender {
+}
 @end
