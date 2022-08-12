@@ -1945,9 +1945,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JtS-dj-iut">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JtS-dj-iut">
                                 <rect key="frame" x="0.0" y="153" width="414" height="709"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostCell" rowHeight="193" id="fi7-uN-VMn" customClass="PostCell">
@@ -1991,7 +1990,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oSg-XA-lp1">
-                                                    <rect key="frame" x="291" y="156" width="21" height="21"/>
+                                                    <rect key="frame" x="291.5" y="156" width="20.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2039,9 +2038,8 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="07D-Fo-0wE">
-                                <rect key="frame" x="142" y="88" width="131" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="07D-Fo-0wE">
+                                <rect key="frame" x="20" y="88" width="374" height="32"/>
                                 <segments>
                                     <segment title="Your Posts"/>
                                     <segment title="Your Likes"/>
@@ -2053,6 +2051,15 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="TIy-4p-yzs"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="07D-Fo-0wE" firstAttribute="top" secondItem="TIy-4p-yzs" secondAttribute="top" id="8Yb-wt-ZNW"/>
+                            <constraint firstItem="TIy-4p-yzs" firstAttribute="trailing" secondItem="JtS-dj-iut" secondAttribute="trailing" id="KLx-6V-ADI"/>
+                            <constraint firstItem="TIy-4p-yzs" firstAttribute="bottom" secondItem="JtS-dj-iut" secondAttribute="bottom" id="SdH-G8-ALb"/>
+                            <constraint firstItem="07D-Fo-0wE" firstAttribute="leading" secondItem="TIy-4p-yzs" secondAttribute="leading" constant="20" id="aSG-ME-seU"/>
+                            <constraint firstItem="JtS-dj-iut" firstAttribute="leading" secondItem="TIy-4p-yzs" secondAttribute="leading" id="bbT-uk-xoJ"/>
+                            <constraint firstItem="TIy-4p-yzs" firstAttribute="trailing" secondItem="07D-Fo-0wE" secondAttribute="trailing" constant="20" id="hgQ-qi-3Rg"/>
+                            <constraint firstItem="JtS-dj-iut" firstAttribute="top" secondItem="07D-Fo-0wE" secondAttribute="bottom" constant="34" id="o4U-WI-e1f"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="bnH-r4-BEh">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="vGG-6K-3e7">

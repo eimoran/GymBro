@@ -197,7 +197,7 @@
         {
             NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
             [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row/2];
-            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cellIndexPath.row+1 inSection:cellIndexPath.section], cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         else
         {
@@ -222,7 +222,7 @@
         {
             NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
             [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row/2];
-            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:cellIndexPath.row+1 inSection:cellIndexPath.section], cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         else
         {
