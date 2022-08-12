@@ -26,6 +26,8 @@
 - (IBAction)nextImage:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *previousImageButton;
 @property (weak, nonatomic) IBOutlet UIButton *nextImageButton;
+@property (weak, nonatomic) IBOutlet UIView *InfoBackgroundView;
+@property (weak, nonatomic) IBOutlet UIView *matchingImagesBackgroundView;
 
 @property BOOL separatorAdded;
 
@@ -75,30 +77,24 @@
     self.genderLabel.text = [NSString stringWithFormat:@"· %@", self.user[@"gender"]];
     self.levelLabel.text = [NSString stringWithFormat:@"· %@", self.user[@"level"]];
     self.gymLabel.text = [NSString stringWithFormat:@"· %@", [self.user[@"gym"] valueForKeyPath:@"name"]];
-    self.distanceLabel.text = [NSString stringWithFormat:@"· %.2f mi away", self.distanceFromUser * 0.00062317];
-}
-
-- (void)createSeparator
-{
-    if (!self.separatorAdded)
+    if (self.indexPath.row % 3 == 0)
     {
-        UIView *separatorView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 5, self.frame.size.width, 5)];
-        
-        if (self.indexPath.row % 3 == 0)
-        {
-            separatorView.backgroundColor = [UIColor systemPinkColor];
-        }
-        else if ((self.indexPath.row - 1) % 3 == 0)
-        {
-            separatorView.backgroundColor = [UIColor blueColor];
-        }
-        else if ((self.indexPath.row - 2) % 3 == 0)
-        {
-            separatorView.backgroundColor = [UIColor greenColor];
-        }
-        [self addSubview:separatorView];
-        self.separatorAdded = YES;
+        self.InfoBackgroundView.backgroundColor = [UIColor colorWithHue:0.6 saturation:0.15 brightness:1 alpha:1];
+        self.matchingImagesBackgroundView.backgroundColor = [UIColor colorWithHue:0.6 saturation:0.15 brightness:1 alpha:1];
     }
+    else if ((self.indexPath.row - 1) % 3 == 0)
+    {
+        self.InfoBackgroundView.backgroundColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
+        self.matchingImagesBackgroundView.backgroundColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
+    }
+    else if ((self.indexPath.row - 2) % 3 == 0)
+    {
+        self.InfoBackgroundView.backgroundColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
+        self.matchingImagesBackgroundView.backgroundColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
+    }
+    self.distanceLabel.text = [NSString stringWithFormat:@"· %.2f mi away", self.distanceFromUser * 0.00062317];
+    self.InfoBackgroundView.layer.cornerRadius = 20.0;
+    self.matchingImagesBackgroundView.layer.cornerRadius = 20.0;
 }
 
 - (void)swipedLeft

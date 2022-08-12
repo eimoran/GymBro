@@ -170,30 +170,17 @@
     if (indexPath.section == 0)
     {
         TipCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TipCell" forIndexPath:indexPath];
-        if (indexPath.row < self.tipArray.count)
-        {
-            
-        }
         cell.tipLabel.text = [NSString stringWithFormat:@"\"%@\"", self.tipArray[indexPath.row][@"text"]];
         cell.tipLabel.textColor = [UIColor grayColor];
         return cell;
     }
     else
     {
-        if (indexPath.row % 2 == 0)
-        {
-            UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
-            cell.user = self.userArray[indexPath.row/2];
-            [cell setData];
-            return cell;
-        }
-        else
-        {
-            UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"separator" forIndexPath:indexPath];
-            cell.indexPath = indexPath;
-            [cell createSeparator];
-            return cell;
-        }
+        UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
+        cell.user = self.userArray[indexPath.row/2];
+        cell.indexPath = indexPath;
+        [cell setData];
+        return cell;
     }
 }
 

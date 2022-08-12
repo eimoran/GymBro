@@ -200,6 +200,22 @@
     return 15;
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    /* for backspace */
+    if([text length] == 0){
+        return YES;
+    }
+    
+    NSUInteger newLength = [textView.text length] + [text length] - range.length;
+    if (newLength > 260)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
+
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     if ([textView.text isEqualToString:@"Write a Comment"])

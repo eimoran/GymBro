@@ -144,25 +144,15 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row % 2 == 0)
-    {
-        UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
-        cell.delegate = self;
-        cell.user = self.userArray[indexPath.row/2];
-        cell.distanceFromUser = [APIManager getDistance:self.currUser from:cell.user];
-        cell.controller = self;
-        cell.rightUtilityButtons = [self rightButtons];
-        
-        [cell setData];
-        return cell;
-    }
-    else
-    {
-        UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"separator" forIndexPath:indexPath];
-        cell.indexPath = indexPath;
-        [cell createSeparator];
-        return cell;
-    }
+    UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
+    cell.delegate = self;
+    cell.user = self.userArray[indexPath.row/2];
+    cell.distanceFromUser = [APIManager getDistance:self.currUser from:cell.user];
+    cell.controller = self;
+    cell.rightUtilityButtons = [self rightButtons];
+    cell.indexPath = indexPath;
+    [cell setData];
+    return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

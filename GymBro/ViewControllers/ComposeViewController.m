@@ -143,6 +143,4 @@
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
 
-- (IBAction)backButton:(id)sender {
-}
 @end

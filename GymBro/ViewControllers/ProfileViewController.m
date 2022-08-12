@@ -44,7 +44,6 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 @property (strong, nonatomic) NSDictionary *currGym;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIView *topBackgroundView;
 
 @property (weak, nonatomic) IBOutlet UILabel *postCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *friendCountLabel;
@@ -119,11 +118,14 @@ static NSString * const clientSecret = @"43SDDVTODTHINIW24OO4J1OK3QCZGSP1DEC53IQ
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
+    self.view.backgroundColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
+    
     self.tabBarController.tabBar.barTintColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
     self.tabBarController.tabBar.backgroundColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
-    self.topBackgroundView.backgroundColor = [UIColor colorWithHue:0.3 saturation:0.15 brightness:1 alpha:1];
+    UIView *topBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, self.view.frame.size.width)];
+    [self.view insertSubview:topBackground atIndex:0];
+    
     self.profileImageView.layer.cornerRadius = self.profileImageView.frame.size.height/2.0;
 }
 

@@ -20,7 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) int currPhotoIndex;
 @property (strong, nonatomic) NSIndexPath *indexPath;
 - (void) setData;
-- (void) createSeparator;
 
 @end
 
