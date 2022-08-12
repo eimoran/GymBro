@@ -146,7 +146,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     cell.delegate = self;
-    cell.user = self.userArray[indexPath.row/2];
+    cell.user = self.userArray[indexPath.row];
     cell.distanceFromUser = [APIManager getDistance:self.currUser from:cell.user];
     cell.controller = self;
     cell.rightUtilityButtons = [self rightButtons];
@@ -156,7 +156,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.userArray.count * 2;
+    return self.userArray.count;
 }
 
 

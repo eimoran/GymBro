@@ -38,6 +38,11 @@
     titleLabel.font = [UIFont fontWithName:@"Menlo Bold" size:20];
     self.navigationItem.titleView = titleLabel;
     
+    UIImage *backIcon = [UIImage imageNamed:@"back.png"];
+    backIcon = [APIManager resizeImage:backIcon withSize:CGSizeMake(40,30)];
+    [self.backButton setTitle:@"" forState:UIControlStateNormal];
+    [self.backButton setImage:backIcon forState:UIControlStateNormal];
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchPostsAndLikes) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];

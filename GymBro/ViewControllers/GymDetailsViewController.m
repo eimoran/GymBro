@@ -177,7 +177,7 @@
     else
     {
         UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
-        cell.user = self.userArray[indexPath.row/2];
+        cell.user = self.userArray[indexPath.row];
         cell.indexPath = indexPath;
         [cell setData];
         return cell;
@@ -197,7 +197,7 @@
     }
     else
     {
-        return self.userArray.count * 2;
+        return self.userArray.count;
     }
 }
 

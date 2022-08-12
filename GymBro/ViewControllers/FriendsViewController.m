@@ -97,15 +97,15 @@
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UserCell" forIndexPath:indexPath];
     switch (self.segmentedControl.selectedSegmentIndex) {
         case 0:
-            cell.user = self.friendsArray[indexPath.row/2];
+            cell.user = self.friendsArray[indexPath.row];
             break;
         case 1:
             cell.delegate = self;
             cell.rightUtilityButtons = [self rightButtons];
-            cell.user = self.friendRequestsArray[indexPath.row/2];
+            cell.user = self.friendRequestsArray[indexPath.row];
             break;
         case 2:
-            cell.user = self.pendingFriendsArray[indexPath.row/2];
+            cell.user = self.pendingFriendsArray[indexPath.row];
             break;
         default:
             break;
@@ -121,13 +121,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (self.segmentedControl.selectedSegmentIndex) {
         case 0:
-            return self.friendsArray.count * 2;
+            return self.friendsArray.count;
             break;
         case 1:
-            return self.friendRequestsArray.count * 2;
+            return self.friendRequestsArray.count;
             break;
         default:
-            return self.pendingFriendsArray.count * 2;
+            return self.pendingFriendsArray.count;
             break;
     }
 }

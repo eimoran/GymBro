@@ -67,7 +67,6 @@
         
         UIImage *favoriteIcon;
         self.hasBeenLiked = NO;
-        self.likedPostsIndex = -1;
         NSArray *likedPosts = user[@"likedPosts"];
         for (int x = 0; x < likedPosts.count; x++)
         {
