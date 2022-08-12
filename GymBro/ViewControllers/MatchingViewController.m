@@ -240,7 +240,7 @@
         if (succeeded)
         {
             NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
-            [self.userArray removeObjectAtIndex:cellIndexPath.row/2];
+            [self.userArray removeObjectAtIndex:cellIndexPath.row];
             [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         else

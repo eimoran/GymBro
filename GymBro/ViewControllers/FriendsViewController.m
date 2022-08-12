@@ -196,7 +196,7 @@
         if (succeeded)
         {
             NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
-            [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row/2];
+            [self.friendRequestsArray removeObjectAtIndex:cellIndexPath.row];
             [self.tableView deleteRowsAtIndexPaths:@[cellIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
         else
