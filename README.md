@@ -1,25 +1,47 @@
 # GymBro
 Description
 
-App will allow users to create a workout profile and get matched with other people who are looking for gym buddies or athletic events. There will be a public forum where users can make posts for other users to see. Users will be able to like, comment, and reply to posts on this forum and as well as direct message friends.
+App will allow users to create a workout profile and get matched with other people who are looking for gym buddies or athletic events. There will be a public forum where users can post public workouts for other people within a certain radius to see. Users will be able to like, comment, and reply to posts on this forum
 
 Features
 -   Log in, Log out, Sign Up
 -   Profile Page
--   Matching Users to other users based on their profiles and locations
+-   Workout traits
+-   Local gym
+-   Profile picture
+-   Profile images to display during matching
+-   Matching Users to other Users based on their profiles and locations
 -   Match based on who matches more profile traits and location
--   Map API to track users’ locations display nearby gyms
+-   Matching displays other user’s images, profile traits, and local gym
+-   Can swipe on a matching cell to send user a friend request or reject user
+-   Map API to track users’ locations and which gyms to show
+-   Gym icons show as weights
+-   Clicking on gym icon gives user option to add gym to their profile 
+-   Friend Requests
+-   Friends page to keep track outgoing/pending requests, incoming requests, and friends list
 -   Forum Posts
--   Comments, Likes, replies
+-   Comments, likes
+-   Clicking on post shows comments and image, if applicable
 
 Ambiguous/Complex Problems
 -   Matching user to other compatible users
 -   Allow user to get a list of gyms nearby and add it to their profile
 
 Stretch Features
--   Allow user to filter
--   Direct message
+-  Allow user to filter
+-   profile traits
+-   Gender
+-   Search bar to search for other gyms near user
+-   Uses foursquare autocomplete
+-   Show more information about gym on gym details page
+-   Photos
+-   tips/reviews
+-   Other users who go there
+-   Likes for post comments
+-   Sort comments in order of likes
+-   View current user’s posts and liked posts
 -   Create Custom Workouts
+-   Direct message
 -   Create list of workouts with videos embedded for each workout that user can add to their plan
 -   Create a weight or lift tracker page where users can track their lifting PR’s or track their weight
 
@@ -33,12 +55,3 @@ SDK & Database integration
 -   Foursquare
 -   Parse Database
 
-User auth
--   Log in
--   Log out
--   Sign up
-
-Visuals & Interactions
--   Double tap forum post to like
--   visual polish
--   Animations for matching section
