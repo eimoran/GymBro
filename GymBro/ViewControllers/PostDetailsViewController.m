@@ -236,7 +236,7 @@
 
 
 - (IBAction)comment:(id)sender {
-    if (self.commentTextView.text.length == 0)
+    if (self.commentTextView.text.length == 0 || [self.commentTextView.text isEqual:@"Write a Comment"])
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Invalid Comment"
                                      message:@"Please Type Something To Comment"
