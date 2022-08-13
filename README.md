@@ -40,10 +40,6 @@ Stretch Features
 -   Likes for post comments
 -   Sort comments in order of likes
 -   View current user’s posts and liked posts
--   Create Custom Workouts
--   Direct message
--   Create list of workouts with videos embedded for each workout that user can add to their plan
--   Create a weight or lift tracker page where users can track their lifting PR’s or track their weight
 
 Planned Problems
 -   Using Map API to filter users based on location
