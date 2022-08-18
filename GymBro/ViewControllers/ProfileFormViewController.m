@@ -70,6 +70,12 @@
 
     self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
     action:@selector(didTapAnywhere:)];
+    
+    self.bio = self.currUser[@"bio"];
+    self.split = self.currUser[@"workoutSplit"];
+    self.time = self.currUser[@"workoutTime"];
+    self.gender = self.currUser[@"gender"];
+    self.level = self.currUser[@"level"];
 }
 
 
@@ -124,6 +130,7 @@
         splitCell.controller = self;
         NSArray *splitOptions = [[NSArray alloc] initWithObjects:@"Whole Body Split", @"Upper And Lower Body Split", @"Push/Pull/Legs",  @"Four Day Split", @"Five Day Split", @"Yoga", @"Other", nil];
         splitCell.traitValue = (int)[splitOptions indexOfObject:self.currUser[@"workoutSplit"]];
+        self.split = self.currUser[@"workoutSplit"];
         [splitCell setTraits];
         return splitCell;
     }
@@ -133,7 +140,10 @@
         workoutTimeCell.controller = self;
         NSArray *timeOptions = [[NSArray alloc] initWithObjects:@"Morning (6am - 12pm)", @"Afternoon (12 - 5pm)", @"Evening (5 - 9pm)", @"Late Night (past 9pm)", nil];
         workoutTimeCell.traitValue = (int)[timeOptions indexOfObject:self.currUser[@"workoutTime"]];
+        self.time = self.currUser[@"workoutTime"];
+        NSLog(@"BEFORE: %@", self.time);
         [workoutTimeCell setTraits];
+        NSLog(@"AFTER: %@", self.time);
         return workoutTimeCell;
     }
     else if (indexPath.row == 3)
@@ -142,7 +152,10 @@
         genderCell.controller = self;
         NSArray *genderOptions = [[NSArray alloc] initWithObjects:@"Male", @"Female", nil];
         genderCell.traitValue = (int)[genderOptions indexOfObject:self.currUser[@"gender"]];
+        self.gender = self.currUser[@"gender"];
+        NSLog(@"BEFORE: %@", self.gender);
         [genderCell setTraits];
+        NSLog(@"AFTER: %@", self.gender);
         return genderCell;
     }
     else if (indexPath.row == 4)
@@ -151,6 +164,7 @@
         levelCell.controller = self;
         NSArray *levelOptions = [[NSArray alloc] initWithObjects:@"Novei", @"Intermediate", @"Advanced", nil];
         levelCell.traitValue = (int)[levelOptions indexOfObject:self.currUser[@"level"]];
+        self.level = self.currUser[@"level"];
         [levelCell setTraits];
         return levelCell;
     }

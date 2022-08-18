@@ -128,13 +128,11 @@
     __block NSMutableArray *userArray = [[NSMutableArray alloc] init];
     
     NSArray *userObjects = [query findObjects];
-    NSLog(@"BEFORE SORTING: %@", [userObjects valueForKeyPath:@"username"]);
     NSMutableArray * users = [[NSMutableArray alloc] init];
     for (PFUser *user in userObjects)
     {
         if (([self getDistance:currUser from:user] * 0.00062317) <= [currUser[@"distanceFilter"] intValue])
         {
-            NSLog(@"ADDED USER: %@", [user valueForKeyPath:@"username"]);
             [users addObject:user];
         }
     }
@@ -142,7 +140,6 @@
     compatibilityArray = result[1];
     userArray = result[0];
     userArray = [self compatibilitySort:userArray withCompatibilityArray:compatibilityArray];
-    NSLog(@"AFTER SORTING %@", [userArray valueForKeyPath:@"username"]);
     return userArray;
 }
 

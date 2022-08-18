@@ -39,6 +39,10 @@
     
     self.tabBarController.tabBar.barTintColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
     self.tabBarController.tabBar.backgroundColor = [UIColor colorWithHue:0 saturation:0.15 brightness:1 alpha:1];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshUser) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -100,10 +104,6 @@
         
         self.userArray = [[NSMutableArray alloc] init];
         [self fetchUsersWithQuery];
-        
-        self.refreshControl = [[UIRefreshControl alloc] init];
-        [self.refreshControl addTarget:self action:@selector(refreshUser) forControlEvents:UIControlEventValueChanged];
-        [self.tableView insertSubview:self.refreshControl atIndex:0];
     }
 }
 
@@ -123,7 +123,6 @@
 - (void)fetchUsersWithQuery
 {
     self.userArray = [APIManager fetchUsersWithQuery:self.currUser withPriorityArray:self.currUser[@"priorityArray"] withGenderFilter:[self.currUser[@"genderFilter"] intValue]];
-    self.rowCount = self.userArray.count;
     [self.tableView reloadData];
     [self.refreshControl endRefreshing];
 }
