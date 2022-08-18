@@ -128,11 +128,13 @@
     __block NSMutableArray *userArray = [[NSMutableArray alloc] init];
     
     NSArray *userObjects = [query findObjects];
+    NSLog(@"BEFORE SORTING: %@", [userObjects valueForKeyPath:@"username"]);
     NSMutableArray * users = [[NSMutableArray alloc] init];
     for (PFUser *user in userObjects)
     {
         if (([self getDistance:currUser from:user] * 0.00062317) <= [currUser[@"distanceFilter"] intValue])
         {
+            NSLog(@"ADDED USER: %@", [user valueForKeyPath:@"username"]);
             [users addObject:user];
         }
     }
@@ -140,6 +142,7 @@
     compatibilityArray = result[1];
     userArray = result[0];
     userArray = [self compatibilitySort:userArray withCompatibilityArray:compatibilityArray];
+    NSLog(@"AFTER SORTING %@", [userArray valueForKeyPath:@"username"]);
     return userArray;
 }
 
@@ -205,7 +208,6 @@
             }
             float distance = [self getDistance:currUser from:user] * 0.00062317;
             
-            // Don't let user customize these values, have them filter distance as a whole
             if (distance <= 1)
             {
                 score += 5;
@@ -222,7 +224,7 @@
             [compatibilityArray addObject:@(score)];
         }
     }
-    // Make dictionary of these arrays and sort the dictionary
+    // Improvement: Make dictionary of these arrays and sort the dictionary
     [result addObject:userArray];
     [result addObject:compatibilityArray];
     return result;
